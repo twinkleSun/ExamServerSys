@@ -30,12 +30,12 @@
     </select>
 
     <!--向组内添加学生-->
-<!--    <insert id="insert" parameterType="com.examsys.model.GroupUser">-->
-<!--        insert into group_user (group_id, user_id)-->
-<!--        values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})-->
-<!--    </insert>-->
-
     <insert id="insert" parameterType="com.examsys.model.GroupUser">
+        insert into group_user (group_id, user_id)
+        values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertUsertoGroup" parameterType="com.examsys.model.GroupUser">
         insert into group_user(group_id,user_id) select #{groupId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER} from dual where not EXISTS
         (select * from group_user where group_id=#{groupId,jdbcType=INTEGER} and user_id=#{userId,jdbcType=INTEGER})
     </insert>

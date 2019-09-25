@@ -44,4 +44,5 @@ public interface GroupUserMapper {
 
     List<UserGroupInfo> selectUserGroupInfo();
 
+    int insertUsertoGroup(GroupUser groupUser);
 }

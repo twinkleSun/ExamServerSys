@@ -130,7 +130,7 @@ public class GroupUserServiceImpl implements IGroupUserService {
             GroupUser groupUser=new GroupUser();
             groupUser.setGroupId(addIds.get(i));
             groupUser.setUserId(userId);
-            int res=groupUserMapper.insert(groupUser);
+            int res=groupUserMapper.insertUsertoGroup(groupUser);
         }
 
         //todo:没做校验
