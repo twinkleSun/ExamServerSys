@@ -10,7 +10,7 @@
     select group_id, user_id
     from group_user
   </select>
-    
+
     <!--组+用户信息-->
     <resultMap id="groupUserInfo" type="com.examsys.model.entity.GroupUserInfo">
         <id column="group_id" property="group_id" jdbcType="INTEGER" />
@@ -20,6 +20,7 @@
           <result column="user_name" property="user_name"></result>
         </collection>
     </resultMap>
+
     <!--获取组+用户所有信息-->
     <select id="selectGroupUserInfo" resultMap="groupUserInfo">
         SELECT g.id group_id,g.group_name group_name,u.id id,u.user_name
@@ -32,6 +33,11 @@
     <insert id="insert" parameterType="com.examsys.model.GroupUser">
         insert into group_user (group_id, user_id)
         values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+    </insert>
+
+    <insert id="insertUsertoGroup" parameterType="com.examsys.model.GroupUser">
+        insert into group_user(group_id,user_id) select #{groupId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER} from dual where not EXISTS
+        (select * from group_user where group_id=#{groupId,jdbcType=INTEGER} and user_id=#{userId,jdbcType=INTEGER})
     </insert>
 
     <select id="selectGroupUserByGid" parameterType="java.lang.Integer" resultMap="groupUserInfo">
@@ -48,8 +54,6 @@
         where group_id = #{group_id,jdbcType=INTEGER} and user_id=#{user_id}
     </delete>
 
-
-
     <delete id="deleteByUserId" parameterType="java.lang.Integer">
         delete from group_user WHERE user_id=#{user_id}
     </delete>
@@ -60,7 +64,6 @@
         WHERE user_id=#{user_id}
     </select>
 
-
     <delete id="deleteByGroupId" parameterType="java.lang.Integer">
         delete from group_user WHERE group_id=#{group_id}
     </delete>
@@ -70,7 +73,6 @@
         from group_user
         WHERE group_id=#{group_id}
     </select>
-
 
     <!--组+用户信息-->
     <resultMap id="userGroupInfo" type="com.examsys.model.entity.UserGroupInfo">
