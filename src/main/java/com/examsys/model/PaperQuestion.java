@@ -3,7 +3,7 @@ package com.examsys.model;
 import java.io.Serializable;
 
 public class PaperQuestion implements Serializable {
-    private Integer paperCode;
+    private String paperCode;
 
     private Integer questionId;
 
@@ -11,13 +11,23 @@ public class PaperQuestion implements Serializable {
 
     private String answer;
 
+    private Integer id;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     private static final long serialVersionUID = 1L;
 
-    public Integer getPaperCode() {
+    public String getPaperCode() {
         return paperCode;
     }
 
-    public void setPaperCode(Integer paperCode) {
+    public void setPaperCode(String paperCode) {
         this.paperCode = paperCode;
     }
 

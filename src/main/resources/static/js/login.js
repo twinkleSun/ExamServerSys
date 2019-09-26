@@ -3,29 +3,45 @@
  */
 $(function(){
    // window.location.href="/userinfo/template";
-    var id=new Array;
 
-    id[0]=21;
     // group_del[1]=8;
-    var group_add=new Array;
+    var option_list=new Array;
 
-    group_add[0]=1;
-    group_add[1]=3;
+    option_list[0]="231";
+    option_list[1]="wqeqe";
 
+    var answer_list=new Array;
+    var test=new Array;
+
+
+    answer_list[0]="231";
+    answer_list[1]="wqeqe";
     //console.log(test1);
-    var test={
-        id:id
-        // group_add:group_add,
-        // group_del:group_del
+    var test1={
+        type:"multi",
+        score:20,
+        content:"jaskdl",
+        option_list:option_list,
+        answer_list:answer_list
     };
 
+    var test2={
+        type:"single",
+        score:20,
+        content:"jaskdl",
+        option_list:option_list,
+        answer_list:answer_list
+    };
+    test[0]=test1;
+    test[1]=test2;
+
     $.ajax({
-        url: "/upi/usergroup/all",
-        type: "get",
+        url: "/question/new",
+        type: "post",
         traditional: true,
         contentType: "application/json; charset=UTF-8",
         dataType: "json",
-        // data:JSON.stringify(test),
+        data:JSON.stringify(test),
         success: function (data) {
            console.log(data);
         },

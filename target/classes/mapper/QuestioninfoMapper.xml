@@ -12,12 +12,7 @@
     delete from questioninfo
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.examsys.model.Questioninfo">
-    insert into questioninfo (id, content, `options`, 
-      answer, `type`)
-    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{options,jdbcType=VARCHAR}, 
-      #{answer,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
-  </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.Questioninfo">
     update questioninfo
     set content = #{content,jdbcType=VARCHAR},
@@ -35,4 +30,12 @@
     select id, content, `options`, answer, `type`
     from questioninfo
   </select>
+
+
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Questioninfo">
+    insert into questioninfo (id, content, `options`,
+    answer, `type`)
+    values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{options,jdbcType=VARCHAR},
+    #{answer,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+  </insert>
 </mapper>

@@ -61,14 +61,16 @@ INSERT INTO `questioninfo` VALUES ('1','java基本数据类型有哪些', 'A、b
 -- ---------------------------
 DROP TABLE IF EXISTS `paper_question`;
 CREATE TABLE `paper_question` (
-  `paper_code` int(11) NOT NULL COMMENT '试卷识别码',
+ `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `paper_code` VARCHAR (45) NOT NULL COMMENT '试卷识别码',
   `question_id` int(11) NOT NULL COMMENT '题目ID',
   `score` DOUBLE(4,2) NOT NULL COMMENT '题目分数',
   `answer` VARCHAR (45) DEFAULT NULL COMMENT '题目的标准答案',
+  PRIMARY KEY (`id`),
   FOREIGN KEY (`question_id`) REFERENCES `questioninfo` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `paper_question` VALUES ('1101','1', '10', 'ABCD');
+INSERT INTO `paper_question` VALUES ('1','1101','1', '10', 'ABCD');
 
 
 -- ----------------------------

@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface PaperQuestionMapper {
+
     int insert(PaperQuestion record);
 
     List<PaperQuestion> selectAll();
