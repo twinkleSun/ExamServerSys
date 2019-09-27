@@ -2,6 +2,7 @@ package com.examsys.controller;
 
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.IGroupUserService;
+import com.examsys.service.IUserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -42,13 +43,11 @@ public class GroupUserController {
         return responseEntity;
     }
 
-
     @PostMapping("/usergroup/relation")
     public ResponseEntity updateRelation(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = iGroupUserService.updateUserGroupRelation(map);
         return responseEntity;
     }
-
 
     @GetMapping(value = "/usergroup/all")
     @ResponseBody

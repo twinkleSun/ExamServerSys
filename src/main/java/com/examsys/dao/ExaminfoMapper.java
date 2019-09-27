@@ -18,4 +18,6 @@ public interface ExaminfoMapper {
     List<Examinfo> selectAll();
 
     int updateByPrimaryKey(Examinfo record);
+
+    List<Examinfo> selectExamById(Integer id);
 }
