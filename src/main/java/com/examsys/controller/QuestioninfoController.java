@@ -28,7 +28,6 @@ import java.util.Map;
 @RequestMapping("/question")
 public class QuestioninfoController {
 
-
     @Autowired
     ExcelAnalysisUtil excelAnalysisUtil;
 
@@ -73,5 +72,12 @@ public class QuestioninfoController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @PostMapping(value = "/all")
+    @Transactional
+    public ResponseEntity getAllQuestionInfo() {
+        ResponseEntity responseEntity=questioninfoService.getAllQuestionInfo();
+        return responseEntity;
     }
 }
