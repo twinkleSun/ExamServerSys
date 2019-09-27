@@ -33,7 +33,6 @@ public class QuestioninfoServiceImpl {
         return paperQuestionList;
     }
 
-
     public ResponseEntity addNewQuestions(List<Questioninfo> questioninfoList){
         int length=questioninfoList.size();
         ResponseEntity responseEntity=new ResponseEntity();
@@ -90,5 +89,21 @@ public class QuestioninfoServiceImpl {
         }
 
         return questioninfoList;
+    }
+
+    public ResponseEntity getAllQuestionInfo(){
+        ResponseEntity responseEntity=new ResponseEntity();
+        List<Questioninfo> questioninfoList = questioninfoMapper.selectAll();
+
+        if(questioninfoList == null){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("没有题目信息");
+        }else {
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("获取题目成功");
+            responseEntity.setData(questioninfoList);
+        }
+
+        return responseEntity;
     }
 }

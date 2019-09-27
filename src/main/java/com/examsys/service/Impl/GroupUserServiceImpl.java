@@ -1,7 +1,9 @@
 package com.examsys.service.Impl;
 
 import com.examsys.dao.GroupUserMapper;
+import com.examsys.dao.UserinfoMapper;
 import com.examsys.model.GroupUser;
+import com.examsys.model.Userinfo;
 import com.examsys.model.entity.GroupUserInfo;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.model.entity.UserGroupInfo;
@@ -21,6 +23,9 @@ public class GroupUserServiceImpl implements IGroupUserService {
 
     @Autowired
     GroupUserMapper groupUserMapper;
+
+    @Autowired
+    UserinfoMapper userinfoMapper;
 
     /**
      * 获取组+成员信息
@@ -88,7 +93,7 @@ public class GroupUserServiceImpl implements IGroupUserService {
         if(groupUserInfo==null){
             responseEntity.setStatus(-1);
             responseEntity.setMsg("组不存在");
-        }else {
+        } else {
             responseEntity.setStatus(200);
             responseEntity.setMsg("查询成功");
             responseEntity.setData(groupUserInfo);
@@ -99,6 +104,20 @@ public class GroupUserServiceImpl implements IGroupUserService {
 
     public ResponseEntity updateUserGroupRelation(Map<String,Object> map){
         int userId=Integer.parseInt(String.valueOf(map.get("id")));
+
+        Userinfo userinfo =new Userinfo();
+        userinfo.setId(userId);
+        userinfo.setUserName((String) map.get("userName"));
+        userinfo.setPassword((String) map.get("password"));
+        userinfo.setUserType((String) map.get("userType"));
+
+        if(userId != 0){
+            userinfoMapper.updateByPrimaryKey(userinfo);
+        }else {
+            userinfoMapper.insert(userinfo);
+        }
+
+        userId = userinfo.getId();
 
         ArrayList<Integer> addIds=(ArrayList<Integer>)map.get("group_add");
         ArrayList<Integer> deleteIds=(ArrayList<Integer>)map.get("group_del");
@@ -111,7 +130,7 @@ public class GroupUserServiceImpl implements IGroupUserService {
             GroupUser groupUser=new GroupUser();
             groupUser.setGroupId(addIds.get(i));
             groupUser.setUserId(userId);
-            int res=groupUserMapper.insert(groupUser);
+            int res=groupUserMapper.insertUsertoGroup(groupUser);
         }
 
         //todo:没做校验
@@ -120,6 +139,7 @@ public class GroupUserServiceImpl implements IGroupUserService {
         responseEntity.setMsg("更新成功");
         return responseEntity;
     }
+
 
     /**
      * 获取组+成员信息
