@@ -3,40 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"/>
     <script type="text/javascript" src="./plugins/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="./js/login.js"></script>
+    <script type="text/javascript" src="js/api-1.js"></script>
+    <script type="text/javascript" src="js/api-18-19.js"></script>
+    <script type="text/javascript" src="js/api-24.js"></script>
+    <script type="text/javascript" src="js/api-22.js"></script>
+    <script type="text/javascript" src="js/api-2-6-10-8.js"></script>
+    <script type="text/javascript" src="js/api-4-9.js"></script>
 </head>
+
+
 <body>
+    <div class="row">
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-6">
+            <table class="table">
+                <caption>api接口测试</caption>
+                <thead>
+                <tr>
+                    <th>api</th>
+                    <th>api</th>
+                    <th>api</th>
+                    <th><input type="button" value="api-1不可用" id="api-1"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="button" value="api-18添加试卷" id="api-18"></td>
+                    <td><input type="button" value="api-24获取所有试卷" id="api-24"></td>
+                    <td><input type="button" value="api-19添加试题" id="api-19"></td>
+                    <td><input type="button" value="api-22获取所有试题" id="api-22"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" value="api-2用户登录" id="api-2"></td>
+                    <td><input type="button" value="api-6添加组" id="api-6"></td>
+                    <td><input type="button" value="api-10向组内添加学生" id="api-10"></td>
+                    <td><input type="button" value="api-8根据学生ID获取组" id="api-8"></td>
+                </tr>
 
-    用户名：
-    <input id="username" name="username" placeholder="用户名" type="text" >
-    <br>
-    密码:
-    <input id="password" name="password" placeholder="密码" type="password" >
+                <tr>
+                    <td><input type="button" value="api-4获取所有组" id="api-4"></td>
+                    <td><input type="button" value="api-5获取所有考生用户列表" id="api-5"></td>
+                    <td><input type="button" value="api-9根据组ID获取学生" id="api-9"></td>
 
-    <br>
-    用户类型:
-    <select name="usert" id="usertype">
-        <option value="admin">admin</option>
-        <option value="student">student</option>
-    </select>
-    <input type="button" value="注册" id="regis-submit">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    用户名：
-    <input id="username2" name="username" placeholder="用户名" type="text" >
-    <br>
-    密码:
-    <input id="password2" name="password" placeholder="密码" type="password" >
-
-
-    <input type="button" value="登陆" id="login-submit">
-
-</form>
-
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

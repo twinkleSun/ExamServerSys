@@ -1,8 +1,10 @@
 package com.examsys.util;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -18,7 +20,7 @@ public class OtherUtil {
      * @param response
      * @param fileName
      */
-    public void setResponseHeader(HttpServletResponse response, String fileName) {
+    public void setResponseHeader(HttpServletResponse response, String fileName, HSSFWorkbook wb) {
         try {
             try {
                 fileName = new String(fileName.getBytes(),"ISO8859-1");
@@ -30,6 +32,10 @@ public class OtherUtil {
             response.setHeader("Content-Disposition", "attachment;filename="+ fileName);
             response.addHeader("Pargam", "no-cache");
             response.addHeader("Cache-Control", "no-cache");
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

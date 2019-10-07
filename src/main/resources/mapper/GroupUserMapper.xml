@@ -1,81 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.examsys.dao.GroupUserMapper">
-  <resultMap id="BaseResultMap" type="com.examsys.model.GroupUser">
-    <result column="group_id" jdbcType="INTEGER" property="groupId" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-  </resultMap>
 
-  <select id="selectAll" resultMap="BaseResultMap">
-    select group_id, user_id
-    from group_user
-  </select>
 
-    <!--组+用户信息-->
-    <resultMap id="groupUserInfo" type="com.examsys.model.entity.GroupUserInfo">
+    <resultMap id="BaseResultMap" type="com.examsys.model.GroupUser" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="group_id" property="groupId" jdbcType="INTEGER" />
+        <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    </resultMap>
+
+
+    <!--resultMap  组+用户信息-->
+    <resultMap id="groupUser" type="com.examsys.model.entity.GroupUserEntity">
         <id column="group_id" property="group_id" jdbcType="INTEGER" />
         <result column="group_name" property="group_name" jdbcType="VARCHAR" />
         <collection property="students" ofType="Map">
-          <id column="id" property="id"></id>
-          <result column="user_name" property="user_name"></result>
+            <id column="id" property="id"></id>
+            <result column="user_name" property="user_name"></result>
         </collection>
     </resultMap>
 
-    <!--获取组+用户所有信息-->
-    <select id="selectGroupUserInfo" resultMap="groupUserInfo">
-        SELECT g.id group_id,g.group_name group_name,u.id id,u.user_name
-        FROM groupinfo g
+    <!--获取组+用户所有列表-->
+    <select id="selectGroupUser" resultMap="groupUser">
+        SELECT g.id group_id,g.name group_name,u.id id,u.name user_name
+        FROM `group` g
         LEFT JOIN  group_user gu on g.id=gu.group_id
-        LEFT JOIN userinfo u on gu.user_id=u.id
+        LEFT JOIN `user` u on gu.student_id=u.id
     </select>
 
-    <!--向组内添加学生-->
-    <insert id="insert" parameterType="com.examsys.model.GroupUser">
-        insert into group_user (group_id, user_id)
-        values (#{groupId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
-    </insert>
 
-    <insert id="insertUsertoGroup" parameterType="com.examsys.model.GroupUser">
-        insert into group_user(group_id,user_id) select #{groupId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER} from dual where not EXISTS
-        (select * from group_user where group_id=#{groupId,jdbcType=INTEGER} and user_id=#{userId,jdbcType=INTEGER})
-    </insert>
-
-    <select id="selectGroupUserByGid" parameterType="java.lang.Integer" resultMap="groupUserInfo">
-        SELECT g.id group_id,g.group_name group_name,u.id id,u.user_name
-        FROM groupinfo g
-        LEFT JOIN  group_user gu on g.id=gu.group_id
-        LEFT JOIN userinfo u on gu.user_id=u.id
-        where g.id=#{groupId}
-    </select>
-
-    <!--删除组+用户关系-->
-    <delete id="delete" parameterType="java.lang.Integer">
-        delete from group_user
-        where group_id = #{group_id,jdbcType=INTEGER} and user_id=#{user_id}
-    </delete>
-
-    <delete id="deleteByUserId" parameterType="java.lang.Integer">
-        delete from group_user WHERE user_id=#{user_id}
-    </delete>
-
-    <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select group_id, user_id
-        from group_user
-        WHERE user_id=#{user_id}
-    </select>
-
-    <delete id="deleteByGroupId" parameterType="java.lang.Integer">
-        delete from group_user WHERE group_id=#{group_id}
-    </delete>
-
-    <select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select group_id, user_id
-        from group_user
-        WHERE group_id=#{group_id}
-    </select>
-
-    <!--组+用户信息-->
-    <resultMap id="userGroupInfo" type="com.examsys.model.entity.UserGroupInfo">
+    <!--resultMap 用户+组信息-->
+    <resultMap id="userGroup" type="com.examsys.model.entity.UserGroupEntity">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="userName" property="userName" jdbcType="VARCHAR" />
         <result column="password" property="password" jdbcType="VARCHAR" />
@@ -86,13 +41,73 @@
         </collection>
     </resultMap>
 
-    <!--获取组+用户所有信息-->
-    <select id="selectUserGroupInfo" resultMap="userGroupInfo">
-        SELECT u.id id,u.user_name userName,u.password password,u.user_type userType,
-        g.id gid,g.group_name groupName
-        FROM userinfo u
-        LEFT JOIN  group_user gu on u.id=gu.user_id
-        LEFT JOIN groupinfo g on gu.group_id=g.id
-        where u.user_type="student"
+    <!--获取用户+组所有信息-->
+    <select id="selectUserGroup" resultMap="userGroup">
+        SELECT u.id id,u.name userName,u.password password,u.role userType,
+        g.id gid,g.name groupName
+        FROM `user` u
+        LEFT JOIN  group_user gu on u.id=gu.student_id
+        LEFT JOIN `group` g on gu.group_id=g.id
+        where u.role="student"
     </select>
+
+    <!--根据组ID查询学生,删除组时用到-->
+    <select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select group_id, student_id from group_user WHERE group_id=#{group_id}
+    </select>
+
+    <!--根据组ID查询所有学生-->
+    <select id="selectGroupUserByGid" parameterType="java.lang.Integer" resultMap="groupUser">
+        SELECT g.id group_id,g.name group_name,u.id id,u.name user_name
+        FROM `group` g
+        LEFT JOIN  group_user gu on g.id=gu.group_id
+        LEFT JOIN `user` u on gu.student_id=u.id
+        where g.id=#{groupId}
+    </select>
+
+    <!--向组内添加学生-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.GroupUser">
+        insert into group_user (group_id, student_id)values (#{groupId}, #{studentId})
+    </insert>
+
+    <!--删除组+用户关系-->
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from group_user where group_id = #{group_id} and student_id=#{student_id}
+    </delete>
+
+    <insert id="insertUsertoGroup" parameterType="com.examsys.model.GroupUser">
+        insert into group_user(group_id,student_id) select #{groupId},#{student_id} from dual where not EXISTS
+        (select * from group_user where group_id=#{groupId} and student_id=#{studentId})
+    </insert>
+
+    <delete id="deleteByGroupId" parameterType="java.lang.Integer">
+        delete from group_user WHERE group_id=#{group_id}
+    </delete>
+
+
+
+
+
+
+  <!--<select id="selectAll" resultMap="BaseResultMap">-->
+    <!--select group_id, user_id-->
+    <!--from group_user-->
+  <!--</select>-->
+
+    <!--<select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
+        <!--select group_id, student_id from group_user WHERE student_id=#{user_id}-->
+    <!--</select>-->
+
+    <!---->
+
+    <!--<delete id="deleteByUserId" parameterType="java.lang.Integer">-->
+        <!--delete from group_user WHERE user_id=#{user_id}-->
+    <!--</delete>-->
+
+    <!---->
+
+
+
+
+
 </mapper>

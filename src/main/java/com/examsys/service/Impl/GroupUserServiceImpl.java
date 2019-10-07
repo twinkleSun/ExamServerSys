@@ -1,15 +1,15 @@
 package com.examsys.service.Impl;
 
 import com.examsys.dao.GroupUserMapper;
-import com.examsys.dao.UserinfoMapper;
+import com.examsys.dao.UserMapper;
 import com.examsys.model.GroupUser;
-import com.examsys.model.Userinfo;
-import com.examsys.model.entity.GroupUserInfo;
+import com.examsys.model.User;
+import com.examsys.model.entity.GroupUserEntity;
 import com.examsys.model.entity.ResponseEntity;
-import com.examsys.model.entity.UserGroupInfo;
-import com.examsys.service.IGroupUserService;
+import com.examsys.model.entity.UserGroupEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,36 +18,81 @@ import java.util.Map;
 /**
  * Created by twinkleStar on 2019/9/3.
  */
+@Service
 @Repository
-public class GroupUserServiceImpl implements IGroupUserService {
+public class GroupUserServiceImpl{
 
     @Autowired
     GroupUserMapper groupUserMapper;
 
     @Autowired
-    UserinfoMapper userinfoMapper;
+    UserMapper userinfoMapper;
 
     /**
      * 获取组+成员信息
      * @return
      */
-    public ResponseEntity getGroupUserInfo(){
-        List<GroupUserInfo> groupUserInfoList=groupUserMapper.selectGroupUserInfo();
+    public ResponseEntity getGroupUser(){
+        List<GroupUserEntity> groupUserList=groupUserMapper.selectGroupUser();
         ResponseEntity responseEntity=new ResponseEntity();
-        if(groupUserInfoList==null || groupUserInfoList.size()==0){
+        if(groupUserList==null || groupUserList.size()==0){
             responseEntity.setStatus(-1);
-            responseEntity.setMsg("组不存在");
+            responseEntity.setMsg("不存在任何组和成员信息");
         }else {
             responseEntity.setStatus(200);
             responseEntity.setMsg("查询成功");
-            responseEntity.setData(groupUserInfoList);
+            responseEntity.setData(groupUserList);
         }
-
         return responseEntity;
     }
 
 
 
+    /**
+     * 获取成员+组信息
+     * @return
+     */
+    public ResponseEntity getUserGroup(){
+        List<UserGroupEntity> userGroupList=groupUserMapper.selectUserGroup();
+        ResponseEntity responseEntity=new ResponseEntity();
+        if(userGroupList==null || userGroupList.size()==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("不存在任何成员和组信息");
+        }else {
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("查询成功");
+            responseEntity.setData(userGroupList);
+        }
+
+        return responseEntity;
+    }
+
+    /**
+     * 根据组ID获取所有学生
+     * @param groupId
+     * @return
+     */
+    public ResponseEntity  getGroupUserByGid(int groupId){
+        GroupUserEntity groupUserInfo=groupUserMapper.selectGroupUserByGid(groupId);
+        ResponseEntity responseEntity=new ResponseEntity();
+        if(groupUserInfo==null){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("组不存在");
+        } else {
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("查询成功");
+            responseEntity.setData(groupUserInfo);
+        }
+
+        return responseEntity;
+    }
+
+    /**
+     * 向某个组添加学生
+     * todo:没检查
+     * @param map
+     * @return
+     */
     public ResponseEntity addNewGroupUser(Map<String,Object> map){
         ResponseEntity responseEntity=new ResponseEntity();
 
@@ -67,7 +112,7 @@ public class GroupUserServiceImpl implements IGroupUserService {
         ArrayList<Integer> resId=new ArrayList<Integer>();
         for(int i=0;i<length;i++){
             studentIds[i]=stuObj.get(i);
-            groupUser.setUserId(studentIds[i]);
+            groupUser.setStudentId(studentIds[i]);
             int res=groupUserMapper.insert(groupUser);
             if(res<0){
                 flag++;
@@ -87,29 +132,19 @@ public class GroupUserServiceImpl implements IGroupUserService {
         return responseEntity;
     }
 
-    public ResponseEntity  getGroupUserByGid(int groupId){
-        GroupUserInfo groupUserInfo=groupUserMapper.selectGroupUserByGid(groupId);
-        ResponseEntity responseEntity=new ResponseEntity();
-        if(groupUserInfo==null){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("组不存在");
-        } else {
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("查询成功");
-            responseEntity.setData(groupUserInfo);
-        }
-
-        return responseEntity;
-    }
-
+    /**
+     * todo:该方法有待修改
+     * @param map
+     * @return
+     */
     public ResponseEntity updateUserGroupRelation(Map<String,Object> map){
         int userId=Integer.parseInt(String.valueOf(map.get("id")));
 
-        Userinfo userinfo =new Userinfo();
+        User userinfo =new User();
         userinfo.setId(userId);
-        userinfo.setUserName((String) map.get("userName"));
+        userinfo.setName((String) map.get("userName"));
         userinfo.setPassword((String) map.get("password"));
-        userinfo.setUserType((String) map.get("userType"));
+        userinfo.setRole((String) map.get("userType"));
 
         if(userId != 0){
             userinfoMapper.updateByPrimaryKey(userinfo);
@@ -129,7 +164,7 @@ public class GroupUserServiceImpl implements IGroupUserService {
         for(int i=0;i<addIds.size();i++){
             GroupUser groupUser=new GroupUser();
             groupUser.setGroupId(addIds.get(i));
-            groupUser.setUserId(userId);
+            groupUser.setStudentId(userId);
             int res=groupUserMapper.insertUsertoGroup(groupUser);
         }
 
@@ -141,23 +176,5 @@ public class GroupUserServiceImpl implements IGroupUserService {
     }
 
 
-    /**
-     * 获取组+成员信息
-     * @return
-     */
-    public ResponseEntity getUserGroupInfo(){
-        List<UserGroupInfo> userGroupInfos=groupUserMapper.selectUserGroupInfo();
-        ResponseEntity responseEntity=new ResponseEntity();
-        if(userGroupInfos==null || userGroupInfos.size()==0){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("组不存在");
-        }else {
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("查询成功");
-            responseEntity.setData(userGroupInfos);
-        }
-
-        return responseEntity;
-    }
 
 }

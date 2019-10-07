@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.examsys.dao.ExamMapper">
+
+
+  <resultMap id="BaseResultMap" type="com.examsys.model.Exam" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="exam_name" property="examName" jdbcType="VARCHAR" />
+    <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
+    <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+    <result column="duration" property="duration" jdbcType="INTEGER" />
+  </resultMap>
+
+
+  <!--根据用户ID查询考试列表-->
+  <select id="selectExamByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, exam_name, paper_code, begin_time, end_time, duration
+    from exam
+    where id in(
+        select exam_id from exam_group,group_user where exam_group.group_id = group_user.group_id
+        and user_id =#{id, jdbcType=INTEGER})
+  </select>
+
+
+
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
+    insert into exam (id, exam_name, paper_code,
+      begin_time, end_time, duration
+      )
+    values (#{id,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR},
+      #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examsys.model.Exam" >
+    update exam
+    set exam_name = #{examName,jdbcType=VARCHAR},
+      paper_code = #{paperCode,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, exam_name, paper_code, begin_time, end_time, duration
+    from exam
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, exam_name, paper_code, begin_time, end_time, duration
+    from exam
+  </select>
+
+
+
+</mapper>

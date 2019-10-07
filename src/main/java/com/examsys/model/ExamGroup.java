@@ -1,13 +1,19 @@
 package com.examsys.model;
 
-import java.io.Serializable;
+public class ExamGroup{
+    private Integer id;
 
-public class ExamGroup implements Serializable {
     private Integer examId;
 
     private Integer groupId;
 
-    private static final long serialVersionUID = 1L;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getExamId() {
         return examId;
@@ -23,18 +29,5 @@ public class ExamGroup implements Serializable {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        sb.append(", examId=").append(examId);
-        sb.append(", groupId=").append(groupId);
-        sb.append(", serialVersionUID=").append(serialVersionUID);
-        sb.append("]");
-        return sb.toString();
     }
 }

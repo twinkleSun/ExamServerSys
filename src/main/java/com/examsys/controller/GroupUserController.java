@@ -1,8 +1,7 @@
 package com.examsys.controller;
 
 import com.examsys.model.entity.ResponseEntity;
-import com.examsys.service.IGroupUserService;
-import com.examsys.service.IUserinfoService;
+import com.examsys.service.Impl.GroupUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
@@ -17,43 +16,63 @@ import java.util.Map;
 public class GroupUserController {
 
     @Autowired
-    IGroupUserService iGroupUserService;
+    GroupUserServiceImpl groupUserService;
 
     /**
      * 获取所有组及其成员列表
-     * todo:后期加上admin权限，仅可查看有权限的组（比如自己创建的）
      * @return
      */
     @GetMapping(value = "/groupuser/all")
     @ResponseBody
     public ResponseEntity getGroupUser() {
-        ResponseEntity responseEntity = iGroupUserService.getGroupUserInfo();
+        ResponseEntity responseEntity = groupUserService.getGroupUser();
         return responseEntity;
     }
 
-    @PostMapping("/groupuser")
-    public ResponseEntity addNew(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = iGroupUserService.addNewGroupUser(map);
-        return responseEntity;
-    }
-
-    @PostMapping("/groupuser/gid")
-    public ResponseEntity getGroupUserByGid(@RequestBody Map<String,Integer> map) {
-        ResponseEntity responseEntity = iGroupUserService.getGroupUserByGid(map.get("id"));
-        return responseEntity;
-    }
-
-    @PostMapping("/usergroup/relation")
-    public ResponseEntity updateRelation(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = iGroupUserService.updateUserGroupRelation(map);
-        return responseEntity;
-    }
-
+    /**
+     * 获取所有考生和其所属的组的列表
+     * @return
+     */
     @GetMapping(value = "/usergroup/all")
     @ResponseBody
     public ResponseEntity getUserGroup() {
-        ResponseEntity responseEntity = iGroupUserService.getUserGroupInfo();
+        ResponseEntity responseEntity = groupUserService.getUserGroup();
         return responseEntity;
     }
+
+    /**
+     * 根据组ID获取所有学生
+     * @param map
+     * @return
+     */
+    @PostMapping("/groupuser/gid")
+    public ResponseEntity getGroupUserByGid(@RequestBody Map<String,Integer> map) {
+        ResponseEntity responseEntity = groupUserService.getGroupUserByGid(map.get("id"));
+        return responseEntity;
+    }
+
+    /**
+     * 向某个组添加学生
+     * @param map
+     * @return
+     */
+    @PostMapping("/groupuser")
+    public ResponseEntity addNewStudent(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = groupUserService.addNewGroupUser(map);
+        return responseEntity;
+    }
+
+    /**
+     * 修改考生信息和组
+     * @param map
+     * @return
+     */
+    @PostMapping("/usergroup/relation")
+    public ResponseEntity updateRelation(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = groupUserService.updateUserGroupRelation(map);
+        return responseEntity;
+    }
+
+
 
 }

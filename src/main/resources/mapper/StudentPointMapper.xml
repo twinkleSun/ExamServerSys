@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.examsys.dao.StudentPointMapper" >
+  <resultMap id="BaseResultMap" type="com.examsys.model.StudentPoint" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+    <result column="student_id" property="studentId" jdbcType="INTEGER" />
+    <result column="objective_grade" property="objectiveGrade" jdbcType="DOUBLE" />
+    <result column="subjective_grade" property="subjectiveGrade" jdbcType="DOUBLE" />
+    <result column="extra_point" property="extraPoint" jdbcType="DOUBLE" />
+    <result column="paper_total_point" property="paperTotalPoint" jdbcType="DOUBLE" />
+    <result column="student_total_point" property="studentTotalPoint" jdbcType="DOUBLE" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from student_point
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPoint" >
+    insert into student_point (id, paper_code, student_id, 
+      objective_grade, subjective_grade, extra_point, 
+      paper_total_point, student_total_point)
+    values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER}, 
+      #{objectiveGrade,jdbcType=DOUBLE}, #{subjectiveGrade,jdbcType=DOUBLE}, #{extraPoint,jdbcType=DOUBLE}, 
+      #{paperTotalPoint,jdbcType=DOUBLE}, #{studentTotalPoint,jdbcType=DOUBLE})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.examsys.model.StudentPoint" >
+    update student_point
+    set paper_code = #{paperCode,jdbcType=VARCHAR},
+      student_id = #{studentId,jdbcType=INTEGER},
+      objective_grade = #{objectiveGrade,jdbcType=DOUBLE},
+      subjective_grade = #{subjectiveGrade,jdbcType=DOUBLE},
+      extra_point = #{extraPoint,jdbcType=DOUBLE},
+      paper_total_point = #{paperTotalPoint,jdbcType=DOUBLE},
+      student_total_point = #{studentTotalPoint,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, paper_code, student_id, objective_grade, subjective_grade, extra_point, 
+    paper_total_point, student_total_point
+    from student_point
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, paper_code, student_id, objective_grade, subjective_grade, extra_point, 
+    paper_total_point, student_total_point
+    from student_point
+  </select>
+</mapper>

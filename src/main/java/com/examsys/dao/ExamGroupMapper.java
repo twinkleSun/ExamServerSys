@@ -9,7 +9,14 @@ import java.util.List;
 @Mapper
 @Repository
 public interface ExamGroupMapper {
+
+    int deleteByPrimaryKey(Integer id);
+
     int insert(ExamGroup record);
 
+    ExamGroup selectByPrimaryKey(Integer id);
+
     List<ExamGroup> selectAll();
+
+    int updateByPrimaryKey(ExamGroup record);
 }

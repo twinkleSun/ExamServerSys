@@ -1,8 +1,8 @@
 package com.examsys.dao;
 
 import com.examsys.model.GroupUser;
-import com.examsys.model.entity.GroupUserInfo;
-import com.examsys.model.entity.UserGroupInfo;
+import com.examsys.model.entity.GroupUserEntity;
+import com.examsys.model.entity.UserGroupEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,23 +14,17 @@ import java.util.List;
 @Repository
 public interface GroupUserMapper {
 
-    List<GroupUser> selectAll();
+    List<GroupUserEntity> selectGroupUser();
 
-    /**
-     * 获取组+成员信息
-     * @return
-     */
-    List<GroupUserInfo> selectGroupUserInfo();
+    List<UserGroupEntity> selectUserGroup();
 
+    List<GroupUser> selectByGroupId(Integer group_id);
 
-    GroupUserInfo selectGroupUserByGid(Integer groupId);
+    GroupUserEntity selectGroupUserByGid(Integer groupId);
 
-    /**
-     * 插入组内成员
-     * @param record
-     * @return
-     */
-    int insert(GroupUser record);
+    int insert(GroupUser groupUser);
+
+    int insertUsertoGroup(GroupUser groupUser);
 
     int delete(@Param("group_id")Integer group_id, @Param("user_id")Integer user_id);
 
@@ -38,11 +32,16 @@ public interface GroupUserMapper {
 
     int deleteByUserId(Integer user_id);
 
-    List<GroupUser> selectByGroupId(Integer group_id);
-
     int deleteByGroupId(Integer group_id);
 
-    List<UserGroupInfo> selectUserGroupInfo();
 
-    int insertUsertoGroup(GroupUser groupUser);
+
+//
+//    List<GroupUserEntity> selectAll();
+//
+
+
+
+
+
 }
