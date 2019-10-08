@@ -17,7 +17,7 @@ import java.util.*;
 
 @Service
 @Repository
-public class TestPaperDetailServiceImpl {
+public class TestPaperServiceImpl {
 
     @Autowired
     TestPaperDetailMapper testPaperMapper;
