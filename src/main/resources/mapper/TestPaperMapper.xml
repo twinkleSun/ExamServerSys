@@ -22,6 +22,8 @@
       #{lastModifiedTime,jdbcType=VARCHAR}, #{createUserId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{description,jdbcType=VARCHAR})
   </insert>
+
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.TestPaper" >
     update test_paper
     set paper_code = #{paperCode,jdbcType=VARCHAR},
@@ -32,11 +34,15 @@
       description = #{description,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, paper_code, create_time, last_modified_time, create_user_id, title, description
     from test_paper
     where id = #{id,jdbcType=INTEGER}
   </select>
+
+
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, paper_code, create_time, last_modified_time, create_user_id, title, description
     from test_paper
@@ -47,5 +53,11 @@
     select id, paper_code, create_time, last_modified_time, create_user_id, title, description
     from test_paper
     where paper_code = #{paperCode}
+  </select>
+
+  <select id="selectByAdminId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, paper_code, create_time, last_modified_time, create_user_id, title, description
+    from test_paper
+    where create_user_id = #{adminId}
   </select>
 </mapper>

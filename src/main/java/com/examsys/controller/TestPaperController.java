@@ -99,8 +99,27 @@ public class TestPaperController {
      */
     @GetMapping(value = "/all")
     public ResponseEntity getAllPapers() {
-        ResponseEntity responseEntity=testPaperService.getAllPapers();
+        ResponseEntity responseEntity=testPaperService.getAllPaperList();
         return responseEntity;
+    }
+
+    /**
+     * 获取所有试卷
+     * @return
+     */
+    @PostMapping(value = "/adminpaper")
+    public ResponseEntity getAllPapersByAdmin(@RequestBody Map<String,Object> mapRes) {
+        ResponseEntity responseEntity=testPaperService.getPaperListByAdmin(mapRes);
+        return responseEntity;
+    }
+
+
+    @PostMapping(value = "/single")
+    @Transactional
+    public ResponseEntity getSinglePaper(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=testPaperService.getTestPaperDetail(map.get("paper_code").toString());
+        return responseEntity;
+
     }
 
 }

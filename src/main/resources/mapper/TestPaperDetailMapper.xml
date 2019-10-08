@@ -11,10 +11,17 @@
     <result column="category_content" property="categoryContent" jdbcType="VARCHAR" />
   </resultMap>
 
-  <!--resultMap 获取所有试卷-->
+  <!--resultMap 获取单个试卷-->
   <resultMap id="testPaperEntity" type="com.examsys.model.entity.TestPaperListEntity">
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
-    <collection property="paperList" ofType="com.examsys.model.entity.TestPaperEntity">
+
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="last_modified_time" property="lastModifiedTime" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="paper_description" property="paperDescription" jdbcType="VARCHAR" />
+
+    <collection property="categoryList" ofType="com.examsys.model.entity.TestPaperEntity">
       <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
       <result column="category_content" property="categoryContent" jdbcType="VARCHAR" />
         <collection property="questionList" ofType="Map">
@@ -24,17 +31,22 @@
           <result column="def_ans" property="defAnswer"></result>
           <result column="score" property="score"></result>
           <result column="must_or_not" property="mustOrNot"></result>
+          <result column="description" property="description"></result>
         </collection>
     </collection>
   </resultMap>
 
-  <!--获取所有试卷-->
-  <select id="selectPapers" resultMap="testPaperEntity">
+  <!--获取单个试卷详情-->
+  <select id="selectPapers" resultMap="testPaperEntity" parameterType="java.lang.String">
         SELECT t.paper_code paper_code,t.category_content category_content,
                t.question_id qid,t.must_or_not must_or_not,t.score score,t.def_answer def_ans,
-               q.content content,q.options options,q.type type
+               q.content content,q.options options,q.type type,q.description description,
+               p.create_time create_time,p.last_modified_time last_modified_time,
+               p.title title,p.description paper_description,p.create_user_id create_user_id
         FROM test_paper_detail t
+        left join test_paper p on t.paper_code=p.paper_code
         LEFT JOIN  question_library q on q.id=t.question_id
+        where t.paper_code=#{paperCode}
     </select>
 
 

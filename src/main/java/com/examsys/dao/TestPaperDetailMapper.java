@@ -1,6 +1,8 @@
 package com.examsys.dao;
 
 import com.examsys.model.TestPaperDetail;
+import com.examsys.model.entity.TestPaperEntity;
+import com.examsys.model.entity.TestPaperListEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +12,7 @@ import java.util.List;
 @Repository
 public interface TestPaperDetailMapper {
 
-    List<TestPaperDetail> selectPapers();
+    TestPaperListEntity selectPapers(String paperCode);
 
 
 

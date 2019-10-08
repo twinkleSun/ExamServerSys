@@ -20,4 +20,6 @@ public interface TestPaperMapper {
     int updateByPrimaryKey(TestPaper record);
 
     TestPaper selectByPaperCode(String paperCode);
+
+    List<TestPaper> selectByAdminId(Integer adminId);
 }

@@ -7,6 +7,7 @@ import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaper;
 import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.model.entity.TestPaperListEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -65,8 +66,6 @@ public class TestPaperServiceImpl {
             }
         }
 
-
-
         for(int i=0;i<map.size();i++){
             QuestionLibrary question=new QuestionLibrary();
             TestPaperDetail testpaper=new TestPaperDetail();
@@ -120,12 +119,53 @@ public class TestPaperServiceImpl {
     }
 
 
-    public ResponseEntity getAllPapers(){
-        List<TestPaperDetail> testPaperList = testPaperDetailMapper.selectPapers();
+    /**
+     * 获取单个试卷详情
+     * @return
+     */
+    public ResponseEntity getTestPaperDetail(String paper_code){
+        TestPaperListEntity testPaperList = testPaperDetailMapper.selectPapers(paper_code);
+        ResponseEntity responseEntity=new ResponseEntity();
+        if(testPaperList==null){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("查询失败");
+        }else {
+            responseEntity.setStatus(200);
+            responseEntity.setData(testPaperList);
+        }
+        return responseEntity;
+    }
+
+
+    /**
+     * 获取试卷列表
+     * @return
+     */
+    public ResponseEntity getAllPaperList(){
+        List<TestPaper> testPaperList = testPaperMapper.selectAll();
         ResponseEntity responseEntity=new ResponseEntity();
         if(testPaperList==null | testPaperList.size()==0){
             responseEntity.setStatus(-1);
             responseEntity.setMsg("不存在试卷");
+        }else {
+            responseEntity.setStatus(200);
+            responseEntity.setData(testPaperList);
+        }
+        return responseEntity;
+    }
+
+
+
+    /**
+     * 获取试卷列表,
+     * @return
+     */
+    public ResponseEntity getPaperListByAdmin(Map<String,Object> mapRes){
+        List<TestPaper> testPaperList = testPaperMapper.selectByAdminId(Integer.valueOf(mapRes.get("admin_id").toString()));
+        ResponseEntity responseEntity=new ResponseEntity();
+        if(testPaperList==null | testPaperList.size()==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("该管理员名下没有试卷");
         }else {
             responseEntity.setStatus(200);
             responseEntity.setData(testPaperList);
