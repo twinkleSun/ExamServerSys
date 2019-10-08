@@ -44,6 +44,7 @@ public class TestPaperServiceImpl {
             question.setType(String.valueOf(map1.get("type")));
             question.setContent(String.valueOf(map1.get("content")));
 
+            question.setDescription(String.valueOf(map1.get("description")));
             question.setOptions(JSON.toJSONString(map1.get("option_list")));
             question.setAnswer(JSON.toJSONString(map1.get("answer_list")));
 

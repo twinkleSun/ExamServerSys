@@ -66,6 +66,7 @@ CREATE TABLE `knowledge` (
 -- DROP TABLE IF EXISTS `question_library`;
 CREATE TABLE `question_library` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `description` varchar(50) DEFAULT null comment '题目描述',
   `content` varchar(255) NOT NULL COMMENT '题干',
   `options` varchar(255)  default NULL COMMENT '选项{}分隔成json格式字符串',
   `answer` varchar(255)  default NULL COMMENT '答案,用|分隔',

@@ -11,6 +11,8 @@ public class QuestionLibrary {
 
     private String type;
 
+    private String description;
+
     public Integer getId() {
         return id;
     }
@@ -50,4 +52,13 @@ public class QuestionLibrary {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 }

@@ -8,26 +8,27 @@
     <result column="options" property="options" jdbcType="VARCHAR" />
     <result column="answer" property="answer" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
 
   <!--新建试卷-->
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.QuestionLibrary" >
     insert into question_library (id, content, options,
-      answer, `type`)
+      answer, `type`,description)
     values (#{id,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{options,jdbcType=VARCHAR},
-      #{answer,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR})
+      #{answer,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
   </insert>
 
   <!--根据内容和选项查询-->
   <select id="selectByQuestion" parameterType="com.examsys.model.QuestionLibrary" resultMap="BaseResultMap">
-    select id, content, options, answer, `type`
+    select id, content, options, answer, `type`,description
     from question_library
     where content = #{content} and options=#{options}
   </select>
 
   <!--获取所有题目-->
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, content, options, answer, `type`
+    select id, content, options, answer, `type`,description
     from question_library
   </select>
 
@@ -43,11 +44,12 @@
     set content = #{content,jdbcType=VARCHAR},
       options = #{options,jdbcType=VARCHAR},
       answer = #{answer,jdbcType=VARCHAR},
-      type = #{type,jdbcType=VARCHAR}
+      description=#{description},
+      `type` = #{type,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, content, options, answer, `type`
+    select id, content, options, answer, `type`,description
     from question_library
     where id = #{id,jdbcType=INTEGER}
   </select>

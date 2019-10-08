@@ -37,35 +37,8 @@ public class QuestionLibraryServiceImpl {
             questionList.setContent(String.valueOf(map1.get("content")));
             questionList.setAnswer(JSON.toJSONString(map1.get("answer_list")));
             questionList.setOptions(JSON.toJSONString(map1.get("option_list")));
+            questionList.setDescription(String.valueOf(map1.get("description")));
             questioninfoList.add(questionList);
-//            ArrayList<String> options=(ArrayList<String>)map1.get("option_list");
-//            ArrayList<String> answers=(ArrayList<String>)map1.get("answer_list");
-//            JSONObject toSaveAnswer = new JSONObject();
-//            String option="";
-//            String answer="";
-//            if(questionList.getType().equals("multi")){
-//                for (int j=0;j<options.size();j++){
-//                    option=option+options.get(j)+"#";
-//                }
-//                for (int j=0;j<answers.size();j++){
-//                    answer=answer+answers.get(j)+"#";
-//                }
-//            }else if(questionList.getType().equals("single")){
-//
-//                for (int j=0;j<options.size();j++){
-//                    option=option+options.get(j)+"#";
-//                }
-//                answer=answer+answers.get(0);
-//            }else if(questionList.getType().equals("judge")){
-//                for (int j=0;j<options.size();j++){
-//                    option=option+options.get(j)+"#";
-//                }
-//                answer=answer+answers.get(0);
-//            }else{
-//
-//            }
-
-
         }
 
         return questioninfoList;
@@ -133,13 +106,6 @@ public class QuestionLibraryServiceImpl {
         }
         return testPaperList;
     }
-
-
-
-
-
-
-
 
 
     public ResponseEntity getAllQuestion(){

@@ -20,7 +20,8 @@ $(function(){
     var json1={
          type: "multi",
          score: 20,
-         content: "多选题测试3",
+         description:"描述测试1",
+         content: "多选题测试3-1",
          must_or_not: 0,
          category_content: "一、数据库基础",
          option_list: [{
@@ -37,7 +38,8 @@ $(function(){
     var json2={
         type: "multi",
         score: 20,
-        content: "多选题测试4",
+        content: "多选题测试4-1",
+        description:"描述测试1",
         must_or_not: 0,
         category_content: "一、数据库基础",
         option_list: [{
@@ -58,6 +60,7 @@ $(function(){
         type: "single",
         score: 20,
         content: "单选题测试",
+        description:"描述测试1",
         must_or_not: 0,
         category_content: "一、数据库基础",
         option_list: [{
@@ -81,6 +84,7 @@ $(function(){
         type: "subjective",
         score: 20,
         content: "简答题测试",
+        description:"描述测试1",
         must_or_not: 1,
         category_content: "二、计算机网络",
         option_list: [],
@@ -91,6 +95,7 @@ $(function(){
         type: "judge",
         score: 20,
         content: "判断题测试2",
+        description:"描述测试1",
         must_or_not: 1,
         category_content: "二、计算机网络",
         option_list: [{
