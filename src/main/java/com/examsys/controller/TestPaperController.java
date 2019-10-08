@@ -3,7 +3,7 @@ package com.examsys.controller;
 import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.ResponseEntity;
-import com.examsys.service.Impl.TestPaperDetailServiceImpl;
+import com.examsys.service.Impl.TestPaperServiceImpl;
 import com.examsys.service.Impl.QuestionLibraryServiceImpl;
 import com.examsys.util.ExcelAnalysisUtil;
 import com.examsys.util.ExcelTemplateUtil;
@@ -21,12 +21,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/paper")
-public class TestPaperDetailController {
+public class TestPaperController {
 
     @Autowired
     ExcelAnalysisUtil excelAnalysisUtil;
     @Autowired
-    TestPaperDetailServiceImpl testPaperService;
+    TestPaperServiceImpl testPaperService;
     @Autowired
     QuestionLibraryServiceImpl questionLibraryService;
 
