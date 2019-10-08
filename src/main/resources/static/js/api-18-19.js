@@ -53,7 +53,7 @@ $(function(){
             "option": "选项三内容"
         }],
 
-        answer_list: [0, 1]
+        answer_list: ["1", 1]
     };
 
     var json3={
@@ -77,7 +77,7 @@ $(function(){
             "option": "选项四内容"
         }],
 
-        answer_list: [1]
+        answer_list: ["1"]
     };
 
     var json4={

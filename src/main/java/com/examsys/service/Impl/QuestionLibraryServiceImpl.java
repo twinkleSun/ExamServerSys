@@ -3,10 +3,9 @@ package com.examsys.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.examsys.dao.QuestionLibraryMapper;
 import com.examsys.model.QuestionLibrary;
-import com.examsys.model.TestPaper;
+import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -86,7 +85,7 @@ public class QuestionLibraryServiceImpl {
      * @param testPaperList
      * @return
      */
-    public List<TestPaper> addNewQuestions(List<QuestionLibrary> questionList, List<TestPaper> testPaperList){
+    public List<TestPaperDetail> addNewQuestions(List<QuestionLibrary> questionList, List<TestPaperDetail> testPaperList){
         int length=questionList.size();
         for(int i=0;i<length;i++){
             QuestionLibrary question=questionList.get(i);

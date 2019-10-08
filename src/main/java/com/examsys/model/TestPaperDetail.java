@@ -1,6 +1,6 @@
 package com.examsys.model;
 
-public class TestPaper {
+public class TestPaperDetail {
     private Integer id;
 
     private String paperCode;

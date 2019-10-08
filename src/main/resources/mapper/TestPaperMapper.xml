@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.examsys.dao.TestPaperMapper" >
-  <resultMap id="BaseResultMap" type="com.examsys.model.TestPaper" >
+<mapper namespace="com.examsys.dao.TestPaperDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.examsys.model.TestPaperDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
     <result column="question_id" property="questionId" jdbcType="INTEGER" />
@@ -33,26 +33,26 @@
         SELECT t.paper_code paper_code,t.category_content category_content,
                t.question_id qid,t.must_or_not must_or_not,t.score score,t.def_answer def_ans,
                q.content content,q.options options,q.type type
-        FROM test_paper t
+        FROM test_paper_detail t
         LEFT JOIN  question_library q on q.id=t.question_id
     </select>
 
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from test_paper
+    delete from test_paper_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.TestPaper" >
-    insert into test_paper (id, paper_code, question_id,
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.TestPaperDetail" >
+    insert into test_paper_detail (id, paper_code, question_id,
       must_or_not, score, def_answer,
       category_content)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{questionId,jdbcType=INTEGER},
       #{mustOrNot,jdbcType=INTEGER}, #{score,jdbcType=DOUBLE}, #{defAnswer,jdbcType=VARCHAR},
       #{categoryContent,jdbcType=VARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.examsys.model.TestPaper" >
-    update test_paper
+  <update id="updateByPrimaryKey" parameterType="com.examsys.model.TestPaperDetail" >
+    update test_paper_detail
     set paper_code = #{paperCode,jdbcType=VARCHAR},
       question_id = #{questionId,jdbcType=INTEGER},
       must_or_not = #{mustOrNot,jdbcType=INTEGER},
@@ -63,12 +63,12 @@
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, paper_code, question_id, must_or_not, score, def_answer, category_content
-    from test_paper
+    from test_paper_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, paper_code, question_id, must_or_not, score, def_answer, category_content
-    from test_paper
+    from test_paper_detail
   </select>
 
 

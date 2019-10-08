@@ -126,6 +126,65 @@ $(function(){
     //
     // });
 
+    var json5=[{
+        kid:"",
+        k_name:"数据库",
+        question_list:[{
+            type: "judge",
+            content: "判断题测试2",
+            description:"描述测试1",
+            option_list: [{
+                "id": 0,
+                "option": "选项一内容"
+            }, {
+                "id": 1,
+                "option": "选项二内容"
+            }],
+            answer_list: [0]
+
+        },{
+            type: "judge",
+            content: "判断题测试2",
+            description:"描述测试1",
+            option_list: [{
+                "id": 0,
+                "option": "选项一内容"
+            }, {
+                "id": 1,
+                "option": "选项二内容"
+            }],
+            answer_list: [0]
+        }]
+    },  {
+        kid:"",
+        k_name:"计算机组成原理",
+        question_list:[{
+        type: "judge",
+        content: "判断题测试2",
+        description:"描述测试1",
+        option_list: [{
+            "id": 0,
+            "option": "选项一内容"
+        }, {
+            "id": 1,
+            "option": "选项二内容"
+        }],
+        answer_list: [0]
+
+    },{
+        type: "judge",
+        content: "判断题测试2",
+        description:"描述测试1",
+        option_list: [{
+            "id": 0,
+            "option": "选项一内容"
+        }, {
+            "id": 1,
+            "option": "选项二内容"
+        }],
+        answer_list: [0]
+    }]
+}];
 
 
 });

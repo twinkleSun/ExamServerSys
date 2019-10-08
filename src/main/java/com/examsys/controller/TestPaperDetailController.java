@@ -1,22 +1,17 @@
 package com.examsys.controller;
 
 import com.examsys.model.QuestionLibrary;
-import com.examsys.model.TestPaper;
+import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.ResponseEntity;
-import com.examsys.service.Impl.TestPaperServiceImpl;
+import com.examsys.service.Impl.TestPaperDetailServiceImpl;
 import com.examsys.service.Impl.QuestionLibraryServiceImpl;
 import com.examsys.util.ExcelAnalysisUtil;
 import com.examsys.util.ExcelTemplateUtil;
 import com.examsys.util.OtherUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +21,12 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/paper")
-public class TestPaperController {
+public class TestPaperDetailController {
 
     @Autowired
     ExcelAnalysisUtil excelAnalysisUtil;
     @Autowired
-    TestPaperServiceImpl testPaperService;
+    TestPaperDetailServiceImpl testPaperService;
     @Autowired
     QuestionLibraryServiceImpl questionLibraryService;
 
@@ -86,8 +81,8 @@ public class TestPaperController {
 
         Map<String,Object> map=testPaperService.handleNewPaper(mapRes);
         List<QuestionLibrary> questionList=(List<QuestionLibrary>)map.get("questionList");
-        List<TestPaper> testPaperList=(List<TestPaper>)map.get("testPaperList");
-        List<TestPaper> paperQuestion=questionLibraryService.addNewQuestions(questionList,testPaperList);
+        List<TestPaperDetail> testPaperList=(List<TestPaperDetail>)map.get("testPaperList");
+        List<TestPaperDetail> paperQuestion=questionLibraryService.addNewQuestions(questionList,testPaperList);
         ResponseEntity responseEntity=testPaperService.addNewPaper(paperQuestion);
         return responseEntity;
 

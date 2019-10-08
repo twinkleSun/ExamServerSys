@@ -1,10 +1,9 @@
 package com.examsys.service.Impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.examsys.dao.TestPaperMapper;
+import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.model.QuestionLibrary;
-import com.examsys.model.TestPaper;
+import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,10 +17,10 @@ import java.util.*;
 
 @Service
 @Repository
-public class TestPaperServiceImpl {
+public class TestPaperDetailServiceImpl {
 
     @Autowired
-    TestPaperMapper testPaperMapper;
+    TestPaperDetailMapper testPaperMapper;
 
     /**
      * 处理添加试卷的数据
@@ -31,14 +30,14 @@ public class TestPaperServiceImpl {
     public Map<String,Object> handleNewPaper(List<Map<String,Object>> map){
         Map<String,Object> mapRes=new HashMap<>();
         List<QuestionLibrary> questionList=new ArrayList<>();
-        List<TestPaper> testPaperList=new ArrayList<>();
+        List<TestPaperDetail> testPaperList=new ArrayList<>();
         Calendar cal=Calendar.getInstance();
         String paper_code=""+cal.get(Calendar.YEAR)+cal.get(Calendar.MONTH)+cal.get(Calendar.DATE)+cal.get(Calendar.HOUR_OF_DAY)
                 +cal.get(Calendar.MINUTE)+cal.get(Calendar.SECOND);
 
         for(int i=0;i<map.size();i++){
             QuestionLibrary question=new QuestionLibrary();
-            TestPaper testpaper=new TestPaper();
+            TestPaperDetail testpaper=new TestPaperDetail();
             Map<String,Object> map1=map.get(i);
 
             question.setType(String.valueOf(map1.get("type")));
@@ -71,12 +70,12 @@ public class TestPaperServiceImpl {
      * @param testPaperList
      * @return
      */
-    public ResponseEntity addNewPaper(List<TestPaper> testPaperList){
+    public ResponseEntity addNewPaper(List<TestPaperDetail> testPaperList){
         ResponseEntity responseEntity=new ResponseEntity();
         int length=testPaperList.size();
 
         for(int i=0;i<length;i++){
-            TestPaper testPaper=testPaperList.get(i);
+            TestPaperDetail testPaper=testPaperList.get(i);
             int res=testPaperMapper.insert(testPaper);
             if(res<0){
                 responseEntity.setStatus(-1);
@@ -89,7 +88,7 @@ public class TestPaperServiceImpl {
 
 
     public ResponseEntity getAllPapers(){
-        List<TestPaper> testPaperList = testPaperMapper.selectPapers();
+        List<TestPaperDetail> testPaperList = testPaperMapper.selectPapers();
         ResponseEntity responseEntity=new ResponseEntity();
         if(testPaperList==null | testPaperList.size()==0){
             responseEntity.setStatus(-1);
