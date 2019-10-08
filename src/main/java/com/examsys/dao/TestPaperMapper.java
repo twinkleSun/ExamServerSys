@@ -11,11 +11,13 @@ import java.util.List;
 public interface TestPaperMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(TestPaper record);
+    int insert(TestPaper testPaper);
 
     TestPaper selectByPrimaryKey(Integer id);
 
     List<TestPaper> selectAll();
 
     int updateByPrimaryKey(TestPaper record);
+
+    TestPaper selectByPaperCode(String paperCode);
 }

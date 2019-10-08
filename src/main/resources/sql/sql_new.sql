@@ -185,8 +185,8 @@ CREATE TABLE `student_point_detail` (
 CREATE TABLE `test_paper` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `paper_code` VARCHAR(45) NOT NULL COMMENT '试卷识别码',
-  `create_time` VARCHAR(45) NOT NULL COMMENT '创建时间',
-  `last_modified_time` VARCHAR (45) NOT NULL COMMENT '上次修改时间',
+  `create_time` VARCHAR(45) DEFAULT NULL COMMENT '创建时间',
+  `last_modified_time` VARCHAR (45) DEFAULT NULL COMMENT '上次修改时间',
   `create_user_id` int(11) NOT NULL COMMENT '创建人ID',
   `title` VARCHAR(45) DEFAULT NULL COMMENT '试卷标题',
   `description` VARCHAR(45) DEFAULT NULL COMMENT '试卷描述',

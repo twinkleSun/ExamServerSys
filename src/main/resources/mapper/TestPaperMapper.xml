@@ -14,7 +14,7 @@
     delete from test_paper
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.examsys.model.TestPaper" >
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.TestPaper" >
     insert into test_paper (id, paper_code, create_time, 
       last_modified_time, create_user_id, title, 
       description)
@@ -40,5 +40,12 @@
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, paper_code, create_time, last_modified_time, create_user_id, title, description
     from test_paper
+  </select>
+
+
+  <select id="selectByPaperCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, paper_code, create_time, last_modified_time, create_user_id, title, description
+    from test_paper
+    where paper_code = #{paperCode}
   </select>
 </mapper>

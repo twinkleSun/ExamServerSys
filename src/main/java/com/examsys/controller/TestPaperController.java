@@ -74,10 +74,14 @@ public class TestPaperController {
 //        }
 //    }
 
-
+    /**
+     * 添加试卷
+     * @param mapRes
+     * @return
+     */
     @PostMapping(value = "/new")
     @Transactional
-    public ResponseEntity addNewPaperByFront(@RequestBody List<Map<String,Object>> mapRes) {
+    public ResponseEntity addNewPaperByFront(@RequestBody Map<String,Object> mapRes) {
 
         Map<String,Object> map=testPaperService.handleNewPaper(mapRes);
         List<QuestionLibrary> questionList=(List<QuestionLibrary>)map.get("questionList");
