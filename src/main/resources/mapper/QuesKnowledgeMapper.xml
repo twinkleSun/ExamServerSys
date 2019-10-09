@@ -16,6 +16,11 @@
     values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{knowledgeId,jdbcType=INTEGER}
       )
   </insert>
+    <insert id="insertNotExist" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.QuesKnowledge" >
+    insert into ques_knowledge (id, question_id, knowledge_id) select #{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{knowledgeId,jdbcType=INTEGER}
+    from dual where not exists (select * from ques_knowledge where question_id=#{questionId,jdbcType=INTEGER} and
+    knowledge_id=#{knowledgeId,jdbcType=INTEGER})
+  </insert>
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.QuesKnowledge" >
     update ques_knowledge
     set question_id = #{questionId,jdbcType=INTEGER},
@@ -27,8 +32,9 @@
     from ques_knowledge
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, question_id, knowledge_id
     from ques_knowledge
   </select>
+
 </mapper>

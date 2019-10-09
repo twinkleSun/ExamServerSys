@@ -17,6 +17,9 @@ public interface QuestionLibraryMapper {
 
     List<QuestionLibrary> selectAll();
 
+    List<QuestionLibrary> selectQuesByKnow(Integer k_id);
+
+    QuestionLibrary getId(QuestionLibrary questionLibrary);
 
 
 //    int deleteByPrimaryKey(Integer id);
