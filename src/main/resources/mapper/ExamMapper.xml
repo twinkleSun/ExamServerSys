@@ -9,52 +9,53 @@
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
     <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
-    <result column="duration" property="duration" jdbcType="INTEGER" />
+    <result column="duration" property="duration" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
 
 
   <!--根据用户ID查询考试列表-->
   <select id="selectExamByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select id, exam_name, paper_code, begin_time, end_time, duration
+    select id, exam_name, paper_code, begin_time, end_time, duration,status
     from exam
     where id in(
         select exam_id from exam_group,group_user where exam_group.group_id = group_user.group_id
         and user_id =#{id, jdbcType=INTEGER})
   </select>
 
-
-
-
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
+        insert into exam (id, exam_name, paper_code,
+        begin_time, end_time, duration,status
+        )
+        values (#{id,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR},
+        #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR},
+        #{status,jdbcType=VARCHAR}
+        )
+    </insert>
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from exam
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
-    insert into exam (id, exam_name, paper_code,
-      begin_time, end_time, duration
-      )
-    values (#{id,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR},
-      #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration,jdbcType=INTEGER}
-      )
-  </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.Exam" >
     update exam
     set exam_name = #{examName,jdbcType=VARCHAR},
       paper_code = #{paperCode,jdbcType=VARCHAR},
       begin_time = #{beginTime,jdbcType=VARCHAR},
       end_time = #{endTime,jdbcType=VARCHAR},
-      duration = #{duration,jdbcType=INTEGER}
+      status = #{status,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, exam_name, paper_code, begin_time, end_time, duration
+    select id, exam_name, paper_code, begin_time, end_time, duration,status
     from exam
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, exam_name, paper_code, begin_time, end_time, duration
+    select id, exam_name, paper_code, begin_time, end_time, duration,status
     from exam
   </select>
 

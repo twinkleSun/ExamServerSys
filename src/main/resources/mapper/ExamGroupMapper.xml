@@ -10,11 +10,9 @@
     delete from exam_group
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.ExamGroup" >
-    insert into exam_group (id, exam_id, group_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{examId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER}
-      )
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.ExamGroup">
+    insert into exam_group (id, exam_id, group_id)
+    values (#{id,jdbcType=INTEGER}, #{examId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.ExamGroup" >
     update exam_group
@@ -31,4 +29,11 @@
     select id, exam_id, group_id
     from exam_group
   </select>
+
+  <select id="selectByExamGroup" resultMap="BaseResultMap" parameterType="com.examsys.model.ExamGroup">
+    select id, exam_id, group_id
+    from exam_group
+    where exam_id = #{examId,jdbcType=INTEGER} and group_id=#{groupId}
+  </select>
+
 </mapper>

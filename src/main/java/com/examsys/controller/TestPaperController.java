@@ -74,10 +74,14 @@ public class TestPaperController {
 //        }
 //    }
 
-
+    /**
+     * 添加试卷
+     * @param mapRes
+     * @return
+     */
     @PostMapping(value = "/new")
     @Transactional
-    public ResponseEntity addNewPaperByFront(@RequestBody List<Map<String,Object>> mapRes) {
+    public ResponseEntity addNewPaperByFront(@RequestBody Map<String,Object> mapRes) {
 
         Map<String,Object> map=testPaperService.handleNewPaper(mapRes);
         List<QuestionLibrary> questionList=(List<QuestionLibrary>)map.get("questionList");
@@ -95,8 +99,32 @@ public class TestPaperController {
      */
     @GetMapping(value = "/all")
     public ResponseEntity getAllPapers() {
-        ResponseEntity responseEntity=testPaperService.getAllPapers();
+        ResponseEntity responseEntity=testPaperService.getAllPaperList();
         return responseEntity;
+    }
+
+    /**
+     * 获取所有试卷
+     * @return
+     */
+    @PostMapping(value = "/adminpaper")
+    public ResponseEntity getAllPapersByAdmin(@RequestBody Map<String,Object> mapRes) {
+        ResponseEntity responseEntity=testPaperService.getPaperListByAdmin(mapRes);
+        return responseEntity;
+    }
+
+
+    /**
+     * 获取单个试卷详情
+     * @param map
+     * @return
+     */
+    @PostMapping(value = "/single")
+    @Transactional
+    public ResponseEntity getSinglePaper(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=testPaperService.getTestPaperDetail(map.get("paper_code").toString());
+        return responseEntity;
+
     }
 
 }

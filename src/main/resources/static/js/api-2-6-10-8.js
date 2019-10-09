@@ -31,7 +31,7 @@ $(function(){
 
 
     var json6={
-        groupName:"测试组名1"
+        groupName:"测试组名5"
     };
 
     $("#api-6").click(function() {

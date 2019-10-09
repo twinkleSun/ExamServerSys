@@ -3,20 +3,14 @@
  */
 $(function(){
 
-    var json2={
-        user_name:"admin",
-        password:"admin"
-    };
-
-    $("#api-2").click(function() {
+    $("#api-34").click(function() {
 
         $.ajax({
-            url: "/upi/user/login",
-            type: "post",
+            url: "/paper/all",
+            type: "get",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json2),
             success: function (data) {
                 console.log(data);
             },
@@ -30,19 +24,19 @@ $(function(){
     });
 
 
-    var json6={
-        groupName:"测试组名5"
+    var json={
+        admin_id:1
     };
 
-    $("#api-6").click(function() {
+    $("#api-37").click(function() {
 
         $.ajax({
-            url: "/upi/group/single",
+            url: "/paper/adminpaper",
             type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json6),
+            data:JSON.stringify(json),
             success: function (data) {
                 console.log(data);
             },
@@ -56,45 +50,26 @@ $(function(){
     });
 
 
-    var json10={
-        group_id: "1",
-        student_id: [ 2, 3]
+    var json29={
+        exam_name:"考试测试",
+        paper_code:"20191008193539",
+        begin_time:"2019-10-10 19:35:39",
+        end_time:"2019-10-10 21:35:39",
+        duration:"00:02:00",
+        group_ids:[1,2]
     };
 
-    $("#api-10").click(function() {
+
+
+    $("#api-29").click(function() {
 
         $.ajax({
-            url: "/upi/groupuser",
+            url: "/exam/new",
             type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json10),
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                // console.log(XMLHttpRequest.status);
-                // console.log(XMLHttpRequest.readyState);
-                // console.log(textStatus);
-            },
-        });
-
-    });
-
-    var json8={
-        id:2
-    };
-
-    $("#api-8").click(function() {
-
-        $.ajax({
-            url: "/upi/group/uid",
-            type: "post",
-            traditional: true,
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            data:JSON.stringify(json8),
+            data:JSON.stringify(json29),
             success: function (data) {
                 console.log(data);
             },
@@ -108,5 +83,30 @@ $(function(){
     });
 
 
+    var json30={
+        exam_id:1,
+        group_ids:[3,4]
+    };
+
+    $("#api-30").click(function() {
+
+        $.ajax({
+            url: "/exam/group",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json30),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
 
 });

@@ -5,18 +5,16 @@ $(function(){
 
     $("#api-24").click(function() {
 
-        var str="[{\"id\":0,\"option\":\"选项一内容\"},{\"id\":1,\"option\":\"选项二内容\"}]";
-        var str2=JSON.parse(str);
-        console.log(str2);
-        console.log(str2.length);
-        console.log(str2[0]);
-        console.log(str2[0].id);
+        var str={
+            paper_code:"20191008193539"
+        }
         $.ajax({
-            url: "/paper/all",
-            type: "get",
+            url: "/paper/single",
+            type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
+            data:JSON.stringify(str),
             success: function (data) {
                 console.log(data);
             },

@@ -115,6 +115,13 @@ $(function(){
     json[3]=json4;
     json[4]=json5;
 
+    var map={
+        title:"测试名称",
+        description:"描述",
+        question_list:json,
+        user_id:1
+    };
+
 
     $("#api-18").click(function() {
         $.ajax({
@@ -123,7 +130,7 @@ $(function(){
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json),
+            data:JSON.stringify(map),
             success: function (data) {
                 console.log(data);
             },

@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface ExamGroupMapper {
 
+    ExamGroup selectByExamGroup(ExamGroup examGroup);
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(ExamGroup record);

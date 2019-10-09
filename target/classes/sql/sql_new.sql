@@ -95,7 +95,7 @@ CREATE TABLE `ques_knowledge`(
 -- 试卷-题目信息表
 -- ---------------------------
 -- DROP TABLE IF EXISTS `test_paper`;
-CREATE TABLE `test_paper` (
+CREATE TABLE `test_paper_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `paper_code` VARCHAR (45) NOT NULL COMMENT '试卷识别码',
   `question_id` int(11) NOT NULL COMMENT '题目ID',
@@ -120,7 +120,8 @@ CREATE TABLE `exam` (
   `paper_code` VARCHAR(40) NOT NULL COMMENT '考试代码',
   `begin_time` VARCHAR (45) NOT NULL COMMENT '开放考试时间',
   `end_time` VARCHAR (45) NOT NULL COMMENT '关闭考试时间',
-  `duration` int(11) NOT NULL COMMENT '考试时长,单位分钟',
+  `duration` VARCHAR (45) NOT NULL COMMENT '考试时长,单位分钟',
+  `status` VARCHAR (10) DEFAULT null COMMENT '考试目前状态',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -182,14 +183,14 @@ CREATE TABLE `student_point_detail` (
 -- ----------------------------
 -- 试卷详情表表
 -- ----------------------------
-CREATE TABLE `test_paper_detail` (
+CREATE TABLE `test_paper` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `paper_code` VARCHAR (45) NOT NULL COMMENT '试卷识别码',
-  `create_time` VARCHAR (45) NOT NULL COMMENT '创建时间',
-  `last_modified_time` VARCHAR (45) NOT NULL COMMENT '上次修改时间',
+  `paper_code` VARCHAR(45) NOT NULL COMMENT '试卷识别码',
+  `create_time` VARCHAR(45) DEFAULT NULL COMMENT '创建时间',
+  `last_modified_time` VARCHAR (45) DEFAULT NULL COMMENT '上次修改时间',
   `create_user_id` int(11) NOT NULL COMMENT '创建人ID',
-  `title` VARCHAR (45) DEFAULT NULL COMMENT '试卷标题',
-  `description` VARCHAR (45) DEFAULT NULL COMMENT '试卷描述',
+  `title` VARCHAR(45) DEFAULT NULL COMMENT '试卷标题',
+  `description` VARCHAR(45) DEFAULT NULL COMMENT '试卷描述',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`create_user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
