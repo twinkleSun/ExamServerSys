@@ -35,4 +35,11 @@
     select id, name, description, level, parent_id
     from knowledge
   </select>
+
+  <!--根据知识点查询题目-->
+  <select id="selectByKnowledge" parameterType="com.examsys.model.Knowledge" resultMap="BaseResultMap">
+    select id, name, description, level, parent_id
+    from knowledge
+    where name = #{name}
+  </select>
 </mapper>

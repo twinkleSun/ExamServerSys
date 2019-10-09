@@ -13,6 +13,8 @@ public interface QuesKnowledgeMapper {
 
     int insert(QuesKnowledge record);
 
+    int insertNotExist(QuesKnowledge record);
+
     QuesKnowledge selectByPrimaryKey(Integer id);
 
     List<QuesKnowledge> selectAll();

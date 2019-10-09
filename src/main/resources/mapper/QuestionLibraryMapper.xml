@@ -53,6 +53,15 @@
     from question_library
     where id = #{id,jdbcType=INTEGER}
   </select>
-
-
+  <select id="getId" resultMap="BaseResultMap" parameterType="com.examsys.model.QuestionLibrary" >
+    select id, content, options, answer, `type`,description
+    from question_library
+    where content = #{content,jdbcType=VARCHAR} and options = #{options,jdbcType=VARCHAR}
+  </select>
+  <select id="selectQuesByKnow" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT q.id id,q.content content,q.options options,q.answer answer,q.`type` `type`,q.description description
+        FROM `question_library` q
+        LEFT JOIN  ques_knowledge qk on q.id=qk.question_id
+        where qk.knowledge_id=#{k_id}
+   </select>
 </mapper>

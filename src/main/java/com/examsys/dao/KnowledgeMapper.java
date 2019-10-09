@@ -18,4 +18,6 @@ public interface KnowledgeMapper {
     List<Knowledge> selectAll();
 
     int updateByPrimaryKey(Knowledge record);
+
+    Knowledge selectByKnowledge(Knowledge knowledge);
 }
