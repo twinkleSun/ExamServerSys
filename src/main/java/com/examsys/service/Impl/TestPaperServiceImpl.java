@@ -40,10 +40,10 @@ public class TestPaperServiceImpl {
         List<TestPaperDetail> testPaperList=new ArrayList<>();
         TestPaper testPaper=new TestPaper();
         Date now = new Date();
-        SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//可以方便地修改日期格式
+        SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         testPaper.setCreateTime(dateFormatTime.format(now));
 
-        SimpleDateFormat dateFormatCode = new SimpleDateFormat("yyyyMMddHHmmss");//可以方便地修改日期格式
+        SimpleDateFormat dateFormatCode = new SimpleDateFormat("yyyyMMddHHmmss");
 
         String paper_code=dateFormatCode.format(now);
 //        Calendar cal=Calendar.getInstance();

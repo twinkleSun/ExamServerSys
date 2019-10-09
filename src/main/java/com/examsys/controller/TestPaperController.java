@@ -114,6 +114,11 @@ public class TestPaperController {
     }
 
 
+    /**
+     * 获取单个试卷详情
+     * @param map
+     * @return
+     */
     @PostMapping(value = "/single")
     @Transactional
     public ResponseEntity getSinglePaper(@RequestBody Map<String,Object> map) {

@@ -12,11 +12,11 @@ public interface ExamMapper {
 
     List<Exam> selectExamByUserId(Integer id);
 
-
+    int insert(Exam exam);
 
 //    int deleteByPrimaryKey(Integer id);
 //
-//    int insert(Examinfo record);
+
 //
 //    Examinfo selectByPrimaryKey(Integer id);
 //

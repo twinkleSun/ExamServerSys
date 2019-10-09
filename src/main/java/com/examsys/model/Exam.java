@@ -12,7 +12,10 @@ public class Exam{
 
     private String endTime;
 
-    private Integer duration;
+    private String duration;
+
+
+    private String status;
 
     public Integer getId() {
         return id;
@@ -54,11 +57,20 @@ public class Exam{
         this.endTime = endTime;
     }
 
-    public Integer getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }
