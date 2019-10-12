@@ -127,4 +127,17 @@ public class TestPaperController {
 
     }
 
+    /**
+     * 获取参与考试的考生
+     * @param map
+     * @return
+     */
+    @PostMapping(value = "/student")
+    @Transactional
+    public ResponseEntity getStudents(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=testPaperService.getStudent((Integer) map.get("exam_id"));
+        return responseEntity;
+
+    }
+
 }
