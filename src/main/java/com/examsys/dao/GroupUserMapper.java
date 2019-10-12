@@ -16,6 +16,8 @@ public interface GroupUserMapper {
 
     List<GroupUserEntity> selectGroupUser();
 
+    List<GroupUserEntity> selectStudent(Integer exam_id);
+
     List<UserGroupEntity> selectUserGroup();
 
     List<GroupUser> selectByGroupId(Integer group_id);

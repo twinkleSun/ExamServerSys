@@ -1,11 +1,14 @@
 package com.examsys.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.examsys.dao.GroupUserMapper;
 import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.dao.TestPaperMapper;
+import com.examsys.model.GroupUser;
 import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaper;
 import com.examsys.model.TestPaperDetail;
+import com.examsys.model.entity.GroupUserEntity;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.model.entity.TestPaperListEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ public class TestPaperServiceImpl {
 
     @Autowired
     TestPaperMapper testPaperMapper;
+
+    @Autowired
+    GroupUserMapper groupUserMapper;
 
     /**
      * 处理添加试卷的数据
@@ -129,7 +135,7 @@ public class TestPaperServiceImpl {
         if(testPaperList==null){
             responseEntity.setStatus(-1);
             responseEntity.setMsg("查询失败");
-        }else {
+        } else {
             responseEntity.setStatus(200);
             responseEntity.setData(testPaperList);
         }
@@ -147,13 +153,12 @@ public class TestPaperServiceImpl {
         if(testPaperList==null | testPaperList.size()==0){
             responseEntity.setStatus(-1);
             responseEntity.setMsg("不存在试卷");
-        }else {
+        } else {
             responseEntity.setStatus(200);
             responseEntity.setData(testPaperList);
         }
         return responseEntity;
     }
-
 
 
     /**
@@ -166,11 +171,30 @@ public class TestPaperServiceImpl {
         if(testPaperList==null | testPaperList.size()==0){
             responseEntity.setStatus(-1);
             responseEntity.setMsg("该管理员名下没有试卷");
-        }else {
+        } else {
             responseEntity.setStatus(200);
             responseEntity.setData(testPaperList);
         }
         return responseEntity;
     }
+
+    /**
+     * 获取考生列表
+     * @return
+     */
+    public ResponseEntity getStudent(Integer exam_id){
+        List<GroupUserEntity> StudentList = groupUserMapper.selectStudent(exam_id);
+        ResponseEntity responseEntity=new ResponseEntity();
+        if(StudentList==null | StudentList.size()==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("没有成员信息");
+        } else {
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("获取成员信息成功");
+            responseEntity.setData(StudentList);
+        }
+        return responseEntity;
+    }
+
 
 }
