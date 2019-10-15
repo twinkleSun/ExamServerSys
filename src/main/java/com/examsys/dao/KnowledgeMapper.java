@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.Knowledge;
+import com.examsys.model.entity.Keypoint;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -20,4 +21,6 @@ public interface KnowledgeMapper {
     int updateByPrimaryKey(Knowledge record);
 
     Knowledge selectByKnowledge(Knowledge knowledge);
+
+    List<Keypoint> selectAllKeyPoint();
 }

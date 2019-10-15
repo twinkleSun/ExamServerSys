@@ -36,6 +36,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
+  <select id="selectStudentByExam" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
+  </select>
+
+
 
 
 

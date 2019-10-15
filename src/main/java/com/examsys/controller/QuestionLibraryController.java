@@ -55,13 +55,20 @@ public class QuestionLibraryController {
      * @return
      */
     @GetMapping(value = "/all")
-    @Transactional
     public ResponseEntity getAllQuestion() {
         ResponseEntity responseEntity=questionLibraryService.getAllQuestion();
         return responseEntity;
     }
 
-
+    /**
+     * 获取所有题目
+     * @return
+     */
+    @PostMapping(value = "/filter")
+    public ResponseEntity getQuestionsByFlitEr(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=questionLibraryService.getQuestionsByFilter(map);
+        return responseEntity;
+    }
 
 
 //    @PostMapping(value = "/excel")
