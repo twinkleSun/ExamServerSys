@@ -17,6 +17,14 @@ public class StudentPoint {
 
     private Double studentTotalPoint;
 
+    private Integer objectiveStatus;
+
+    private Integer subjectiveStatus;
+
+
+
+    private Integer examId;
+
     public Integer getId() {
         return id;
     }
@@ -79,5 +87,30 @@ public class StudentPoint {
 
     public void setStudentTotalPoint(Double studentTotalPoint) {
         this.studentTotalPoint = studentTotalPoint;
+    }
+
+
+    public Integer getObjectiveStatus() {
+        return objectiveStatus;
+    }
+
+    public void setObjectiveStatus(Integer objectiveStatus) {
+        this.objectiveStatus = objectiveStatus;
+    }
+
+    public Integer getSubjectiveStatus() {
+        return subjectiveStatus;
+    }
+
+    public void setSubjectiveStatus(Integer subjectiveStatus) {
+        this.subjectiveStatus = subjectiveStatus;
+    }
+
+    public Integer getExamId() {
+        return examId;
+    }
+
+    public void setExamId(Integer examId) {
+        this.examId = examId;
     }
 }

@@ -150,14 +150,18 @@ CREATE TABLE `exam_group`(
 -- DROP TABLE IF EXISTS `student_point`;
 CREATE TABLE `student_point`(
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `paper_code` VARCHAR(45) NOT NULL  COMMENT '试卷识别码',
+  `paper_code` varchar(40) default null comment '试卷识别码',
+  `exam_id` int(11) NOT NULL  COMMENT '考试ID',
   `student_id` int(11) NOT NULL COMMENT '考生ID',
   `objective_grade` DOUBLE(4,2) DEFAULT NULL COMMENT '客观题分数',
+  `objective_status` int(2) DEFAULT NULL COMMENT '客观题批改状态',
+  `subjective_status` int(2) DEFAULT NULL COMMENT '主观题批改状态',
   `subjective_grade` DOUBLE(4,2) DEFAULT NULL COMMENT '主观题分数',
   `extra_point` DOUBLE(4,2) default null comment '附加分',
   `paper_total_point` DOUBLE(4,2) default null comment '总分',
   `student_total_point` DOUBLE(4,2) default null comment '学生总分',
-   PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- INSERT INTO `student_point` VALUES ('1','1101','1','1','1','1','100','80');
@@ -169,13 +173,15 @@ CREATE TABLE `student_point`(
 CREATE TABLE `student_point_detail` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `paper_code` VARCHAR(45) NOT NULL COMMENT '试卷识别码',
+  `exam_id` int(11) NOT NULL  COMMENT '考试ID',
   `question_id` int(11) NOT NULL COMMENT '题目ID',
   `student_id` int(11) NOT NULL COMMENT '考生ID',
-  `def_answer` VARCHAR (255) DEFAULT NULL COMMENT '默认答案',
+  `def_point` int(5) DEFAULT NULL COMMENT '每题总分',
   `student_answer` VARCHAR (255) DEFAULT NULL COMMENT '考生答案',
   `student_point` DOUBLE(4,2) DEFAULT NULL COMMENT '考生分数',
   `question_status` int(11) default null comment '1为已批改，0为未批改',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 -- INSERT INTO `student_point_detail` VALUES ('1','1101', '1', '1','ABCD','AB','0','1');
