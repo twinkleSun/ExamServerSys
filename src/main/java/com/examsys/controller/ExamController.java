@@ -37,5 +37,12 @@ public class ExamController {
         return responseEntity;
     }
 
+    @PostMapping(value = "/techend")
+    @ResponseBody
+    public ResponseEntity endExam(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = examService.endExam(Integer.valueOf(map.get("exam_id").toString()));
+        return responseEntity;
+    }
+
 }
 

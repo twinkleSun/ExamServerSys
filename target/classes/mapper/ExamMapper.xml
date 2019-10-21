@@ -34,6 +34,26 @@
     </insert>
 
 
+
+  <update id="updateExamStatus" parameterType="com.examsys.model.Exam">
+    update exam set
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from exam
     where id = #{id,jdbcType=INTEGER}

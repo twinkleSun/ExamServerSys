@@ -44,8 +44,8 @@
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="userType" property="userType" jdbcType="VARCHAR" />
         <collection property="group_list" ofType="Map">
-            <id column="gid" property="id"></id>
-            <result column="groupName" property="groupName"></result>
+            <id column="gid" property="group_id"></id>
+            <result column="groupName" property="group_name"></result>
         </collection>
     </resultMap>
 

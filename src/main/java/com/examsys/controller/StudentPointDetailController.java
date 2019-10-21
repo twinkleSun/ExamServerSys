@@ -40,4 +40,6 @@ public class StudentPointDetailController {
         return responseEntity;
     }
 
+
+
 }

@@ -10,6 +10,8 @@ import java.util.List;
 @Mapper
 @Repository
 public interface StudentPointMapper {
+
+    StudentPoint selectByIds(StudentPoint studentPoint);
     int deleteByPrimaryKey(Integer id);
 
     int insert(StudentPoint record);

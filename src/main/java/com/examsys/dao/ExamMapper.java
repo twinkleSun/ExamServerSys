@@ -14,6 +14,8 @@ public interface ExamMapper {
 
     int insert(Exam exam);
 
+    int updateExamStatus(Exam exam);
+
 //    int deleteByPrimaryKey(Integer id);
 //
 
