@@ -27,15 +27,38 @@
   </select>
 
   <!--获取所有题目-->
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, content, options, answer, `type`,description
     from question_library
   </select>
 
+
+  <resultMap id="quesKnowNameEntity" type="com.examsys.model.entity.QuesKnowNameEntity">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="options" property="options" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+
+    <collection property="knowledge" javaType="java.util.List" ofType="java.lang.String">
+      <result column="knowledge" property="knowledge" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <select id="selectAllWithKnowledgeName" resultMap="quesKnowNameEntity">
+    select q.id, q.content, q.options, q.answer, q.type,q.description,
+          k.name knowledge
+    from question_library q
+    left join ques_knowledge qk on q.id = qk.question_id
+    left join knowledge k on k.id = qk.knowledge_id
+  </select>
+
+
   <!--根据内容和选项查询-->
-  <select id="selectByFilter" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByFilter" parameterType="java.lang.String" resultMap="quesKnowNameEntity">
     select l.id, l.content, l.options, l.answer, l.type,l.description,
-    q.question_id,q.knowledge_id,k.name
+    q.question_id,q.knowledge_id,k.name knowledge
     from question_library l
     left join ques_knowledge q on q.question_id = l.id
     left join knowledge k on q.knowledge_id=k.id

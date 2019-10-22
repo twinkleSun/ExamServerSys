@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.examsys.dao.QuestionLibraryMapper;
 import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaperDetail;
+import com.examsys.model.entity.QuesKnowNameEntity;
 import com.examsys.model.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -109,7 +110,7 @@ public class QuestionLibraryServiceImpl {
 
     public ResponseEntity getAllQuestion(){
         ResponseEntity responseEntity=new ResponseEntity();
-        List<QuestionLibrary> questionList = questionLibraryMapper.selectAll();
+        List<QuesKnowNameEntity> questionList = questionLibraryMapper.selectAllWithKnowledgeName();
 
         if(questionList == null || questionList.size()==0){
             responseEntity.setStatus(-1);
@@ -150,7 +151,7 @@ public class QuestionLibraryServiceImpl {
 
         ques_knowledge=ques_knowledge.substring(0,ques_knowledge.length()-1);
 
-        List<QuestionLibrary> questionList = questionLibraryMapper.selectByFilter(ques_name,ques_type,ques_knowledge);
+        List<QuesKnowNameEntity> questionList = questionLibraryMapper.selectByFilter(ques_name,ques_type,ques_knowledge);
 
         if(questionList == null || questionList.size()==0){
             responseEntity.setStatus(-1);

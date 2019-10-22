@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.QuestionLibrary;
+import com.examsys.model.entity.QuesKnowNameEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -18,11 +19,13 @@ public interface QuestionLibraryMapper {
 
     List<QuestionLibrary> selectAll();
 
+    List<QuesKnowNameEntity> selectAllWithKnowledgeName();
+
     List<QuestionLibrary> selectQuesByKnow(Integer k_id);
 
     QuestionLibrary getId(QuestionLibrary questionLibrary);
 
-    List<QuestionLibrary> selectByFilter(@Param("content")String content,
+    List<QuesKnowNameEntity> selectByFilter(@Param("content")String content,
                                          @Param("type")String type,
                                          @Param("kname")String kname);
 
