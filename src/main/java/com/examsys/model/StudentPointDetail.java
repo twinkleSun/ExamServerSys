@@ -9,13 +9,24 @@ public class StudentPointDetail {
 
     private Integer studentId;
 
-    private String defAnswer;
+
+    private Integer defPoint;
 
     private String studentAnswer;
 
     private Double studentPoint;
 
     private Integer questionStatus;
+
+    private Integer examId;
+
+    public Integer getExamId() {
+        return examId;
+    }
+
+    public void setExamId(Integer examId) {
+        this.examId = examId;
+    }
 
     public Integer getId() {
         return id;
@@ -49,13 +60,6 @@ public class StudentPointDetail {
         this.studentId = studentId;
     }
 
-    public String getDefAnswer() {
-        return defAnswer;
-    }
-
-    public void setDefAnswer(String defAnswer) {
-        this.defAnswer = defAnswer;
-    }
 
     public String getStudentAnswer() {
         return studentAnswer;
@@ -80,4 +84,13 @@ public class StudentPointDetail {
     public void setQuestionStatus(Integer questionStatus) {
         this.questionStatus = questionStatus;
     }
+
+    public Integer getDefPoint() {
+        return defPoint;
+    }
+
+    public void setDefPoint(Integer defPoint) {
+        this.defPoint = defPoint;
+    }
+
 }

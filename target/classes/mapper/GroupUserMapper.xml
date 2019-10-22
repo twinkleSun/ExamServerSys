@@ -28,6 +28,14 @@
         LEFT JOIN `user` u on gu.student_id=u.id
     </select>
 
+    <!--获取考生所有列表-->
+    <select id="selectStudent" parameterType="java.lang.Integer" resultMap="groupUser">
+        SELECT eg.group_id group_id,g.name group_name,u.id id,u.name user_name
+        FROM `exam_group` eg, `group` g,`group_user` gu,`user` u
+        where eg.group_id = g.id and eg.group_id = gu.group_id and gu.student_id = u.id
+            and eg.exam_id = #{exam_id,jdbcType=INTEGER}
+    </select>
+
 
     <!--resultMap 用户+组信息-->
     <resultMap id="userGroup" type="com.examsys.model.entity.UserGroupEntity">
@@ -36,8 +44,8 @@
         <result column="password" property="password" jdbcType="VARCHAR" />
         <result column="userType" property="userType" jdbcType="VARCHAR" />
         <collection property="group_list" ofType="Map">
-            <id column="gid" property="id"></id>
-            <result column="groupName" property="groupName"></result>
+            <id column="gid" property="group_id"></id>
+            <result column="groupName" property="group_name"></result>
         </collection>
     </resultMap>
 

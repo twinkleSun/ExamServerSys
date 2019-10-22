@@ -27,7 +27,6 @@ public class ExamServiceImpl{
 
 
     public ResponseEntity addNewExam(Map<String,Object> map){
-
         ResponseEntity responseEntity=new ResponseEntity();
         Exam exam=new Exam();
         exam.setExamName(String.valueOf(map.get("exam_name")));
@@ -37,7 +36,6 @@ public class ExamServiceImpl{
         exam.setBeginTime(String.valueOf(map.get("begin_time")));
         exam.setEndTime(String.valueOf(map.get("end_time")));
         exam.setDuration(String.valueOf(map.get("duration")));
-
 
         try{
             Date dtBegin = dateFormatTime.parse(exam.getBeginTime());
@@ -81,6 +79,21 @@ public class ExamServiceImpl{
         ResponseEntity responseEntity=new ResponseEntity();
         responseEntity.setStatus(200);
         responseEntity.setMsg("创建成功");
+        return responseEntity;
+    }
+
+    public ResponseEntity endExam(int examId){
+        ResponseEntity responseEntity = new ResponseEntity();
+        Exam exam = new Exam();
+        exam.setStatus("已结束");
+        exam.setId(examId);
+        int res = examMapper.updateExamStatus(exam);
+        if(res<0){
+            throw new RuntimeException("数据库错误");
+        }else {
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("更新成功");
+        }
         return responseEntity;
     }
 

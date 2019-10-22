@@ -4,45 +4,107 @@
   <resultMap id="BaseResultMap" type="com.examsys.model.StudentPointDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+    <result column="exam_id" property="examId" jdbcType="INTEGER" />
     <result column="question_id" property="questionId" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
-    <result column="def_answer" property="defAnswer" jdbcType="VARCHAR" />
+    <result column="def_point" property="defPoint" jdbcType="INTEGER" />
     <result column="student_answer" property="studentAnswer" jdbcType="VARCHAR" />
     <result column="student_point" property="studentPoint" jdbcType="DOUBLE" />
     <result column="question_status" property="questionStatus" jdbcType="INTEGER" />
   </resultMap>
+
+
+  <resultMap id="studentAnsEntity" type="com.examsys.model.entity.StudentAnswersDetail">
+    <id column="exam_id" property="exam_id" jdbcType="INTEGER" />
+    <result column="paper_code" property="paper_code" jdbcType="VARCHAR" />
+    <collection property="student_answers_detail" javaType="java.util.List" ofType="Map">
+      <id column="student_id" property="student_id" jdbcType="INTEGER" />
+      <result column="student_name" property="student_name" jdbcType="VARCHAR" />
+      <collection property="paper_status" javaType="java.util.HashMap" ofType="Map">
+        <result column="objective_grade" property="objective_grade"></result>
+        <result column="subjective_status" property="subjective_status"></result>
+        <collection property="subjective_answers" ofType="Map" javaType="java.util.List">
+          <id column="id" property="id"></id>
+          <result column="content" property="content"></result>
+          <result column="description" property="description"></result>
+          <result column="total_point" property="total_point"></result>
+          <result column="answer" property="answer"></result>
+          <result column="student_answer" property="student_answer"></result>
+          <result column="tech_point" property="tech_point"></result>
+          <result column="question_status" property="question_status"></result>
+        </collection>
+      </collection>
+    </collection>
+  </resultMap>
+
+  <select id="selectStudentAnswers" resultMap="studentAnsEntity" parameterType="java.lang.Integer">
+        SELECT sp.exam_id exam_id, sp.paper_code paper_code,sp.student_id student_id,
+               sp.objective_grade,sp.subjective_status subjective_status,
+               u.name student_name,
+               sd.question_id id,sd.def_point total_point,sd.student_answer student_answer,
+               sd.student_point tech_point,sd.question_status question_status,
+               ql.content content, ql.description description,ql.answer answer
+        FROM student_point sp
+        left join `user` u on sp.student_id=u.id
+        left join student_point_detail sd on sd.exam_id = sp.exam_id
+        LEFT JOIN  question_library ql on ql.id=sd.question_id
+        where sp.exam_id=#{examId}
+    </select>
+
+
+  <update id="updateByIds" parameterType="com.examsys.model.StudentPointDetail" >
+    update student_point_detail
+    set student_point = #{studentPoint,jdbcType=DOUBLE},
+      question_status = #{questionStatus,jdbcType=INTEGER}
+    where exam_id = #{examId,jdbcType=INTEGER} and student_id =#{studentId} and question_id = #{questionId}
+  </update>
+
+
+
+
+
+
+
+
+
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from student_point_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPointDetail" >
     insert into student_point_detail (id, paper_code, question_id, 
-      student_id, def_answer, student_answer, 
-      student_point, question_status)
+      student_id, def_point, student_answer,
+      student_point, question_status,exam_id)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{questionId,jdbcType=INTEGER}, 
-      #{studentId,jdbcType=INTEGER}, #{defAnswer,jdbcType=VARCHAR}, #{studentAnswer,jdbcType=VARCHAR}, 
-      #{studentPoint,jdbcType=DOUBLE}, #{questionStatus,jdbcType=INTEGER})
+      #{studentId,jdbcType=INTEGER}, #{defPoint,jdbcType=INTEGER}, #{studentAnswer,jdbcType=VARCHAR},
+      #{studentPoint,jdbcType=DOUBLE}, #{questionStatus,jdbcType=INTEGER},#{examId})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.StudentPointDetail" >
     update student_point_detail
     set paper_code = #{paperCode,jdbcType=VARCHAR},
       question_id = #{questionId,jdbcType=INTEGER},
       student_id = #{studentId,jdbcType=INTEGER},
-      def_answer = #{defAnswer,jdbcType=VARCHAR},
+      def_point = #{defPoint,jdbcType=INTEGER},
       student_answer = #{studentAnswer,jdbcType=VARCHAR},
       student_point = #{studentPoint,jdbcType=DOUBLE},
-      question_status = #{questionStatus,jdbcType=INTEGER}
+      question_status = #{questionStatus,jdbcType=INTEGER},
+      exam_id = #{examId}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, paper_code, question_id, student_id, def_answer, student_answer, student_point, 
-    question_status
+    select id, paper_code, question_id, student_id, def_point, student_answer, student_point,
+    question_status,exam_id
     from student_point_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, paper_code, question_id, student_id, def_answer, student_answer, student_point, 
-    question_status
+    select id, paper_code, question_id, student_id, def_point, student_answer, student_point,
+    question_status,exam_id
     from student_point_detail
   </select>
+
+
+
+
 </mapper>

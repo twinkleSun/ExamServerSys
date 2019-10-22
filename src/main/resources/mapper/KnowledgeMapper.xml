@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.examsys.dao.KnowledgeMapper" >
+
   <resultMap id="BaseResultMap" type="com.examsys.model.Knowledge" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -8,16 +9,18 @@
     <result column="level" property="level" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
   </resultMap>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from knowledge
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Knowledge" >
-    insert into knowledge (id, name, description, 
-      level, parent_id)
+    insert into knowledge (id, `name`, description, `level`, parent_id)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
       #{level,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER})
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.Knowledge" >
     update knowledge
     set name = #{name,jdbcType=VARCHAR},
@@ -26,20 +29,33 @@
       parent_id = #{parentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name, description, level, parent_id
+    select id, `name`, description, `level`, parent_id
     from knowledge
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name, description, level, parent_id
+    select id, `name`, description, `level`, parent_id
     from knowledge
   </select>
 
   <!--根据知识点查询题目-->
   <select id="selectByKnowledge" parameterType="com.examsys.model.Knowledge" resultMap="BaseResultMap">
-    select id, name, description, level, parent_id
+    select id, `name`, description, `level`, parent_id
     from knowledge
     where name = #{name}
   </select>
+
+  <resultMap id="KeypointResultMap" type="com.examsys.model.entity.Keypoint" >
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="key" property="key" jdbcType="VARCHAR" />
+    <result column="isLeaf" property="isLeaf" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectAllKeyPoint" resultMap="KeypointResultMap">
+    select `name` title, `name` `key` from knowledge
+  </select>
+
 </mapper>

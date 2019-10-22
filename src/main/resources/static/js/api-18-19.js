@@ -105,7 +105,7 @@ $(function(){
             "id": 1,
             "option": "选项二内容"
         }],
-        answer_list: [0]
+        answer_list: [{"id":0, "content":"选项一内容"}]
     };
 
 

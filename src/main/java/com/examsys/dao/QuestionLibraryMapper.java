@@ -2,6 +2,7 @@ package com.examsys.dao;
 
 import com.examsys.model.QuestionLibrary;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,6 +22,9 @@ public interface QuestionLibraryMapper {
 
     QuestionLibrary getId(QuestionLibrary questionLibrary);
 
+    List<QuestionLibrary> selectByFilter(@Param("content")String content,
+                                         @Param("type")String type,
+                                         @Param("kname")String kname);
 
 //    int deleteByPrimaryKey(Integer id);
 //

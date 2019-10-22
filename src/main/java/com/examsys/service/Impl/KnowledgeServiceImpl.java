@@ -7,6 +7,7 @@ import com.examsys.dao.QuestionLibraryMapper;
 import com.examsys.model.Knowledge;
 import com.examsys.model.QuesKnowledge;
 import com.examsys.model.QuestionLibrary;
+import com.examsys.model.entity.Keypoint;
 import com.examsys.model.entity.QuesKnowEntity;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.model.entity.UserGroupEntity;
@@ -92,7 +93,7 @@ public class KnowledgeServiceImpl {
 
     public ResponseEntity getAllKnowledge(){
         ResponseEntity responseEntity=new ResponseEntity();
-        List<Knowledge> knowledgeList = knowledgeMapper.selectAll();
+        List<Keypoint> knowledgeList = knowledgeMapper.selectAllKeyPoint();
 
         if(knowledgeList == null || knowledgeList.size()==0){
             responseEntity.setStatus(-1);

@@ -122,4 +122,45 @@ public class QuestionLibraryServiceImpl {
 
         return responseEntity;
     }
+
+
+    public ResponseEntity getQuestionsByFilter(Map<String,Object> map){
+        ResponseEntity responseEntity=new ResponseEntity();
+
+        List<String> ques_name_filter=(List<String>)map.get("ques_name_filter");
+        List<String> ques_type_filter=(List<String>)map.get("ques_type_filter");
+        List<String> ques_knowledge_filter=(List<String>)map.get("ques_knowledge_filter");
+        String ques_name = "";
+        String ques_type = "";
+        String ques_knowledge = "";
+
+        for(int i=0;i<ques_name_filter.size();i++){
+            ques_name=ques_name+ques_name_filter.get(i)+"|";
+        }
+        ques_name=ques_name.substring(0,ques_name.length()-1);
+
+        for(int i=0;i<ques_type_filter.size();i++){
+            ques_type=ques_type+ques_type_filter.get(i)+"|";
+        }
+        ques_type=ques_type.substring(0,ques_type.length()-1);
+
+        for(int i=0;i<ques_knowledge_filter.size();i++){
+            ques_knowledge=ques_knowledge+ques_knowledge_filter.get(i)+"|";
+        }
+
+        ques_knowledge=ques_knowledge.substring(0,ques_knowledge.length()-1);
+
+        List<QuestionLibrary> questionList = questionLibraryMapper.selectByFilter(ques_name,ques_type,ques_knowledge);
+
+        if(questionList == null || questionList.size()==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("不存在满足条件的题目");
+        }else {
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("获取成功");
+            responseEntity.setData(questionList);
+        }
+
+        return responseEntity;
+    }
 }

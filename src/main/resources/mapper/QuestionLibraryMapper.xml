@@ -32,7 +32,15 @@
     from question_library
   </select>
 
-
+  <!--根据内容和选项查询-->
+  <select id="selectByFilter" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select l.id, l.content, l.options, l.answer, l.type,l.description,
+    q.question_id,q.knowledge_id,k.name
+    from question_library l
+    left join ques_knowledge q on q.question_id = l.id
+    left join knowledge k on q.knowledge_id=k.id
+    where content regexp #{content} or `type` regexp #{type} or `name` regexp #{kname}
+  </select>
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

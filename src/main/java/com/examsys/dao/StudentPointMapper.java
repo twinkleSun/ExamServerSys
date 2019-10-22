@@ -2,6 +2,7 @@ package com.examsys.dao;
 
 import com.examsys.model.StudentPoint;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,6 +10,8 @@ import java.util.List;
 @Mapper
 @Repository
 public interface StudentPointMapper {
+
+    StudentPoint selectByIds(StudentPoint studentPoint);
     int deleteByPrimaryKey(Integer id);
 
     int insert(StudentPoint record);
@@ -18,4 +21,6 @@ public interface StudentPointMapper {
     List<StudentPoint> selectAll();
 
     int updateByPrimaryKey(StudentPoint record);
+
+    int updateSubStatus(StudentPoint studentPoint);
 }
