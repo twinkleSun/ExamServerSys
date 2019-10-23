@@ -3,18 +3,19 @@
  */
 $(function(){
 
-    $("#api-24").click(function() {
 
-        var str={
-            paper_code:"20191008193539"
-        }
+    $("#1-api-7").click(function() {
+        var json7={
+            group_id: "1",
+            student_id: [ 2, 3]
+        };
         $.ajax({
-            url: "/paper/single",
+            url: "/upi/groupuser",
             type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(str),
+            data:JSON.stringify(json7),
             success: function (data) {
                 console.log(data);
             },
@@ -26,5 +27,13 @@ $(function(){
         });
 
     });
+
+
+
+
+
+
+
+
 
 });

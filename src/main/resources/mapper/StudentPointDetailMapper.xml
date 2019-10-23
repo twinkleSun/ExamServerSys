@@ -7,7 +7,7 @@
     <result column="exam_id" property="examId" jdbcType="INTEGER" />
     <result column="question_id" property="questionId" jdbcType="INTEGER" />
     <result column="student_id" property="studentId" jdbcType="INTEGER" />
-    <result column="def_point" property="defPoint" jdbcType="INTEGER" />
+    <result column="def_point" property="defPoint" jdbcType="DOUBLE" />
     <result column="student_answer" property="studentAnswer" jdbcType="VARCHAR" />
     <result column="student_point" property="studentPoint" jdbcType="DOUBLE" />
     <result column="question_status" property="questionStatus" jdbcType="INTEGER" />
@@ -60,8 +60,21 @@
   </update>
 
 
+  <select id="selectByIds" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, paper_code, question_id, student_id, def_point, student_answer, student_point,
+    question_status,exam_id
+    from student_point_detail
+    where student_id = #{studentId} and exam_id = #{examId} and question_id = #{questionId}
+  </select>
 
-
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPointDetail" >
+    insert into student_point_detail (id, paper_code, question_id,
+      student_id, def_point, student_answer,
+      student_point, question_status,exam_id)
+    values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{questionId,jdbcType=INTEGER},
+      #{studentId,jdbcType=INTEGER}, #{defPoint,jdbcType=DOUBLE}, #{studentAnswer,jdbcType=VARCHAR},
+      #{studentPoint,jdbcType=DOUBLE}, #{questionStatus,jdbcType=INTEGER},#{examId})
+  </insert>
 
 
 
@@ -72,20 +85,13 @@
     delete from student_point_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPointDetail" >
-    insert into student_point_detail (id, paper_code, question_id, 
-      student_id, def_point, student_answer,
-      student_point, question_status,exam_id)
-    values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{questionId,jdbcType=INTEGER}, 
-      #{studentId,jdbcType=INTEGER}, #{defPoint,jdbcType=INTEGER}, #{studentAnswer,jdbcType=VARCHAR},
-      #{studentPoint,jdbcType=DOUBLE}, #{questionStatus,jdbcType=INTEGER},#{examId})
-  </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.StudentPointDetail" >
     update student_point_detail
     set paper_code = #{paperCode,jdbcType=VARCHAR},
       question_id = #{questionId,jdbcType=INTEGER},
       student_id = #{studentId,jdbcType=INTEGER},
-      def_point = #{defPoint,jdbcType=INTEGER},
+      def_point = #{defPoint,jdbcType=DOUBLE},
       student_answer = #{studentAnswer,jdbcType=VARCHAR},
       student_point = #{studentPoint,jdbcType=DOUBLE},
       question_status = #{questionStatus,jdbcType=INTEGER},

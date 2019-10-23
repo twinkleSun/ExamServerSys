@@ -20,7 +20,7 @@
     from exam
     where id in(
         select exam_id from exam_group,group_user where exam_group.group_id = group_user.group_id
-        and user_id =#{id, jdbcType=INTEGER})
+        and group_user.student_id =#{id, jdbcType=INTEGER})
   </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >

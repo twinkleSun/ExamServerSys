@@ -14,7 +14,7 @@ public interface TestPaperDetailMapper {
 
     TestPaperListEntity selectPapers(String paperCode);
 
-
+    TestPaperListEntity selectStuPaper(String paperCode);
 
     int deleteByPrimaryKey(Integer id);
 

@@ -10,7 +10,7 @@ public class StudentPointDetail {
     private Integer studentId;
 
 
-    private Integer defPoint;
+    private Double defPoint;
 
     private String studentAnswer;
 
@@ -85,11 +85,11 @@ public class StudentPointDetail {
         this.questionStatus = questionStatus;
     }
 
-    public Integer getDefPoint() {
+    public Double getDefPoint() {
         return defPoint;
     }
 
-    public void setDefPoint(Integer defPoint) {
+    public void setDefPoint(Double defPoint) {
         this.defPoint = defPoint;
     }
 

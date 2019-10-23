@@ -138,18 +138,26 @@ public class QuestionLibraryServiceImpl {
         for(int i=0;i<ques_name_filter.size();i++){
             ques_name=ques_name+ques_name_filter.get(i)+"|";
         }
-        ques_name=ques_name.substring(0,ques_name.length()-1);
+        if(ques_name!=""){
+            ques_name=ques_name.substring(0,ques_name.length()-1);
+        }
+
 
         for(int i=0;i<ques_type_filter.size();i++){
             ques_type=ques_type+ques_type_filter.get(i)+"|";
         }
-        ques_type=ques_type.substring(0,ques_type.length()-1);
+        if(ques_type!=""){
+            ques_type=ques_type.substring(0,ques_type.length()-1);
+        }
+
 
         for(int i=0;i<ques_knowledge_filter.size();i++){
             ques_knowledge=ques_knowledge+ques_knowledge_filter.get(i)+"|";
         }
+        if(ques_knowledge!=""){
+            ques_knowledge=ques_knowledge.substring(0,ques_knowledge.length()-1);
+        }
 
-        ques_knowledge=ques_knowledge.substring(0,ques_knowledge.length()-1);
 
         List<QuesKnowNameEntity> questionList = questionLibraryMapper.selectByFilter(ques_name,ques_type,ques_knowledge);
 
