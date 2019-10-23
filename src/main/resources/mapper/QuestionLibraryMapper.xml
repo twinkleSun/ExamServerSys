@@ -55,6 +55,8 @@
   </select>
 
 
+
+
   <!--根据内容和选项查询-->
   <select id="selectByFilter" parameterType="java.lang.String" resultMap="quesKnowNameEntity">
     select l.id, l.content, l.options, l.answer, l.type,l.description,
@@ -62,7 +64,7 @@
     from question_library l
     left join ques_knowledge q on q.question_id = l.id
     left join knowledge k on q.knowledge_id=k.id
-    where content regexp #{content} or `type` regexp #{type} or `name` regexp #{kname}
+    where content regexp #{content} and `type` regexp #{type} and `name` regexp #{kname}
   </select>
 
 
