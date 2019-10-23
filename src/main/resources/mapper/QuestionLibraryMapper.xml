@@ -55,16 +55,19 @@
   </select>
 
 
-
-
   <!--根据内容和选项查询-->
   <select id="selectByFilter" parameterType="java.lang.String" resultMap="quesKnowNameEntity">
-    select l.id, l.content, l.options, l.answer, l.type,l.description,
-    q.question_id,q.knowledge_id,k.name knowledge
-    from question_library l
-    left join ques_knowledge q on q.question_id = l.id
-    left join knowledge k on q.knowledge_id=k.id
-    where content regexp #{content} and `type` regexp #{type} and `name` regexp #{kname}
+    select q1.id ,q1.content,q1.options, q1.answer,q1.type,q1.description,
+           kl.name knowledge
+		from question_library q1
+		left join ques_knowledge qk1 on q1.id = qk1.question_id
+		left join  knowledge kl on qk1.knowledge_id=kl.id
+		where q1.id
+		     in(select q.id from question_library q
+                  left join ques_knowledge qk on q.id = qk.question_id
+                  left join knowledge k on qk.knowledge_id=k.id
+                  where q.content regexp #{content} and q.type regexp #{type} and k.name regexp #{kname})
+
   </select>
 
 

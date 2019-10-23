@@ -14,9 +14,9 @@ $(function(){
     arr3[1]="数据库";
 
     var str={
-        ques_name_filter: ["多选题测试", "简答题测试"],
-        ques_type_filter: ["multi"],
-        ques_knowledge_filter: ["计算机网络", "数据库"]
+        ques_name_filter: ["测试"],
+        ques_type_filter: ["judge"],
+        ques_knowledge_filter: [ "数据库"]
     };
     $("#api-27-2").click(function() {
 
