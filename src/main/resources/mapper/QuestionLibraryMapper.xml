@@ -66,8 +66,10 @@
 		     in(select q.id from question_library q
                   left join ques_knowledge qk on q.id = qk.question_id
                   left join knowledge k on qk.knowledge_id=k.id
-                  where q.content regexp #{content} and q.type regexp #{type} and k.name regexp #{kname})
-
+                  where
+                  <if test="content!=''">q.content regexp #{content}</if>
+                  <if test="type!=''">and q.type regexp #{type}</if>
+                  <if test="kname!=''">and k.name regexp #{kname})</if>
   </select>
 
 
