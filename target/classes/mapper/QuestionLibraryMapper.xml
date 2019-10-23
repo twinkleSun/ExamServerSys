@@ -66,12 +66,26 @@
 		     in(select q.id from question_library q
                   left join ques_knowledge qk on q.id = qk.question_id
                   left join knowledge k on qk.knowledge_id=k.id
-                  where
-                  <if test="content!=''">q.content regexp #{content}</if>
+                  where 1=1
+                  <if test="content!=''">and q.content regexp #{content}</if>
                   <if test="type!=''">and q.type regexp #{type}</if>
-                  <if test="kname!=''">and k.name regexp #{kname})</if>
+                  <if test="kname!=''">and k.name regexp #{kname}</if>
+                )
   </select>
+    <!--<if test="content!='' or type!='' or kname!=''">-->
+    <!--where-->
+    <!--<if test="content!=''">-->
+    <!--q.content regexp #{content}-->
+    <!--<if test="type!='' or kname!=''">and</if>-->
+    <!--</if>-->
+    <!--<if test="type!=''">-->
+    <!--q.type regexp #{type}-->
+    <!--<if test="kname!=''">and</if>-->
+    <!--</if>-->
 
+    <!--<if test="kname!=''">k.name regexp #{kname}</if>-->
+
+    <!--</if>-->
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from question_library

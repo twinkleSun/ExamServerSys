@@ -15,8 +15,8 @@ $(function(){
 
     var str={
         ques_name_filter: ["测试"],
-        ques_type_filter: [""],
-        ques_knowledge_filter: [ "数据库"]
+        ques_type_filter: ["judge"],
+        ques_knowledge_filter: ["数据库"]
     };
     $("#api-27-2").click(function() {
 
