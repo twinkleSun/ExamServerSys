@@ -48,7 +48,7 @@
         left join `user` u on sp.student_id=u.id
         left join student_point_detail sd on sd.exam_id = sp.exam_id
         LEFT JOIN  question_library ql on ql.id=sd.question_id
-        where sp.exam_id=#{examId}
+        where sp.exam_id=#{examId} and ql.type = "subjective"
     </select>
 
 
