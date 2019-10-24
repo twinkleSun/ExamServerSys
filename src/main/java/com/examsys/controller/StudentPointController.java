@@ -25,4 +25,6 @@ public class StudentPointController {
         ResponseEntity responseEntity = studentPointService.addStuAns(map);
         return responseEntity;
     }
+
+
 }

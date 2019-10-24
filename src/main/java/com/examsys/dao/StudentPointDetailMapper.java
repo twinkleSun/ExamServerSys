@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.StudentPointDetail;
+import com.examsys.model.entity.StuObjJudgeEntity;
 import com.examsys.model.entity.StudentAnswersDetail;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -26,5 +27,9 @@ public interface StudentPointDetailMapper {
     int updateByPrimaryKey(StudentPointDetail record);
 
     int updateByIds(StudentPointDetail studentPointDetail);
+
+    List<StuObjJudgeEntity> selectStuObjQues(Integer examId);
+
+    int updateByPK(StudentPointDetail studentPointDetail);
 
 }

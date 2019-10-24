@@ -48,4 +48,16 @@ public class StudentPointDetailController {
 
     }
 
+    /**
+     * 学生考试提交答卷
+     * @param map
+     * @return
+     */
+    @PostMapping(value = "/startobj")
+    @ResponseBody
+    public ResponseEntity startObjJudge(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = studentPointDetailService.stuObjQuesJudge(Integer.valueOf(map.get("exam_id").toString()));
+        return responseEntity;
+    }
+
 }

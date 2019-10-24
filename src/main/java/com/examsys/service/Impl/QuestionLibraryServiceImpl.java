@@ -96,7 +96,7 @@ public class QuestionLibraryServiceImpl {
             }else{
                 int tmp= questionLibraryMapper.insert(question);
                 if(tmp<0){
-                   // throw new RuntimeException("有题目添加失败");
+                    throw new RuntimeException("数据库错误");
                 }else {
 
                     testPaperList.get(i).setQuestionId(question.getId());
