@@ -85,7 +85,7 @@
 
     <insert id="insertUsertoGroup" parameterType="com.examsys.model.GroupUser">
         insert into group_user(group_id,student_id) select #{groupId},#{student_id} from dual where not EXISTS
-        (select * from group_user where group_id=#{groupId} and student_id=#{studentId})
+        (select * from group_user where group_id=#{groupId} and student_id=#{student_id})
     </insert>
 
     <delete id="deleteByGroupId" parameterType="java.lang.Integer">

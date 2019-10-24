@@ -147,17 +147,30 @@ public class GroupUserServiceImpl{
         userinfo.setPassword((String) map.get("password"));
         userinfo.setRole((String) map.get("userType"));
 
+        int res = 0;
         if(userId != 0){
-            userinfoMapper.updateByPrimaryKey(userinfo);
-        }else {
-            userinfoMapper.insert(userinfo);
+            res = userinfoMapper.updateByPrimaryKey(userinfo);
+        } else {
+            res = userinfoMapper.insert(userinfo);
+        }
+
+        if(res <= 0) {
+            responseEntity.setMsg("更新失败");
+            responseEntity.setStatus(-1);
+            return responseEntity;
         }
 
         userId = userinfo.getId();
-        int res = groupUserMapper.deleteByUserId(userId);
+        int respp = groupUserMapper.deleteByUserId(userId);
+
+        if(respp <= 0) {
+            responseEntity.setMsg("更新失败");
+            responseEntity.setStatus(-1);
+            return responseEntity;
+        }
 
         ArrayList<Map<String,Object>> groupList= (ArrayList<Map<String, Object>>) map.get("group_list");
-//        ArrayList<Integer> deleteIds=(ArrayList<Integer>)map.get("group_del");
+
 
 //        grouplist不为空，删除所有组信息，然后插入新的组
         int flag = 0;
@@ -171,13 +184,10 @@ public class GroupUserServiceImpl{
             }
         }
 
-
-
-
         //todo:没做校验
         if(flag==0){
             responseEntity.setStatus(200);
-            responseEntity.setMsg("添加成功");
+            responseEntity.setMsg("更新成功");
         }else{
             responseEntity.setMsg("更新失败");
             responseEntity.setStatus(-1);
