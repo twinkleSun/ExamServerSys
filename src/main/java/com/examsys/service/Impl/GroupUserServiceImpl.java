@@ -171,7 +171,6 @@ public class GroupUserServiceImpl{
 
         ArrayList<Map<String,Object>> groupList= (ArrayList<Map<String, Object>>) map.get("group_list");
 
-//        grouplist不为空，删除所有组信息，然后插入新的组
         int flag = 0;
         if (groupList != null && groupList.size() !=0 ) {
             for (int j=0;j<groupList.size();j++){
@@ -193,5 +192,4 @@ public class GroupUserServiceImpl{
         }
         return responseEntity;
     }
-
 }

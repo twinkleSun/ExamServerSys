@@ -62,6 +62,8 @@ public class GroupUserController {
         return responseEntity;
     }
 
+
+
     /**
      * 修改考生信息和组
      * @param map
@@ -72,7 +74,5 @@ public class GroupUserController {
         ResponseEntity responseEntity = groupUserService.updateUserGroupRelation(map);
         return responseEntity;
     }
-
-
 
 }

@@ -41,13 +41,6 @@
     SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
   </select>
 
-
-
-
-
-
-
-
   <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
     <!--select id, user_name, `password`, user_type-->
     <!--from userinfo-->
@@ -65,7 +58,5 @@
   <!--<select id="selectTest" resultType="java.lang.String">-->
     <!--select user_name from userinfo-->
   <!--</select>-->
-
-
 
 </mapper>

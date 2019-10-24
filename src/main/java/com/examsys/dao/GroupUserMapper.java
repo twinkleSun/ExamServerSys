@@ -37,9 +37,6 @@ public interface GroupUserMapper {
     int insertUsertoGroup(int groupId, int student_id);
 
 
-//
-//    List<GroupUserEntity> selectAll();
-
 
 
 }
