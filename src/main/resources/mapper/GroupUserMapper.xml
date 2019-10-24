@@ -92,6 +92,10 @@
         delete from group_user WHERE group_id=#{group_id}
     </delete>
 
+    <delete id="deleteByUserId" parameterType="java.lang.Integer">
+        delete from group_user where student_id=#{student_id}
+    </delete>
+
 
 
 
@@ -113,9 +117,6 @@
     <!--</delete>-->
 
     <!---->
-
-
-
 
 
 </mapper>
