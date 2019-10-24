@@ -41,5 +41,11 @@ public class StudentPointDetailController {
     }
 
 
+    @PostMapping(value = "/stupaper")
+    public ResponseEntity getSinglePaper(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=studentPointDetailService.getStuExamPaper(map.get("paper_code").toString());
+        return responseEntity;
+
+    }
 
 }

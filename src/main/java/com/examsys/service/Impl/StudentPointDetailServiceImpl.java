@@ -2,10 +2,12 @@ package com.examsys.service.Impl;
 
 import com.examsys.dao.StudentPointDetailMapper;
 import com.examsys.dao.StudentPointMapper;
+import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.model.StudentPoint;
 import com.examsys.model.StudentPointDetail;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.model.entity.StudentAnswersDetail;
+import com.examsys.model.entity.TestPaperListEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,8 @@ public class StudentPointDetailServiceImpl {
     StudentPointDetailMapper studentPointDetailMapper;
     @Autowired
     StudentPointMapper studentPointMapper;
+    @Autowired
+    TestPaperDetailMapper testPaperDetailMapper;
 
     public ResponseEntity getAllStudentAnswers(int examId){
         ResponseEntity responseEntity = new ResponseEntity();
@@ -114,5 +118,19 @@ public class StudentPointDetailServiceImpl {
         return responseEntity;
     }
 
+
+
+    public ResponseEntity getStuExamPaper(String paper_code){
+        TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paper_code);
+        ResponseEntity responseEntity=new ResponseEntity();
+        if(testPaperList==null){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("查询失败,请检查");
+        } else {
+            responseEntity.setStatus(200);
+            responseEntity.setData(testPaperList);
+        }
+        return responseEntity;
+    }
 
 }

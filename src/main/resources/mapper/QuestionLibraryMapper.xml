@@ -27,21 +27,65 @@
   </select>
 
   <!--获取所有题目-->
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, content, options, answer, `type`,description
     from question_library
   </select>
 
-  <!--根据内容和选项查询-->
-  <select id="selectByFilter" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select l.id, l.content, l.options, l.answer, l.type,l.description,
-    q.question_id,q.knowledge_id,k.name
-    from question_library l
-    left join ques_knowledge q on q.question_id = l.id
-    left join knowledge k on q.knowledge_id=k.id
-    where content regexp #{content} or `type` regexp #{type} or `name` regexp #{kname}
+
+  <resultMap id="quesKnowNameEntity" type="com.examsys.model.entity.QuesKnowNameEntity">
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="options" property="options" jdbcType="VARCHAR" />
+    <result column="answer" property="answer" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+
+    <collection property="knowledge" javaType="java.util.List" ofType="java.lang.String">
+      <result column="knowledge" property="knowledge" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <select id="selectAllWithKnowledgeName" resultMap="quesKnowNameEntity">
+    select q.id, q.content, q.options, q.answer, q.type,q.description,
+          k.name knowledge
+    from question_library q
+    left join ques_knowledge qk on q.id = qk.question_id
+    left join knowledge k on k.id = qk.knowledge_id
   </select>
 
+
+  <!--根据内容和选项查询-->
+  <select id="selectByFilter" parameterType="java.lang.String" resultMap="quesKnowNameEntity">
+    select q1.id ,q1.content,q1.options, q1.answer,q1.type,q1.description,
+           kl.name knowledge
+		from question_library q1
+		left join ques_knowledge qk1 on q1.id = qk1.question_id
+		left join  knowledge kl on qk1.knowledge_id=kl.id
+		where q1.id
+		     in(select q.id from question_library q
+                  left join ques_knowledge qk on q.id = qk.question_id
+                  left join knowledge k on qk.knowledge_id=k.id
+                  where 1=1
+                  <if test="content!=''">and q.content regexp #{content}</if>
+                  <if test="type!=''">and q.type regexp #{type}</if>
+                  <if test="kname!=''">and k.name regexp #{kname}</if>
+                )
+  </select>
+    <!--<if test="content!='' or type!='' or kname!=''">-->
+    <!--where-->
+    <!--<if test="content!=''">-->
+    <!--q.content regexp #{content}-->
+    <!--<if test="type!='' or kname!=''">and</if>-->
+    <!--</if>-->
+    <!--<if test="type!=''">-->
+    <!--q.type regexp #{type}-->
+    <!--<if test="kname!=''">and</if>-->
+    <!--</if>-->
+
+    <!--<if test="kname!=''">k.name regexp #{kname}</if>-->
+
+    <!--</if>-->
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from question_library

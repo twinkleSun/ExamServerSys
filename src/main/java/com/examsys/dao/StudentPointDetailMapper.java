@@ -19,6 +19,8 @@ public interface StudentPointDetailMapper {
 
     StudentPointDetail selectByPrimaryKey(Integer id);
 
+    StudentPointDetail selectByIds(StudentPointDetail studentPointDetail);
+
     List<StudentPointDetail> selectAll();
 
     int updateByPrimaryKey(StudentPointDetail record);

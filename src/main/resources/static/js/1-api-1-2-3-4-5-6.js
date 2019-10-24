@@ -3,20 +3,19 @@
  */
 $(function(){
 
-    var json2={
-        user_name:"admin",
-        password:"admin"
-    };
 
-    $("#api-2").click(function() {
-
+    $("#1-api-1").click(function() {
+        var json1={
+            user_name:"admin",
+            password:"admin"
+        };
         $.ajax({
             url: "/upi/user/login",
             type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json2),
+            data:JSON.stringify(json1),
             success: function (data) {
                 console.log(data);
             },
@@ -30,14 +29,103 @@ $(function(){
     });
 
 
-    var json6={
-        groupName:"测试组名5"
-    };
+    $("#1-api-2").click(function() {
+        $.ajax({
+            url: "/upi/groupuser/all",
+            type: "get",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
 
-    $("#api-6").click(function() {
+    });
+
+
+    $("#1-api-3").click(function() {
+
+        $.ajax({
+            url: "/upi/usergroup/all",
+            type: "get",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
+
+    $("#1-api-4").click(function() {
+        var json4={
+            groupName:"测试组名5"
+        };
 
         $.ajax({
             url: "/upi/group/single",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json4),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
+
+    $("#1-api-5").click(function() {
+
+        var json5={
+            id:2
+        };
+        $.ajax({
+            url: "/upi/group/uid",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json5),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
+
+    $("#1-api-6").click(function() {
+        var json6={
+            id:2
+        };
+        $.ajax({
+            url: "/upi/groupuser/gid",
             type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
@@ -54,59 +142,6 @@ $(function(){
         });
 
     });
-
-
-    var json10={
-        group_id: "1",
-        student_id: [ 2, 3]
-    };
-
-    $("#api-10").click(function() {
-
-        $.ajax({
-            url: "/upi/groupuser",
-            type: "post",
-            traditional: true,
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            data:JSON.stringify(json10),
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                // console.log(XMLHttpRequest.status);
-                // console.log(XMLHttpRequest.readyState);
-                // console.log(textStatus);
-            },
-        });
-
-    });
-
-    var json8={
-        id:2
-    };
-
-    $("#api-8").click(function() {
-
-        $.ajax({
-            url: "/upi/group/uid",
-            type: "post",
-            traditional: true,
-            contentType: "application/json; charset=UTF-8",
-            dataType: "json",
-            data:JSON.stringify(json8),
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                // console.log(XMLHttpRequest.status);
-                // console.log(XMLHttpRequest.readyState);
-                // console.log(textStatus);
-            },
-        });
-
-    });
-
 
 
 });
