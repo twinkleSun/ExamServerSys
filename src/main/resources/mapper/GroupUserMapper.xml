@@ -100,7 +100,6 @@
 
 
 
-
   <!--<select id="selectAll" resultMap="BaseResultMap">-->
     <!--select group_id, user_id-->
     <!--from group_user-->

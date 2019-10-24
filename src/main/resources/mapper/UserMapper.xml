@@ -30,6 +30,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+
   <!--根据用户ID删除用户-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `user`
@@ -39,16 +40,6 @@
   <select id="selectStudentByExam" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
   </select>
-
-
-
-
-
-
-
-
-
-
 
 
 

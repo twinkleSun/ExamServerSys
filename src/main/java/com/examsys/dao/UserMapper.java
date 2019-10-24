@@ -20,12 +20,6 @@ public interface UserMapper {
 
 
 
-
-
-
-
-
-//
 //    Userinfo selectByPrimaryKey(Integer id);
 //
 //    List<Userinfo> selectAll();
