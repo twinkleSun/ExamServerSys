@@ -15,6 +15,7 @@ public interface QuestionLibraryMapper {
 
     int insert(QuestionLibrary questionLibrary);
 
+
     QuestionLibrary selectByQuestion(QuestionLibrary questionLibrary);
 
     List<QuestionLibrary> selectAll();

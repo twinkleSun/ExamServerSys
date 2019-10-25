@@ -82,11 +82,23 @@ public class TestPaperServiceImpl {
             question.setContent(String.valueOf(map1.get("content")));
 
             question.setDescription(String.valueOf(map1.get("description")));
-            question.setOptions(JSON.toJSONString(map1.get("option_list")));
+
+            if( map1.get("option_list") == null || map1.get("option_list")== ""){
+                question.setOptions("");
+            }else {
+                question.setOptions(JSON.toJSONString(map1.get("option_list")));
+            }
+
+            if( map1.get("description") == null || map1.get("description")== ""){
+                question.setDescription("");
+            }else {
+                question.setDescription(String.valueOf(map1.get("description")));
+            }
+
             question.setAnswer(JSON.toJSONString(map1.get("answer_list")));
 
 
-            double score=(double) Integer.parseInt(String.valueOf(map1.get("score")));
+            double score=Double.parseDouble(String.valueOf(map1.get("score")));
             testpaper.setScore(score);
             testpaper.setDefAnswer(map1.get("answer_list").toString());
             testpaper.setPaperCode(paper_code);
