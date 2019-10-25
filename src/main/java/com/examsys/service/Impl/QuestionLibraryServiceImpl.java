@@ -69,7 +69,7 @@ public class QuestionLibraryServiceImpl {
         for(int i=0;i<length;i++){
             QuestionLibrary question=questionList.get(i);
             QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready!=null){
+            if(questionAlready != null){
                 questionLibraryList.add(questionAlready);
             }else{
                 int tmp= questionLibraryMapper.insert(question);
@@ -91,32 +91,32 @@ public class QuestionLibraryServiceImpl {
         return responseEntity;
     }
 
-    /**
-     * 添加试卷的试题
-     * @param questionList
-     * @param testPaperList
-     * @return
-     */
-    public List<TestPaperDetail> addNewQuestions(List<QuestionLibrary> questionList, List<TestPaperDetail> testPaperList){
-        int length=questionList.size();
-        for(int i=0;i<length;i++){
-            QuestionLibrary question=questionList.get(i);
-            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready!=null){
-                testPaperList.get(i).setQuestionId(questionAlready.getId());
-            }else{
-                int tmp= questionLibraryMapper.insert(question);
-                if(tmp<0){
-                    throw new RuntimeException("数据库错误");
-                }else {
-
-                    testPaperList.get(i).setQuestionId(question.getId());
-                }
-            }
-
-        }
-        return testPaperList;
-    }
+//    /**
+//     * 添加试卷的试题
+//     * @param questionList
+//     * @param testPaperList
+//     * @return
+//     */
+//    public List<TestPaperDetail> addNewQuestions( List<TestPaperDetail> testPaperList){
+//        //int length=questionList.size();
+//        for(int i=0;i<length;i++){
+//            QuestionLibrary question=questionList.get(i);
+//            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
+//            if(questionAlready!=null){
+//                testPaperList.get(i).setQuestionId(questionAlready.getId());
+//            }else{
+//                int tmp= questionLibraryMapper.insert(question);
+//                if(tmp<0){
+//                    throw new RuntimeException("数据库错误");
+//                }else {
+//
+//                    testPaperList.get(i).setQuestionId(question.getId());
+//                }
+//            }
+//
+//        }
+//        return testPaperList;
+//    }
 
 
     public ResponseEntity getAllQuestion(){

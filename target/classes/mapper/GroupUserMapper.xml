@@ -96,11 +96,6 @@
         delete from group_user where student_id=#{student_id}
     </delete>
 
-
-
-
-
-
   <!--<select id="selectAll" resultMap="BaseResultMap">-->
     <!--select group_id, user_id-->
     <!--from group_user-->
@@ -116,7 +111,6 @@
         <!--delete from group_user WHERE user_id=#{user_id}-->
     <!--</delete>-->
 
-    <!---->
 
 
 </mapper>

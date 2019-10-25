@@ -54,7 +54,8 @@ $(function(){
                 // console.log(textStatus);
             },
         });
-
     });
+
+
 
 });

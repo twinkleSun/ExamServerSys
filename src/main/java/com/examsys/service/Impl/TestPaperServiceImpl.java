@@ -41,9 +41,9 @@ public class TestPaperServiceImpl {
      * @param TestpaperMap
      * @return
      */
-    public Map<String,Object> handleNewPaper(Map<String,Object> TestpaperMap){
-        Map<String,Object> mapRes=new HashMap<>();
-        List<QuestionLibrary> questionList=new ArrayList<>();
+    public List<TestPaperDetail> handleNewPaper(Map<String,Object> TestpaperMap){
+        //Map<String,Object> mapRes=new HashMap<>();
+        //List<QuestionLibrary> questionList=new ArrayList<>();
         List<TestPaperDetail> testPaperList=new ArrayList<>();
         TestPaper testPaper=new TestPaper();
         Date now = new Date();
@@ -74,45 +74,47 @@ public class TestPaperServiceImpl {
         }
 
         for(int i=0;i<map.size();i++){
-            QuestionLibrary question=new QuestionLibrary();
-            TestPaperDetail testpaper=new TestPaperDetail();
+            //QuestionLibrary question=new QuestionLibrary();
+            TestPaperDetail testpaper2=new TestPaperDetail();
             Map<String,Object> map1=map.get(i);
 
-            question.setType(String.valueOf(map1.get("type")));
-            question.setContent(String.valueOf(map1.get("content")));
+           // question.setId(Integer.valueOf(map1.get("id").toString()));
+//            question.setType(String.valueOf(map1.get("type")));
+//            question.setContent(String.valueOf(map1.get("content")));
 
-            question.setDescription(String.valueOf(map1.get("description")));
-
-            if( map1.get("option_list") == null || map1.get("option_list")== ""){
-                question.setOptions("");
-            }else {
-                question.setOptions(JSON.toJSONString(map1.get("option_list")));
-            }
-
-            if( map1.get("description") == null || map1.get("description")== ""){
-                question.setDescription("");
-            }else {
-                question.setDescription(String.valueOf(map1.get("description")));
-            }
-
-            question.setAnswer(JSON.toJSONString(map1.get("answer_list")));
+//            question.setDescription(String.valueOf(map1.get("description")));
+//
+//            if( map1.get("option_list") == null || map1.get("option_list")== ""){
+//                question.setOptions("");
+//            }else {
+//                question.setOptions(JSON.toJSONString(map1.get("option_list")));
+//            }
+//
+//            if( map1.get("description") == null || map1.get("description")== ""){
+//                question.setDescription("");
+//            }else {
+//                question.setDescription(String.valueOf(map1.get("description")));
+//            }
+//
+            //question.setAnswer(JSON.toJSONString(map1.get("answer_list")));
 
 
             double score=Double.parseDouble(String.valueOf(map1.get("score")));
-            testpaper.setScore(score);
-            testpaper.setDefAnswer(map1.get("answer_list").toString());
-            testpaper.setPaperCode(paper_code);
-            testpaper.setMustOrNot(Integer.valueOf(map1.get("must_or_not").toString()));
-            testpaper.setCategoryContent(String.valueOf(map1.get("category_content")));
+            testpaper2.setScore(score);
+            testpaper2.setDefAnswer(map1.get("answer_list").toString());
+            testpaper2.setPaperCode(paper_code);
+            testpaper2.setMustOrNot(Integer.valueOf(map1.get("must_or_not").toString()));
+            testpaper2.setCategoryContent(String.valueOf(map1.get("category_content")));
 
-            questionList.add(question);
-            testPaperList.add(testpaper);
+            testpaper2.setQuestionId(Integer.valueOf(map1.get("id").toString()));
+            //questionList.add(question);
+            testPaperList.add(testpaper2);
         }
 
-        mapRes.put("questionList",questionList);
-        mapRes.put("testPaperList",testPaperList);
+        //mapRes.put("questionList",questionList);
+        //mapRes.put("testPaperList",testPaperList);
 
-        return mapRes;
+        return testPaperList;
     }
 
 
@@ -207,6 +209,36 @@ public class TestPaperServiceImpl {
             responseEntity.setData(StudentList);
         }
         return responseEntity;
+    }
+
+
+    public ResponseEntity editPaper(Map<String,Object> TestpaperMap){
+        ResponseEntity responseEntity = new ResponseEntity();
+        String paper_code = String.valueOf(TestpaperMap.get("paper_code"));
+        List<Map<String,Object>> map=(List<Map<String,Object>>)TestpaperMap.get("question_list");
+        List<Integer> quesIds = new ArrayList<>();
+        List<TestPaperDetail> alreadyList=new ArrayList<>();
+        for(int i=0;i<map.size();i++){
+
+            TestPaperDetail testpaper2=new TestPaperDetail();
+            Map<String,Object> map1=map.get(i);
+
+            quesIds.add(Integer.valueOf(map1.get("id").toString()));
+
+            double score=Double.parseDouble(String.valueOf(map1.get("score")));
+            testpaper2.setScore(score);
+            testpaper2.setDefAnswer(map1.get("answer_list").toString());
+            testpaper2.setPaperCode(paper_code);
+            testpaper2.setMustOrNot(Integer.valueOf(map1.get("must_or_not").toString()));
+            testpaper2.setCategoryContent(String.valueOf(map1.get("category_content")));
+
+            testpaper2.setQuestionId(Integer.valueOf(map1.get("id").toString()));
+            //questionList.add(question);
+            //testPaperList.add(testpaper2);
+        }
+        return responseEntity;
+
+
     }
 
 

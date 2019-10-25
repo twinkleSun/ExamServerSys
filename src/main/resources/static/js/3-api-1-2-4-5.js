@@ -8,6 +8,7 @@ $(function(){
 
         var json1=new Array;
         var json1_1={
+            id:1,
             type: "multi",
             score: 20,
             description:"描述测试1",
@@ -16,15 +17,16 @@ $(function(){
             category_content: "一、数据库基础",
             option_list: [{
                 "id": 0,
-                "option": "选项一内容"
+                "content": "选项一内容"
             }, {
                 "id": 1,
-                "option": "选项二内容"
+                "content": "选项二内容"
             }],
 
-            answer_list: [0, 1]
+            answer_list: [{"id":0, "content":"选项一内容"},{"id":1, "content":"选项一内容"}]
         };
         var json1_2={
+            id:2,
             type: "multi",
             score: 20,
             content: "多选题测试4-1",
@@ -33,18 +35,19 @@ $(function(){
             category_content: "一、数据库基础",
             option_list: [{
                 "id": 0,
-                "option": "选项一内容"
+                "content": "选项一内容"
             }, {
                 "id": 1,
-                "option": "选项二内容"
+                "content": "选项二内容"
             }, {
                 "id": 2,
-                "option": "选项三内容"
+                "content": "选项三内容"
             }],
 
-            answer_list: ["1", 1]
+            answer_list: [{"id":0, "content":"选项一内容"}]
         };
         var json1_3={
+            id:3,
             type: "single",
             score: 20,
             content: "单选题测试",
@@ -53,21 +56,22 @@ $(function(){
             category_content: "一、数据库基础",
             option_list: [{
                 "id": 0,
-                "option": "选项一内容"
+                "content": "选项一内容"
             }, {
                 "id": 1,
-                "option": "选项二内容"
+                "content": "选项二内容"
             }, {
                 "id": 2,
                 "option": "选项三内容"
             }, {
                 "id": 3,
-                "option": "选项四内容"
+                "content": "选项四内容"
             }],
 
-            answer_list: ["1"]
+            answer_list: [{"id":1, "content":"选项er内容"}]
         };
         var json1_4={
+            id:4,
             type: "subjective",
             score: 20,
             content: "简答题测试",
@@ -78,6 +82,7 @@ $(function(){
             answer_list: ["参考答案测试"]
         };
         var json1_5={
+            id:5,
             type: "judge",
             score: 20,
             content: "判断题测试2",
@@ -86,10 +91,10 @@ $(function(){
             category_content: "二、计算机网络",
             option_list: [{
                 "id": 0,
-                "option": "选项一内容"
+                "content": "选项一内容"
             }, {
                 "id": 1,
-                "option": "选项二内容"
+                "content": "选项二内容"
             }],
             answer_list: [{"id":0, "content":"选项一内容"}]
         };
@@ -102,6 +107,7 @@ $(function(){
         var map={
             title:"测试名称",
             description:"描述",
+            paper_code:"",
             question_list:json1,
             user_id:1
         };
