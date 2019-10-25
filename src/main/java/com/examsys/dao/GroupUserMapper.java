@@ -26,22 +26,15 @@ public interface GroupUserMapper {
 
     int insert(GroupUser groupUser);
 
-    int insertUsertoGroup(GroupUser groupUser);
-
-    int delete(@Param("group_id")Integer group_id, @Param("user_id")Integer user_id);
+    int delete(Integer group_id, Integer student_id);
 
     List<GroupUser> selectByUserId(Integer user_id);
 
-    int deleteByUserId(Integer user_id);
+    int deleteByUserId(Integer student_id);
 
     int deleteByGroupId(Integer group_id);
 
-
-
-//
-//    List<GroupUserEntity> selectAll();
-//
-
+    int insertUsertoGroup(int groupId, int student_id);
 
 
 

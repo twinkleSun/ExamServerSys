@@ -18,29 +18,15 @@ public interface UserMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-
-
-
-
-
-
-
-//
 //    Userinfo selectByPrimaryKey(Integer id);
 //
 //    List<Userinfo> selectAll();
-
-
 //
 //    /**
 //     * 设置数据库自增长
 //     * @return
 //     */
 //    int alterUserinfoable();
-//
-//
-//
-//
 //
 //    List<String> selectTest();
 }

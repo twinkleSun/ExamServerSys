@@ -26,9 +26,10 @@
     update `user`
     set `name` = #{name,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
-      role = #{userType,jdbcType=VARCHAR}
+      role = #{role,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 
   <!--根据用户ID删除用户-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -39,23 +40,6 @@
   <select id="selectStudentByExam" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
   </select>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
     <!--select id, user_name, `password`, user_type-->
@@ -74,7 +58,5 @@
   <!--<select id="selectTest" resultType="java.lang.String">-->
     <!--select user_name from userinfo-->
   <!--</select>-->
-
-
 
 </mapper>

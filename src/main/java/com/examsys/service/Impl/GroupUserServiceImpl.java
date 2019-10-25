@@ -138,6 +138,7 @@ public class GroupUserServiceImpl{
      * @return
      */
     public ResponseEntity updateUserGroupRelation(Map<String,Object> map){
+        ResponseEntity responseEntity=new ResponseEntity();
         int userId=Integer.parseInt(String.valueOf(map.get("id")));
 
         User userinfo =new User();
@@ -146,35 +147,49 @@ public class GroupUserServiceImpl{
         userinfo.setPassword((String) map.get("password"));
         userinfo.setRole((String) map.get("userType"));
 
+        int res = 0;
         if(userId != 0){
-            userinfoMapper.updateByPrimaryKey(userinfo);
-        }else {
-            userinfoMapper.insert(userinfo);
+            res = userinfoMapper.updateByPrimaryKey(userinfo);
+        } else {
+            res = userinfoMapper.insert(userinfo);
+        }
+
+        if(res <= 0) {
+            responseEntity.setMsg("更新失败");
+            responseEntity.setStatus(-1);
+            return responseEntity;
         }
 
         userId = userinfo.getId();
+        int respp = groupUserMapper.deleteByUserId(userId);
 
-        ArrayList<Integer> addIds=(ArrayList<Integer>)map.get("group_add");
-        ArrayList<Integer> deleteIds=(ArrayList<Integer>)map.get("group_del");
-
-        for (int j=0;j<deleteIds.size();j++){
-            int res=groupUserMapper.delete(deleteIds.get(j),userId);
+        if(respp <= 0) {
+            responseEntity.setMsg("更新失败");
+            responseEntity.setStatus(-1);
+            return responseEntity;
         }
 
-        for(int i=0;i<addIds.size();i++){
-            GroupUser groupUser=new GroupUser();
-            groupUser.setGroupId(addIds.get(i));
-            groupUser.setStudentId(userId);
-            int res=groupUserMapper.insertUsertoGroup(groupUser);
+        ArrayList<Map<String,Object>> groupList= (ArrayList<Map<String, Object>>) map.get("group_list");
+
+        int flag = 0;
+        if (groupList != null && groupList.size() !=0 ) {
+            for (int j=0;j<groupList.size();j++){
+                int groupId = (int) groupList.get(j).get("group_id");
+                int resp = groupUserMapper.insertUsertoGroup(groupId,userId);
+                if(resp < 0) {
+                    flag++;
+                }
+            }
         }
 
         //todo:没做校验
-        ResponseEntity responseEntity=new ResponseEntity();
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("更新成功");
+        if(flag==0){
+            responseEntity.setStatus(200);
+            responseEntity.setMsg("更新成功");
+        }else{
+            responseEntity.setMsg("更新失败");
+            responseEntity.setStatus(-1);
+        }
         return responseEntity;
     }
-
-
-
 }

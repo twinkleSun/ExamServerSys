@@ -26,7 +26,7 @@
     update `user`
     set `name` = #{name,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=VARCHAR},
-      role = #{userType,jdbcType=VARCHAR}
+      role = #{role,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
