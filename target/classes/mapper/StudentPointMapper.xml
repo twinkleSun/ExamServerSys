@@ -30,7 +30,13 @@
     where exam_id = #{examId} and student_id = #{studentId}
   </select>
 
-
+  <update id="updateByPK" parameterType="com.examsys.model.StudentPoint" >
+    update student_point
+    set objective_grade = #{objectiveGrade,jdbcType=DOUBLE},
+      student_total_point = #{studentTotalPoint,jdbcType=DOUBLE},
+      objective_status=#{objectiveStatus}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
 
 

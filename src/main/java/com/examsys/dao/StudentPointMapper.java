@@ -23,4 +23,6 @@ public interface StudentPointMapper {
     int updateByPrimaryKey(StudentPoint record);
 
     int updateSubStatus(StudentPoint studentPoint);
+
+    int updateByPK(StudentPoint studentPoint);
 }

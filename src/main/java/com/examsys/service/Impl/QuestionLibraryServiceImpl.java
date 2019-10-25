@@ -36,8 +36,19 @@ public class QuestionLibraryServiceImpl {
             questionList.setType(String.valueOf(map1.get("type")));
             questionList.setContent(String.valueOf(map1.get("content")));
             questionList.setAnswer(JSON.toJSONString(map1.get("answer_list")));
-            questionList.setOptions(JSON.toJSONString(map1.get("option_list")));
-            questionList.setDescription(String.valueOf(map1.get("description")));
+            if(map1.get("option_list") ==null || map1.get("option_list")==""){
+                questionList.setOptions("");
+            }else {
+                questionList.setOptions(JSON.toJSONString(map1.get("option_list")));
+            }
+
+            if( map1.get("description") == null || map1.get("description")== ""){
+                questionList.setDescription("");
+            }else {
+                questionList.setDescription(String.valueOf(map1.get("description")));
+            }
+
+            //questionList.setDescription(String.valueOf(map1.get("description")));
             questioninfoList.add(questionList);
         }
 
@@ -96,7 +107,7 @@ public class QuestionLibraryServiceImpl {
             }else{
                 int tmp= questionLibraryMapper.insert(question);
                 if(tmp<0){
-                   // throw new RuntimeException("有题目添加失败");
+                    throw new RuntimeException("数据库错误");
                 }else {
 
                     testPaperList.get(i).setQuestionId(question.getId());

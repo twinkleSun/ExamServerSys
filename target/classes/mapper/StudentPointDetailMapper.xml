@@ -52,6 +52,63 @@
     </select>
 
 
+
+  <resultMap id="stuObjEntity" type="com.examsys.model.entity.StuObjJudgeEntity">
+    <id column="stu_id" property="stuId" jdbcType="INTEGER" />
+    <result column="exam_id" property="examId" jdbcType="INTEGER" />
+    <result column="sp_id" property="spId" jdbcType="INTEGER" />
+    <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+    <result column="objective_grade" property="objectiveGrade" jdbcType="DOUBLE" />
+    <result column="subjective_grade" property="subjectiveGrade" jdbcType="DOUBLE" />
+    <result column="objective_status" property="objectiveStatus" jdbcType="INTEGER" />
+    <result column="extra_point" property="extraPoint" jdbcType="DOUBLE" />
+    <result column="student_total_point" property="studentTotalPoint" jdbcType="DOUBLE" />
+    <collection property="stuQues" ofType="com.examsys.model.entity.StuObjQuesEntity">
+      <id column="sd_id" property="sdId" />
+      <result column="question_id" property="questionId" jdbcType="INTEGER" />
+      <result column="def_point" property="defPoint" jdbcType="DOUBLE" />
+      <result column="student_answer" property="studentAnswer" jdbcType="VARCHAR" />
+      <result column="student_point" property="studentPoint" jdbcType="DOUBLE" />
+      <result column="question_status" property="questionStatus" jdbcType="INTEGER" />
+      <result column="def_ans" property="defAns" jdbcType="VARCHAR" />
+      <result column="ques_type" property="quesType" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+
+  <select id="selectStuObjQues" resultMap="stuObjEntity" parameterType="java.lang.Integer">
+        SELECT sp.student_id stu_id,sp.exam_id exam_id, sp.id sp_id,sp.paper_code paper_code,
+               sp.objective_grade,sp.subjective_grade subjective_grade,sp.objective_status,
+               sp.extra_point,sp.student_total_point,
+               sd.id sd_id,sd.question_id question_id,sd.def_point def_point,sd.student_answer student_answer,
+               sd.student_point student_point,sd.question_status question_status,
+               ql.type ques_type,ql.answer def_ans
+        FROM student_point sp
+        left join student_point_detail sd on sd.student_id = sp.student_id
+        LEFT JOIN  question_library ql on ql.id=sd.question_id
+        where sp.exam_id=#{examId} and ql.type != "subjective"
+    </select>
+
+
+
+
+  <update id="updateByPK" parameterType="com.examsys.model.StudentPointDetail">
+    update student_point_detail
+    set student_point = #{studentPoint,jdbcType=DOUBLE},
+      question_status = #{questionStatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+
+
+
+
+
+
+
+
+
   <update id="updateByIds" parameterType="com.examsys.model.StudentPointDetail" >
     update student_point_detail
     set student_point = #{studentPoint,jdbcType=DOUBLE},

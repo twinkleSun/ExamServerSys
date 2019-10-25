@@ -21,8 +21,6 @@ public class StudentPoint {
 
     private Integer subjectiveStatus;
 
-
-
     private Integer examId;
 
     public Integer getId() {

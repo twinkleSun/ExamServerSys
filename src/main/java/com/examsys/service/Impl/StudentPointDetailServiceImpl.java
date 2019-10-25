@@ -1,17 +1,18 @@
 package com.examsys.service.Impl;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.examsys.dao.StudentPointDetailMapper;
 import com.examsys.dao.StudentPointMapper;
 import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.model.StudentPoint;
 import com.examsys.model.StudentPointDetail;
-import com.examsys.model.entity.ResponseEntity;
-import com.examsys.model.entity.StudentAnswersDetail;
-import com.examsys.model.entity.TestPaperListEntity;
+import com.examsys.model.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -131,6 +132,113 @@ public class StudentPointDetailServiceImpl {
             responseEntity.setData(testPaperList);
         }
         return responseEntity;
+    }
+
+
+    public ResponseEntity stuObjQuesJudge(int eId){
+        ResponseEntity responseEntity =new ResponseEntity();
+        List<StuObjJudgeEntity> stuObjJudgeEntityList = studentPointDetailMapper.selectStuObjQues(eId);
+
+        for(int i=0;i<stuObjJudgeEntityList.size();i++){
+            StuObjJudgeEntity stuObjJudgeEntity = stuObjJudgeEntityList.get(i);
+            int spId = stuObjJudgeEntity.getSpId();
+            String paperCode = stuObjJudgeEntity.getPaperCode();
+            Double extraPoint = stuObjJudgeEntity.getExtraPoint();
+            Double objectiveGrade = stuObjJudgeEntity.getObjectiveGrade();
+            int objectiveStatus = stuObjJudgeEntity.getObjectiveStatus();
+            Double subjectiveGrade = stuObjJudgeEntity.getSubjectiveGrade();
+            Double studentTotalPoint = stuObjJudgeEntity.getStudentTotalPoint();
+            int stuId = stuObjJudgeEntity.getStuId();
+            int examId = stuObjJudgeEntity.getExamId();
+            List<StuObjQuesEntity> stuQues = stuObjJudgeEntity.getStuQues();
+
+            for(int j=0;j<stuQues.size();j++){
+                StuObjQuesEntity stuObjQuesEntity = stuQues.get(j);
+                int sdId = stuObjQuesEntity.getSdId();
+                int questionId = stuObjQuesEntity.getQuestionId();
+                Double defPoint = stuObjQuesEntity.getDefPoint();
+                String studentAnswer = stuObjQuesEntity.getStudentAnswer();
+                Double studentPoint = stuObjQuesEntity.getStudentPoint();
+                int questionStatus = stuObjQuesEntity.getQuestionStatus();
+                String defAns = stuObjQuesEntity.getDefAns();
+                String quesType = stuObjQuesEntity.getQuesType();
+                if (studentAnswer == null || studentAnswer == "") {
+                    studentPoint = 0.0;
+
+                }else{
+                    if(quesType.equals("multi")){
+                        JSONArray defAnsArr =  JSONObject.parseArray(defAns);
+                        JSONArray stuAnsArr =  JSONObject.parseArray(studentAnswer);
+
+                        int defLen = defAnsArr.size();
+                        int stuLen = stuAnsArr.size();
+                        if(defLen == stuLen){
+                            ArrayList<Integer> defArr = new ArrayList<>();
+                            for (Object obj : defAnsArr) {
+                                JSONObject defObj = (JSONObject)obj;
+                                defArr.add(defObj.getInteger("id"));
+                            }
+
+                            int tmp = 1;
+                            for(Object obj:stuAnsArr){
+                                JSONObject stuObj = (JSONObject)obj;
+                                int tmpId = stuObj.getInteger("id");
+                                if(defArr.contains(tmpId)){
+                                }else{
+                                    tmp = 0;
+                                    studentPoint = 0.0;
+                                    break;
+                                }
+                            }
+
+                            if(tmp == 1){
+                                studentPoint = defPoint;
+                            }
+
+                        }else{
+                            studentPoint = 0.0;
+                        }
+
+                    }else{
+                        if (studentAnswer.equals(defAns)){
+                            studentPoint = defPoint;
+                        }else{
+                            studentPoint = 0.0;
+                        }
+                    }
+
+                    objectiveGrade = studentPoint + studentPoint;
+
+                    StudentPointDetail studentPointDetail = new StudentPointDetail();
+                    studentPointDetail.setQuestionStatus(1);
+                    studentPointDetail.setStudentPoint(studentPoint);
+                    studentPointDetail.setId(sdId);
+                    int res = studentPointDetailMapper.updateByPK(studentPointDetail);
+
+                    if(res<0){
+                        throw new RuntimeException("数据库错误");
+                    }
+                }
+
+
+            }
+
+            StudentPoint studentPoint = new StudentPoint();
+            studentPoint.setObjectiveStatus(1);
+            studentPoint.setObjectiveGrade(objectiveGrade);
+            studentPoint.setStudentTotalPoint(objectiveGrade+subjectiveGrade);
+            studentPoint.setId(spId);
+            int res = studentPointMapper.updateByPK(studentPoint);
+            if(res<0){
+                throw new RuntimeException("数据库错误");
+            }
+
+        }
+
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("客观题判断成功");
+        return responseEntity;
+
     }
 
 }
