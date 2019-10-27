@@ -29,4 +29,38 @@ $(function(){
 
     });
 
+
+
+
+
+    $("#2-api-8").click(function() {
+
+
+        var json8={
+            id:7,
+            name: "数据库4",
+            description:"数据库",
+            level: 2,
+            parent_id:2
+        };
+
+        $.ajax({
+            url: "/keypoint/single",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json8),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
 });

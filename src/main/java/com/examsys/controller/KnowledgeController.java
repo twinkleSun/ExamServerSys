@@ -32,6 +32,15 @@ public class KnowledgeController {
         return responseEntity;
     }
 
+
+    @PostMapping(value = "/single")
+    @Transactional
+    public ResponseEntity addSingleKnowledgeByFront(@RequestBody Map<String,Object> mapRes) {
+        ResponseEntity responseEntity=knowledgeService.addSingleKnowledge(mapRes);
+
+        return responseEntity;
+    }
+
     /**
      * 获取所有知识点
      * @return

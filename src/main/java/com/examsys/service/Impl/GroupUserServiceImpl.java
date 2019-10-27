@@ -155,11 +155,20 @@ public class GroupUserServiceImpl{
 
         int res = 0;
         if(userId != 0){
-            res = userinfoMapper.updateByPrimaryKey(userinfo);
+
+            User userAlready  = userinfoMapper.selectByUser(userinfo);
+            if (userAlready != null) {
+                responseEntity.setMsg("数据库中已存在相同的用户名和密码，请重新修改");
+                responseEntity.setStatus(-1);
+                return responseEntity;
+            }else{
+                res = userinfoMapper.updateByPrimaryKey(userinfo);
+
+            }
+
         } else {
             User userAlready  = userinfoMapper.selectByUser(userinfo);
             if (userAlready == null) {
-
                 res = userinfoMapper.insert(userinfo);
             }else{
                 responseEntity.setMsg("该用户已存在");

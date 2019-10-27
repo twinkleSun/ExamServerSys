@@ -55,6 +55,48 @@ public class KnowledgeServiceImpl {
         return knowledgeList;
     }
 
+
+    public ResponseEntity addSingleKnowledge(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+        Knowledge knowledge=new Knowledge();
+
+        knowledge.setName(String.valueOf(map.get("name")));
+        knowledge.setDescription(String.valueOf(map.get("description")));
+        knowledge.setLevel(1);
+        knowledge.setParentId(0);
+        if(map.get("id") == null || map.get("id") == ""){
+            Knowledge knowledgeAlready = knowledgeMapper.selectByKnowledge(knowledge);
+            if(knowledgeAlready!=null){
+              responseEntity.setStatus(-1);
+              responseEntity.setMsg("知识点已经存在");
+              return responseEntity;
+            }else{
+                int tmp= knowledgeMapper.insert(knowledge);
+                if(tmp<0){
+                    throw new RuntimeException("数据库错误");
+                }
+            }
+        }else{
+            knowledge.setId(Integer.valueOf(String.valueOf(map.get("id"))));
+            Knowledge knowledgeAlready = knowledgeMapper.selectByKnowledge(knowledge);
+            if(knowledgeAlready!=null){
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("知识点已经存在,知识点不可以重名");
+                return responseEntity;
+            }else{
+                int res = knowledgeMapper.updateByPrimaryKey(knowledge);
+                if(res<0){
+                    throw new RuntimeException("数据库错误");
+                }
+            }
+
+        }
+
+        responseEntity.setMsg("操作成功");
+        responseEntity.setStatus(200);
+        return responseEntity;
+    }
+
     /**
      * 添加知识点
      * @param knowledgeList
