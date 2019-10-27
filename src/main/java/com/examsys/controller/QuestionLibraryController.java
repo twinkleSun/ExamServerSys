@@ -50,6 +50,15 @@ public class QuestionLibraryController {
         return responseEntity;
     }
 
+
+    @PostMapping(value = "/single")
+    @Transactional
+    public ResponseEntity addSingleQusetionsByFront(@RequestBody Map<String,Object> mapRes) {
+        ResponseEntity responseEntity = questionLibraryService.addSingleQuestion(mapRes);
+        return responseEntity;
+    }
+
+
     /**
      * 获取所有题目
      * @return

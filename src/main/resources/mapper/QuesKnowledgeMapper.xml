@@ -10,11 +10,15 @@
     delete from ques_knowledge
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+
+  <delete id="deleteByQuesId" parameterType="java.lang.Integer">
+    delete from ques_knowledge where question_id = #{quesId,jdbcType=INTEGER}
+  </delete>
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.QuesKnowledge" >
-    insert into ques_knowledge (id, question_id, knowledge_id
-      )
-    values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{knowledgeId,jdbcType=INTEGER}
-      )
+    insert into ques_knowledge (id, question_id, knowledge_id)
+    values (#{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{knowledgeId,jdbcType=INTEGER})
   </insert>
     <insert id="insertNotExist" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.QuesKnowledge" >
     insert into ques_knowledge (id, question_id, knowledge_id) select #{id,jdbcType=INTEGER}, #{questionId,jdbcType=INTEGER}, #{knowledgeId,jdbcType=INTEGER}

@@ -20,4 +20,6 @@ public interface QuesKnowledgeMapper {
     List<QuesKnowledge> selectAll();
 
     int updateByPrimaryKey(QuesKnowledge record);
+
+    int deleteByQuesId(Integer quesId);
 }

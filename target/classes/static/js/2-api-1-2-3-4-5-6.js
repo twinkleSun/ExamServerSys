@@ -66,21 +66,21 @@ $(function(){
     };
     var json1_4={
         type: "subjective",
-        score: 20,
+        // score: 20,
         content: "简答题测试",
         description:"描述测试1",
-        must_or_not: 1,
-        category_content: "二、计算机网络",
+        // must_or_not: 1,
+        // category_content: "二、计算机网络",
         option_list: [],
         answer_list: ["参考答案测试"]
     };
     var json1_5={
         type: "judge",
-        score: 20,
+        // score: 20,
         content: "判断题测试2",
         description:"描述测试1",
-        must_or_not: 1,
-        category_content: "二、计算机网络",
+        // must_or_not: 1,
+        // category_content: "二、计算机网络",
         option_list: [{
             "id": 0,
             "content": "选项一内容"
