@@ -152,6 +152,29 @@ $(function(){
     });
 
 
+    $("#3-api-3").click(function() {
+        var json3={
+            paper_code:["20191027173527","20191027173021"]
+        };
+        $.ajax({
+            url: "/paper/del",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json3),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
     $("#3-api-4").click(function() {
         var json4={
             admin_id:1

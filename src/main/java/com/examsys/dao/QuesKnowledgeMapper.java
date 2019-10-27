@@ -22,4 +22,8 @@ public interface QuesKnowledgeMapper {
     int updateByPrimaryKey(QuesKnowledge record);
 
     int deleteByQuesId(Integer quesId);
+
+    int deleteByKid(Integer knowId);
+
+
 }

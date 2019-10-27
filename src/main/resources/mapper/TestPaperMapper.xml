@@ -14,6 +14,13 @@
     delete from test_paper
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+
+  <delete id="deleteByPaperCode" parameterType="java.lang.String" >
+    delete from test_paper where paper_code = #{paperCode}
+  </delete>
+
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.TestPaper" >
     insert into test_paper (id, paper_code, create_time, 
       last_modified_time, create_user_id, title, 

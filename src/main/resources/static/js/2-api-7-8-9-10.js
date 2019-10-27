@@ -108,6 +108,31 @@ $(function(){
 
     });
 
+    $("#2-api-10").click(function() {
+
+        var json9={
+            id:[2]
+        };
+
+        $.ajax({
+            url: "/keypoint/del",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json9),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
 
 
 });

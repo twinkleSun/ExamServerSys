@@ -18,6 +18,8 @@ public interface ExamMapper {
 
     List<Exam> selectAll();
 
+    List<Exam> selectByPaperCode(String paperCode);
+
 //    int deleteByPrimaryKey(Integer id);
 //
 

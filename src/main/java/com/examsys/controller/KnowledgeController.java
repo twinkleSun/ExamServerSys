@@ -25,7 +25,6 @@ public class KnowledgeController {
      * @return
      */
     @PostMapping(value = "/multi")
-    @Transactional
     public ResponseEntity addNewKnowledgeByFront(@RequestBody List<Map<String,Object>> mapRes) {
         List<Knowledge> konwledgeList=knowledgeService.handleNewKnowledge(mapRes);
         ResponseEntity responseEntity=knowledgeService.addNewKnowledge(konwledgeList);
@@ -34,10 +33,8 @@ public class KnowledgeController {
 
 
     @PostMapping(value = "/single")
-    @Transactional
     public ResponseEntity addSingleKnowledgeByFront(@RequestBody Map<String,Object> mapRes) {
         ResponseEntity responseEntity=knowledgeService.addSingleKnowledge(mapRes);
-
         return responseEntity;
     }
 
@@ -46,7 +43,6 @@ public class KnowledgeController {
      * @return
      */
     @GetMapping(value = "/all")
-    @Transactional
     public ResponseEntity getAllKnowledge() {
         ResponseEntity responseEntity=knowledgeService.getAllKnowledge();
         return responseEntity;
@@ -58,7 +54,6 @@ public class KnowledgeController {
      * @return
      */
     @PostMapping(value = "/questions")
-    @Transactional
     public ResponseEntity addQuesAndKnow(@RequestBody List<Map<String,Object>> mapRes) {
         List<QuesKnowEntity> QuesKnowList=knowledgeService.handleQuesAndKnow(mapRes);
         ResponseEntity responseEntity=knowledgeService.addQuesAndKnow(QuesKnowList);
@@ -71,9 +66,14 @@ public class KnowledgeController {
      * @return
      */
     @PostMapping(value = "/questionlist")
-    @Transactional
     public ResponseEntity getQuesByKnow(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity=knowledgeService.getQuesByKonw(map);
+        return responseEntity;
+    }
+
+    @PostMapping(value = "/del")
+    public ResponseEntity delKnow(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=knowledgeService.delKnow(map);
         return responseEntity;
     }
 

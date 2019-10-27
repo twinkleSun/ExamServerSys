@@ -2,13 +2,11 @@ package com.examsys.service.Impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.examsys.dao.ExamMapper;
 import com.examsys.dao.GroupUserMapper;
 import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.dao.TestPaperMapper;
-import com.examsys.model.GroupUser;
-import com.examsys.model.QuestionLibrary;
-import com.examsys.model.TestPaper;
-import com.examsys.model.TestPaperDetail;
+import com.examsys.model.*;
 import com.examsys.model.entity.GroupUserEntity;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.model.entity.TestPaperListEntity;
@@ -35,6 +33,10 @@ public class TestPaperServiceImpl {
 
     @Autowired
     GroupUserMapper groupUserMapper;
+
+    @Autowired
+    ExamMapper examMapper;
+
 
     /**
      * 处理添加试卷的数据
@@ -199,33 +201,32 @@ public class TestPaperServiceImpl {
     }
 
 
-    public ResponseEntity editPaper(Map<String,Object> TestpaperMap){
+    public ResponseEntity delByPaperCode(Map<String,Object> map){
         ResponseEntity responseEntity = new ResponseEntity();
-        String paper_code = String.valueOf(TestpaperMap.get("paper_code"));
-        List<Map<String,Object>> map=(List<Map<String,Object>>)TestpaperMap.get("question_list");
-        List<Integer> quesIds = new ArrayList<>();
-        List<TestPaperDetail> alreadyList=new ArrayList<>();
-        for(int i=0;i<map.size();i++){
+        List<String> paperCodes = (List<String>)map.get("paper_code");
 
-            TestPaperDetail testpaper2=new TestPaperDetail();
-            Map<String,Object> map1=map.get(i);
-
-            quesIds.add(Integer.valueOf(map1.get("id").toString()));
-
-            double score=Double.parseDouble(String.valueOf(map1.get("score")));
-            testpaper2.setScore(score);
-            testpaper2.setDefAnswer(map1.get("answer_list").toString());
-            testpaper2.setPaperCode(paper_code);
-            testpaper2.setMustOrNot(Integer.valueOf(map1.get("must_or_not").toString()));
-            testpaper2.setCategoryContent(String.valueOf(map1.get("category_content")));
-
-            testpaper2.setQuestionId(Integer.valueOf(map1.get("id").toString()));
-            //questionList.add(question);
-            //testPaperList.add(testpaper2);
+        for(int i=0;i<paperCodes.size();i++){
+            String paperCode = paperCodes.get(i);
+            List<Exam> examList = examMapper.selectByPaperCode(paperCode);
+            if(examList == null || examList.size()==0){
+                int res = testPaperMapper.deleteByPaperCode(paperCode);
+                if(res<0){
+                    throw new RuntimeException("数据库错误");
+                }
+                int res2 = testPaperDetailMapper.deleteByPaperCode(paperCode);
+                if(res2<0){
+                    throw new RuntimeException("数据库错误");
+                }
+            }else{
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("该试卷已与考试关联，请更换考试关联的试卷再删除");
+                return responseEntity;
+            }
         }
+
+        responseEntity.setMsg("删除成功");
+        responseEntity.setStatus(200);
         return responseEntity;
-
-
     }
 
 

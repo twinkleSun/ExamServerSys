@@ -14,6 +14,12 @@
   </resultMap>
 
 
+  <select id="selectByPaperCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, exam_name, paper_code, begin_time, end_time, duration,status
+    from exam
+    where paper_code = #{paperCode}
+  </select>
+
   <!--根据用户ID查询考试列表-->
   <select id="selectExamByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id, exam_name, paper_code, begin_time, end_time, duration,status

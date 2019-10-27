@@ -25,4 +25,6 @@ public interface TestPaperMapper {
 
     int updateByPaperCode(TestPaper record);
 
+    int deleteByPaperCode(String paperCode);
+
 }

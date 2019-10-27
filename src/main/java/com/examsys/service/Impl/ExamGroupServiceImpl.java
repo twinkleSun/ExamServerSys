@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,6 +34,7 @@ public class ExamGroupServiceImpl {
             return responseEntity;
         }
 
+        List<Exam> examNotEnd = new ArrayList<>();
         int len = examList.size();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String current = simpleDateFormat.format(new java.util.Date());
@@ -46,13 +48,18 @@ public class ExamGroupServiceImpl {
                 } else if(current.compareTo(exam.getEndTime()) > 0) {
                     exam.setStatus("已结束");
                 }
+
+
+                if(exam.getStatus()!="已结束"){
+                    examNotEnd.add(exam);
+                }
             }
 
             int res = examMapper.updateExamStatus(exam);
         }
         responseEntity.setStatus(200);
         responseEntity.setMsg("查询成功");
-        responseEntity.setData(examList);
+        responseEntity.setData(examNotEnd);
 
         return responseEntity;
     }

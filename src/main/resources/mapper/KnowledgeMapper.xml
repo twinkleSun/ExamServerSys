@@ -15,6 +15,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Knowledge" >
     insert into knowledge (id, `name`, description, `level`, parent_id)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 

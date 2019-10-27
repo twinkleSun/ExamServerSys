@@ -10,6 +10,7 @@ import java.util.List;
 @Mapper
 @Repository
 public interface KnowledgeMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(Knowledge record);

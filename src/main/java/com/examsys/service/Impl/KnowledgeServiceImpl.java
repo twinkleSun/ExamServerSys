@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -176,6 +177,7 @@ public class KnowledgeServiceImpl {
         return QuesKnowList;
     }
 
+
     public ResponseEntity addQuesAndKnow(List<QuesKnowEntity> QuesKnowList){
         ResponseEntity responseEntity=new ResponseEntity();
 
@@ -233,5 +235,28 @@ public class KnowledgeServiceImpl {
         }
 
         return responseEntity;
+    }
+
+    public ResponseEntity delKnow(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        ArrayList<Integer> knowIds = (ArrayList<Integer>)map.get("id");
+
+        for(int i=0;i<knowIds.size();i++){
+            int knowId = knowIds.get(i);
+            int res = quesKnowledgeMapper.deleteByKid(knowId);
+            if(res<0){
+                throw new RuntimeException("数据库错误");
+            }
+            int res2 = knowledgeMapper.deleteByPrimaryKey(knowId);
+            if(res2<0){
+                throw new RuntimeException("数据库错误");
+            }
+        }
+
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("删除成功");
+        return responseEntity;
+
     }
 }
