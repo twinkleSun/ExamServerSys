@@ -16,6 +16,8 @@ public interface ExamMapper {
 
     int updateExamStatus(Exam exam);
 
+    List<Exam> selectAll();
+
 //    int deleteByPrimaryKey(Integer id);
 //
 

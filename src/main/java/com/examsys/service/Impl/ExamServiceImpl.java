@@ -49,7 +49,7 @@ public class ExamServiceImpl{
 
         }
 
-        exam.setStatus("0");
+        exam.setStatus("未开始");
 
         int res=examMapper.insert(exam);
 

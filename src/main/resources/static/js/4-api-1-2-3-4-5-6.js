@@ -81,6 +81,28 @@ $(function(){
 
     });
 
+    $("#4-api-5").click(function() {
+
+
+        $.ajax({
+            url: "/epi/admin/examlist",
+            type: "get",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
+
 
     $("#4-api-4").click(function() {
 

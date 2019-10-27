@@ -14,7 +14,6 @@ public class Exam{
 
     private String duration;
 
-
     private String status;
 
     public Integer getId() {

@@ -47,10 +47,49 @@ public class ExamGroupServiceImpl {
                     exam.setStatus("已结束");
                 }
             }
+
+            int res = examMapper.updateExamStatus(exam);
         }
         responseEntity.setStatus(200);
         responseEntity.setMsg("查询成功");
         responseEntity.setData(examList);
+
+        return responseEntity;
+    }
+
+
+
+    public ResponseEntity getExamListByAdmin() {
+        List<Exam> exams=examMapper.selectAll();
+        ResponseEntity responseEntity=new ResponseEntity();
+
+        if(exams==null || exams.size()==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("没有考试列表");
+            return responseEntity;
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String curTime = simpleDateFormat.format(new java.util.Date());
+        for(int i = 0; i < exams.size(); i++) {
+            Exam exam = exams.get(i);
+            if(exam.getStatus().equals("未开始") || exam.getStatus().equals("0")) {
+                if(curTime.compareTo(exam.getBeginTime()) <= 0)  {
+                    exam.setStatus("未开始");
+                } else if(curTime.compareTo(exam.getBeginTime()) > 0 && curTime.compareTo(exam.getEndTime()) <= 0){
+                    exam.setStatus("进行中");
+                } else if(curTime.compareTo(exam.getEndTime()) > 0) {
+                    exam.setStatus("已结束");
+                }
+            }
+
+            int res = examMapper.updateExamStatus(exam);
+        }
+
+
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("查询成功");
+        responseEntity.setData(exams);
 
         return responseEntity;
     }

@@ -74,6 +74,7 @@
     from exam
     where id = #{id,jdbcType=INTEGER}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, exam_name, paper_code, begin_time, end_time, duration,status
     from exam
