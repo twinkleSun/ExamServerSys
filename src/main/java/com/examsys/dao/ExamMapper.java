@@ -20,15 +20,11 @@ public interface ExamMapper {
 
     List<Exam> selectByPaperCode(String paperCode);
 
-//    int deleteByPrimaryKey(Integer id);
-//
+    Exam selectByPrimaryKey(Integer id);
 
-//
-//    Examinfo selectByPrimaryKey(Integer id);
-//
-//    List<Examinfo> selectAll();
-//
-//    int updateByPrimaryKey(Examinfo record);
+   int deleteByPrimaryKey(Integer id);
+
+   int updateByPrimaryKey(Exam record);
 
 
 }

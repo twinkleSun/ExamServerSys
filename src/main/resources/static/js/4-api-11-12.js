@@ -4,18 +4,17 @@
 $(function(){
 
 
-    $("#1-api-7").click(function() {
-        var json7={
-            group_id: "1",
-            student_id: [ 2, 3]
+    $("#4-api-11").click(function() {
+        var str7={
+            exam_id:3
         };
         $.ajax({
-            url: "/upi/groupuser",
+            url: "/spi/startobj",
             type: "post",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json7),
+            data:JSON.stringify(str7),
             success: function (data) {
                 console.log(data);
             },
@@ -28,27 +27,19 @@ $(function(){
 
     });
 
-    $("#1-api-10").click(function() {
-        var json10={
-            id:"",
-            userName:"user",
-            password:"password2",
-            userType:"student",
-            group_list:[{
-                group_id:2,
-                group_name:"group1"
-            }, {
-                group_id:5,
-                group_name:"group2"
-            }]
+
+
+    $("#4-api-12").click(function() {
+        var str12={
+            exam_id:[4,6]
         };
         $.ajax({
-            url: "/upi/usergroup/relation",
-            type: "post",
+            url: "/exam/del",
+            type: "delete",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",
-            data:JSON.stringify(json10),
+            data:JSON.stringify(str12),
             success: function (data) {
                 console.log(data);
             },
@@ -58,8 +49,7 @@ $(function(){
                 // console.log(textStatus);
             },
         });
+
     });
-
-
 
 });

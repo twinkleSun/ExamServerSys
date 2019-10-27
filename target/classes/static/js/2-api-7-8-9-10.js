@@ -116,7 +116,7 @@ $(function(){
 
         $.ajax({
             url: "/keypoint/del",
-            type: "post",
+            type: "delete",
             traditional: true,
             contentType: "application/json; charset=UTF-8",
             dataType: "json",

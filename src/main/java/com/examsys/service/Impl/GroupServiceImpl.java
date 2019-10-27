@@ -1,7 +1,9 @@
 package com.examsys.service.Impl;
 
+import com.examsys.dao.ExamGroupMapper;
 import com.examsys.dao.GroupUserMapper;
 import com.examsys.dao.GroupMapper;
+import com.examsys.model.ExamGroup;
 import com.examsys.model.Group;
 import com.examsys.model.GroupUser;
 import com.examsys.model.entity.ResponseEntity;
@@ -20,8 +22,12 @@ public class GroupServiceImpl{
 
     @Autowired
     GroupMapper groupMapper;
+
     @Autowired
     GroupUserMapper groupUserMapper;
+
+    @Autowired
+    ExamGroupMapper examGroupMapper;
 
     /**
      * 添加单个组
@@ -59,17 +65,24 @@ public class GroupServiceImpl{
      * @param map
      * @return
      */
-    public ResponseEntity deleteSingleGroup(Map<String,Integer> map){
-        int groupId=map.get("id");
-        List<GroupUser> groupUsers=groupUserMapper.selectByGroupId(groupId);
-        if (groupUsers==null ||groupUsers.size()==0){
+    public ResponseEntity deleteGroups(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<Integer> groupIds = (List<Integer>)map.get("group_id");
 
-            //todo:加上试卷后需要改动
-        }else {
-            int delRelation=groupUserMapper.deleteByGroupId(groupId);
+        for(int i=0;i<groupIds.size();i++){
+            int groupId = groupIds.get(i);
+            List<ExamGroup> examGroups = examGroupMapper.selectByGroupId(groupId);
+            if(examGroups == null || examGroups.size() == 0){
+                int res=groupUserMapper.deleteByGroupId(groupId);
+
+                int res2= groupMapper.deleteByPrimaryKey(groupId);
+            }else {
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("该组已和考试关联，不可以删除");
+                return responseEntity;
+            }
         }
-        int delRes=groupMapper.deleteByPrimaryKey(groupId);
-        ResponseEntity responseEntity=new ResponseEntity();
+
         responseEntity.setStatus(200);
         responseEntity.setMsg("删除成功");
         return responseEntity;

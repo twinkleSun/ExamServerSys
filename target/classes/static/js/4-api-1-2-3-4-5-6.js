@@ -5,11 +5,13 @@ $(function(){
 
     $("#4-api-1").click(function() {
         var json1={
+            id:9,
             exam_name:"考试测试",
             paper_code:"20191008193539",
             begin_time:"2019-10-10 19:35:39",
             end_time:"2019-10-10 21:35:39",
             duration:"00:02:00",
+            status:"未开始",
             group_ids:[1,2]
         };
         $.ajax({

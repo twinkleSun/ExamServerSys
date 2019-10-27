@@ -13,12 +13,34 @@
     <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
 
+  <update id="updateByPrimaryKey" parameterType="com.examsys.model.Exam" >
+    update exam
+    set exam_name = #{examName,jdbcType=VARCHAR},
+      paper_code = #{paperCode,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=VARCHAR},
+      end_time = #{endTime,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      duration = #{duration,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, exam_name, paper_code, begin_time, end_time, duration,status
+    from exam
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
 
   <select id="selectByPaperCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select id, exam_name, paper_code, begin_time, end_time, duration,status
     from exam
     where paper_code = #{paperCode}
   </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from exam
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
 
   <!--根据用户ID查询考试列表-->
   <select id="selectExamByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -60,26 +82,10 @@
 
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from exam
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
 
-  <update id="updateByPrimaryKey" parameterType="com.examsys.model.Exam" >
-    update exam
-    set exam_name = #{examName,jdbcType=VARCHAR},
-      paper_code = #{paperCode,jdbcType=VARCHAR},
-      begin_time = #{beginTime,jdbcType=VARCHAR},
-      end_time = #{endTime,jdbcType=VARCHAR},
-      status = #{status,jdbcType=VARCHAR},
-      duration = #{duration,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
-    where id = #{id,jdbcType=INTEGER}
-  </select>
+
+
+
 
   <select id="selectAll" resultMap="BaseResultMap" >
     select id, exam_name, paper_code, begin_time, end_time, duration,status

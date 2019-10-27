@@ -50,7 +50,7 @@ public class ExamGroupServiceImpl {
                 }
 
 
-                if(exam.getStatus()!="已结束"){
+                if(!exam.getStatus().equals("已结束")){
                     examNotEnd.add(exam);
                 }
             }

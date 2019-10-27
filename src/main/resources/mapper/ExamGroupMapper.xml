@@ -6,6 +6,18 @@
     <result column="exam_id" property="examId" jdbcType="INTEGER" />
     <result column="group_id" property="groupId" jdbcType="INTEGER" />
   </resultMap>
+
+  <select id="selectByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, exam_id, group_id
+    from exam_group
+    where group_id = #{groupId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByExamId" parameterType="java.lang.Integer" >
+    delete from exam_group
+    where exam_id = #{examId,jdbcType=INTEGER}
+  </delete>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from exam_group
     where id = #{id,jdbcType=INTEGER}

@@ -71,7 +71,7 @@ public class KnowledgeController {
         return responseEntity;
     }
 
-    @PostMapping(value = "/del")
+    @DeleteMapping(value = "/del")
     public ResponseEntity delKnow(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity=knowledgeService.delKnow(map);
         return responseEntity;

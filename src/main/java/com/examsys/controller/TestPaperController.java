@@ -143,13 +143,7 @@ public class TestPaperController {
     }
 
 
-    /**
-     * 获取参与考试的考生
-     * @param map
-     * @return
-     */
-    @PostMapping(value = "/del")
-    @Transactional
+    @DeleteMapping(value = "/del")
     public ResponseEntity delTestPaper(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity=testPaperService.delByPaperCode(map);
         return responseEntity;
