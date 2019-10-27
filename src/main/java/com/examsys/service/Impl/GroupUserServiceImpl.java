@@ -139,22 +139,37 @@ public class GroupUserServiceImpl{
      */
     public ResponseEntity updateUserGroupRelation(Map<String,Object> map){
         ResponseEntity responseEntity=new ResponseEntity();
-        int userId=Integer.parseInt(String.valueOf(map.get("id")));
+
+        int userId =0;
+        if (String.valueOf(map.get("id")) == null || String.valueOf(map.get("id")) == "") {
+
+        }else{
+            userId=Integer.parseInt(String.valueOf(map.get("id")));
+        }
 
         User userinfo =new User();
         userinfo.setId(userId);
-        userinfo.setName((String) map.get("userName"));
-        userinfo.setPassword((String) map.get("password"));
-        userinfo.setRole((String) map.get("userType"));
+        userinfo.setName((String)map.get("userName"));
+        userinfo.setPassword((String)map.get("password"));
+        userinfo.setRole((String)map.get("userType"));
 
         int res = 0;
         if(userId != 0){
             res = userinfoMapper.updateByPrimaryKey(userinfo);
         } else {
-            res = userinfoMapper.insert(userinfo);
+            User userAlready  = userinfoMapper.selectByUser(userinfo);
+            if (userAlready == null) {
+
+                res = userinfoMapper.insert(userinfo);
+            }else{
+                responseEntity.setMsg("该用户已存在");
+                responseEntity.setStatus(-1);
+                return responseEntity;
+            }
+
         }
 
-        if(res <= 0) {
+        if(res < 0) {
             responseEntity.setMsg("更新失败");
             responseEntity.setStatus(-1);
             return responseEntity;
@@ -163,33 +178,35 @@ public class GroupUserServiceImpl{
         userId = userinfo.getId();
         int respp = groupUserMapper.deleteByUserId(userId);
 
-        if(respp <= 0) {
-            responseEntity.setMsg("更新失败");
+        if(respp < 0) {
+            responseEntity.setMsg("更新gu失败");
             responseEntity.setStatus(-1);
             return responseEntity;
         }
 
-        ArrayList<Map<String,Object>> groupList= (ArrayList<Map<String, Object>>) map.get("group_list");
+        List<Map<String,Object>> groupList= (List<Map<String, Object>>)map.get("group_list");
 
-        int flag = 0;
+
         if (groupList != null && groupList.size() !=0 ) {
             for (int j=0;j<groupList.size();j++){
-                int groupId = (int) groupList.get(j).get("group_id");
-                int resp = groupUserMapper.insertUsertoGroup(groupId,userId);
+                Map<String,Object> groupUser = groupList.get(j);
+
+                int groupId = Integer.valueOf(groupUser.get("group_id").toString());
+                GroupUser gu = new GroupUser();
+                gu.setStudentId(userId);
+                gu.setGroupId(groupId);
+                int resp = groupUserMapper.insertUsertoGroup(gu);
                 if(resp < 0) {
-                    flag++;
+                    throw new RuntimeException("数据库错误");
                 }
             }
         }
 
-        //todo:没做校验
-        if(flag==0){
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("更新成功");
-        }else{
-            responseEntity.setMsg("更新失败");
-            responseEntity.setStatus(-1);
-        }
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("更新成功");
+
         return responseEntity;
     }
+
+
 }

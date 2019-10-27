@@ -34,7 +34,7 @@ public interface GroupUserMapper {
 
     int deleteByGroupId(Integer group_id);
 
-    int insertUsertoGroup(int groupId, int student_id);
+    int insertUsertoGroup(GroupUser gu);
 
 
 

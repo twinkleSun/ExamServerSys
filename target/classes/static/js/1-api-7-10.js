@@ -30,13 +30,17 @@ $(function(){
 
     $("#1-api-10").click(function() {
         var json10={
-            id:7,
-            userName:"user2",
+            id:"",
+            userName:"user",
             password:"password2",
             userType:"student",
-            group_list:[
-                {group_id:1,group_name:"group1"},
-                {group_id:2,group_name:"group2"}]
+            group_list:[{
+                group_id:2,
+                group_name:"group1"
+            }, {
+                group_id:5,
+                group_name:"group2"
+            }]
         };
         $.ajax({
             url: "/upi/usergroup/relation",
