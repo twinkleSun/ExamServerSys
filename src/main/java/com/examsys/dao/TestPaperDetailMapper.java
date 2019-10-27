@@ -25,4 +25,6 @@ public interface TestPaperDetailMapper {
     List<TestPaperDetail> selectAll();
 
     int updateByPrimaryKey(TestPaperDetail record);
+
+    int deleteByPaperCode(String paperCode);
 }

@@ -22,4 +22,7 @@ public interface TestPaperMapper {
     TestPaper selectByPaperCode(String paperCode);
 
     List<TestPaper> selectByAdminId(Integer adminId);
+
+    int updateByPaperCode(TestPaper record);
+
 }

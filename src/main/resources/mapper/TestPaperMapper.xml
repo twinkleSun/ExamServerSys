@@ -24,6 +24,18 @@
   </insert>
 
 
+  <update id="updateByPaperCode" parameterType="com.examsys.model.TestPaper">
+    update test_paper
+    set paper_code = #{paperCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR},
+      last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR}
+    where paper_code = #{paperCode,jdbcType=INTEGER}
+  </update>
+
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.TestPaper" >
     update test_paper
     set paper_code = #{paperCode,jdbcType=VARCHAR},

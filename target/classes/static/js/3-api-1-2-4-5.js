@@ -16,14 +16,14 @@ $(function(){
             must_or_not: 0,
             category_content: "一、数据库基础",
             option_list: [{
-                "id": 0,
-                "content": "选项一内容"
+                id: 0,
+                content: "选项一内容"
             }, {
-                "id": 1,
-                "content": "选项二内容"
+                id: 1,
+                content: "选项二内容"
             }],
 
-            answer_list: [{"id":0, "content":"选项一内容"},{"id":1, "content":"选项一内容"}]
+            answer_list: [{id:0, content:"选项一内容"},{id:1, content:"选项一内容"}]
         };
         var json1_2={
             id:2,
@@ -34,17 +34,17 @@ $(function(){
             must_or_not: 0,
             category_content: "一、数据库基础",
             option_list: [{
-                "id": 0,
-                "content": "选项一内容"
+                id: 0,
+                content: "选项一内容"
             }, {
-                "id": 1,
-                "content": "选项二内容"
+                id: 1,
+                content: "选项二内容"
             }, {
-                "id": 2,
-                "content": "选项三内容"
+                id: 2,
+                content: "选项三内容"
             }],
 
-            answer_list: [{"id":0, "content":"选项一内容"}]
+            answer_list: [{id:0, content:"选项一内容"}]
         };
         var json1_3={
             id:3,
@@ -55,20 +55,20 @@ $(function(){
             must_or_not: 0,
             category_content: "一、数据库基础",
             option_list: [{
-                "id": 0,
-                "content": "选项一内容"
+                id: 0,
+                content: "选项一内容"
             }, {
-                "id": 1,
-                "content": "选项二内容"
+                id: 1,
+                content: "选项二内容"
             }, {
-                "id": 2,
-                "option": "选项三内容"
+                id: 2,
+                option: "选项三内容"
             }, {
-                "id": 3,
-                "content": "选项四内容"
+                id: 3,
+                content: "选项四内容"
             }],
 
-            answer_list: [{"id":1, "content":"选项er内容"}]
+            answer_list: [{id:1, content:"选项er内容"}]
         };
         var json1_4={
             id:4,
@@ -90,13 +90,13 @@ $(function(){
             must_or_not: 1,
             category_content: "二、计算机网络",
             option_list: [{
-                "id": 0,
-                "content": "选项一内容"
+                id: 0,
+                content: "选项一内容"
             }, {
-                "id": 1,
-                "content": "选项二内容"
+                id: 1,
+                content: "选项二内容"
             }],
-            answer_list: [{"id":0, "content":"选项一内容"}]
+            answer_list: [{id:0, content:"选项一内容"}]
         };
         json1[0]=json1_1;
         json1[1]=json1_2;
@@ -106,7 +106,7 @@ $(function(){
 
         var map={
             title:"测试名称",
-            description:"描述",
+            description:"描述222",
             paper_code:"",
             question_list:json1,
             user_id:1

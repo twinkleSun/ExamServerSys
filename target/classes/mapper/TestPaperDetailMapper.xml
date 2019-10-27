@@ -109,7 +109,9 @@
 
 
 
-
+   <delete id="deleteByPaperCode" parameterType="java.lang.String" >
+    delete from test_paper_detail where paper_code = #{paperCode,jdbcType=INTEGER}
+  </delete>
 
 
 

@@ -82,18 +82,14 @@ public class TestPaperController {
     @PostMapping(value = "/new")
     @Transactional
     public ResponseEntity addNewPaperByFront(@RequestBody Map<String,Object> mapRes) {
+        List<TestPaperDetail> testPaperList = testPaperService.handleNewPaper(mapRes);
 
-        //Map<String,Object> map=testPaperService.handleNewPaper(mapRes);
-        //List<QuestionLibrary> questionList=(List<QuestionLibrary>)map.get("questionList");
         if(mapRes.get("paper_code") == null || mapRes.get("paper_code") == "" ){
-            List<TestPaperDetail> testPaperList = testPaperService.handleNewPaper(mapRes);
-            //List<TestPaperDetail> paperQuestion=questionLibraryService.addNewQuestions(questionList,testPaperList);
-            ResponseEntity responseEntity=testPaperService.addNewPaper(testPaperList);
-            return responseEntity;
         }else{
-            ResponseEntity responseEntity=testPaperService.editPaper(mapRes);
-            return responseEntity;
+            testPaperService.deletePaper(testPaperList);
         }
+        ResponseEntity responseEntity=testPaperService.addNewPaper(testPaperList);
+        return responseEntity;
 
 
     }
