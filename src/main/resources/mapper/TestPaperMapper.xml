@@ -15,6 +15,25 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
+  <resultMap id="PaperWithAdmin" type="com.examsys.model.entity.TestPaperAdminEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+    <result column="last_modified_time" property="lastModifiedTime" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="selectAllWithAdmin" resultMap="PaperWithAdmin">
+    select t.id, paper_code, t.create_time, t.last_modified_time, t.create_user_id user_id, t.title, t.description,
+    u.name user_name
+    from test_paper t
+    left join `user` u on u.id = t.create_user_id
+
+  </select>
 
   <delete id="deleteByPaperCode" parameterType="java.lang.String" >
     delete from test_paper where paper_code = #{paperCode}
@@ -34,7 +53,6 @@
   <update id="updateByPaperCode" parameterType="com.examsys.model.TestPaper">
     update test_paper
     set paper_code = #{paperCode,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
       last_modified_time = #{lastModifiedTime,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
@@ -62,7 +80,7 @@
   </select>
 
 
-  <select id="selectAll" resultMap="BaseResultMap" >
+  <select id="selectAll" resultMap="BaseResultMap">
     select id, paper_code, create_time, last_modified_time, create_user_id, title, description
     from test_paper
   </select>

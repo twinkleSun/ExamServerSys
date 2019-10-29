@@ -9,6 +9,7 @@ import com.examsys.dao.TestPaperMapper;
 import com.examsys.model.*;
 import com.examsys.model.entity.GroupUserEntity;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.model.entity.TestPaperAdminEntity;
 import com.examsys.model.entity.TestPaperListEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -50,13 +51,15 @@ public class TestPaperServiceImpl {
         SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat dateFormatCode = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        testPaper.setCreateTime(dateFormatTime.format(now));
+
+
         testPaper.setDescription(String.valueOf(TestpaperMap.get("description")));
         testPaper.setTitle(String.valueOf(TestpaperMap.get("title")));
         testPaper.setCreateUserId(Integer.valueOf(TestpaperMap.get("user_id").toString()));
 
         String paper_code;
         if (TestpaperMap.get("paper_code") == null || TestpaperMap.get("paper_code") == "") {
+            testPaper.setCreateTime(dateFormatTime.format(now));
             paper_code=dateFormatCode.format(now);
             testPaper.setPaperCode(paper_code);
             int res=testPaperMapper.insert(testPaper);
@@ -66,6 +69,7 @@ public class TestPaperServiceImpl {
         }else {
             paper_code = String.valueOf(TestpaperMap.get("paper_code"));
             testPaper.setPaperCode(paper_code);
+            testPaper.setLastModifiedTime(dateFormatTime.format(now));
             int res = testPaperMapper.updateByPaperCode(testPaper);
             if(res<0){
                 throw new RuntimeException("数据库错误");
@@ -152,7 +156,7 @@ public class TestPaperServiceImpl {
      * @return
      */
     public ResponseEntity getAllPaperList(){
-        List<TestPaper> testPaperList = testPaperMapper.selectAll();
+        List<TestPaperAdminEntity>  testPaperList = testPaperMapper.selectAllWithAdmin();
         ResponseEntity responseEntity=new ResponseEntity();
         if(testPaperList==null | testPaperList.size()==0){
             responseEntity.setStatus(-1);

@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.TestPaper;
+import com.examsys.model.entity.TestPaperAdminEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +17,8 @@ public interface TestPaperMapper {
     TestPaper selectByPrimaryKey(Integer id);
 
     List<TestPaper> selectAll();
+
+    List<TestPaperAdminEntity> selectAllWithAdmin();
 
     int updateByPrimaryKey(TestPaper record);
 

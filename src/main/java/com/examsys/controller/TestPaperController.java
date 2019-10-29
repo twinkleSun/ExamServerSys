@@ -85,6 +85,7 @@ public class TestPaperController {
         List<TestPaperDetail> testPaperList = testPaperService.handleNewPaper(mapRes);
 
         if(mapRes.get("paper_code") == null || mapRes.get("paper_code") == "" ){
+
         }else{
             testPaperService.deletePaper(testPaperList);
         }
