@@ -25,4 +25,6 @@ public interface StudentPointMapper {
     int updateSubStatus(StudentPoint studentPoint);
 
     int updateByPK(StudentPoint studentPoint);
+
+    int updateTotalPoint(StudentPoint studentPoint);
 }

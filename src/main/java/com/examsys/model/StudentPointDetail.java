@@ -9,7 +9,6 @@ public class StudentPointDetail {
 
     private Integer studentId;
 
-
     private Double defPoint;
 
     private String studentAnswer;

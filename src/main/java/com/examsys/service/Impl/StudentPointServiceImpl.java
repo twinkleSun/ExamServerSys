@@ -1,5 +1,6 @@
 package com.examsys.service.Impl;
 
+import com.alibaba.fastjson.JSON;
 import com.examsys.dao.StudentPointDetailMapper;
 import com.examsys.dao.StudentPointMapper;
 import com.examsys.model.StudentPoint;
@@ -37,7 +38,7 @@ public class StudentPointServiceImpl {
             String type = String.valueOf(stuQues.get("type"));
             String description = String.valueOf(stuQues.get("description"));
             double total_point = Double.valueOf(stuQues.get("total_point").toString());
-            String student_answer = String.valueOf(stuQues.get("student_answer"));
+            String student_answer = JSON.toJSONString(stuQues.get("student_answer"));
             int mustOrNot = Integer.valueOf(stuQues.get("mustOrNot").toString());
 
             StudentPointDetail studentPointDetail = new StudentPointDetail();
@@ -52,7 +53,11 @@ public class StudentPointServiceImpl {
 
             StudentPointDetail alreadyStuRecord = studentPointDetailMapper.selectByIds(studentPointDetail);
             if (alreadyStuRecord != null){
-                throw new RuntimeException("系统错误");
+                alreadyStuRecord.setStudentAnswer(studentPointDetail.getStudentAnswer());
+                int res = studentPointDetailMapper.updateStuAnswer(alreadyStuRecord);
+                if(res<0){
+                    throw new RuntimeException("数据库错误");
+                }
             }else {
                 int res = studentPointDetailMapper.insert(studentPointDetail);
                 if(res<0){
@@ -72,7 +77,8 @@ public class StudentPointServiceImpl {
 
         StudentPoint alreadyStuRecord = studentPointMapper.selectByIds(studentPoint);
         if(alreadyStuRecord != null){
-            throw new RuntimeException("系统错误");
+            alreadyStuRecord.setPaperTotalPoint(studentPoint.getPaperTotalPoint());
+            int res = studentPointMapper.updateTotalPoint(alreadyStuRecord);
         }else{
             int res =studentPointMapper.insert(studentPoint);
             if(res<0){
@@ -82,7 +88,8 @@ public class StudentPointServiceImpl {
                 responseEntity.setStatus(200);
             }
         }
-
+        responseEntity.setMsg("考试结束");
+        responseEntity.setStatus(200);
         return responseEntity;
     }
 }

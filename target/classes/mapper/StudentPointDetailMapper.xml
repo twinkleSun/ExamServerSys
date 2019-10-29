@@ -99,7 +99,11 @@
   </update>
 
 
-
+  <update id="updateStuAnswer" parameterType="com.examsys.model.StudentPointDetail">
+    update student_point_detail
+    set  student_answer = #{studentAnswer,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
 
 
 
