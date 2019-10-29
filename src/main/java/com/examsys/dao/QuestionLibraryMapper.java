@@ -32,7 +32,7 @@ public interface QuestionLibraryMapper {
 
     int updateByPK(QuestionLibrary record);
 
-//    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer id);
 //
 //
 //

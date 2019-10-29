@@ -80,6 +80,14 @@ public class QuestionLibraryController {
     }
 
 
+
+    @DeleteMapping(value = "/del")
+    public ResponseEntity delQues(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=questionLibraryService.delQues(map);
+        return responseEntity;
+    }
+
+
 //    @PostMapping(value = "/excel")
 //    @Transactional
 //    public ResponseEntity addNewQuestionByExcel(

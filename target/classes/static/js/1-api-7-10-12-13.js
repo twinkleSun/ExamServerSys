@@ -83,4 +83,29 @@ $(function(){
         });
     });
 
+
+
+    $("#1-api-13").click(function() {
+        var json13={
+            group_id:5,
+            student_id:[13,15]
+        };
+        $.ajax({
+            url: "/upi/usergroup/del",
+            type: "delete",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json13),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+    });
+
 });

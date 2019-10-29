@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.examsys.dao.KnowledgeMapper;
 import com.examsys.dao.QuesKnowledgeMapper;
 import com.examsys.dao.QuestionLibraryMapper;
+import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.model.Knowledge;
 import com.examsys.model.QuesKnowledge;
 import com.examsys.model.QuestionLibrary;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 /**
@@ -32,6 +34,9 @@ public class QuestionLibraryServiceImpl {
 
     @Autowired
     QuesKnowledgeMapper quesKnowledgeMapper;
+
+    @Autowired
+    TestPaperDetailMapper testPaperDetailMapper;
 
     /**
      * 处理题库数据
@@ -277,6 +282,31 @@ public class QuestionLibraryServiceImpl {
             responseEntity.setData(questionList);
         }
 
+        return responseEntity;
+    }
+
+
+    public ResponseEntity delQues(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        ArrayList<Integer> quesIds = (ArrayList<Integer>)map.get("question_id");
+
+        for(int i=0;i<quesIds.size();i++){
+            List<TestPaperDetail> testPaperDetails = testPaperDetailMapper.selectByQuesId(quesIds.get(i));
+            if(testPaperDetails == null || testPaperDetails.size()==0){
+                //可以删除
+
+                int res2 = quesKnowledgeMapper.deleteByQuesId(quesIds.get(i));
+                int res  = questionLibraryMapper.deleteByPrimaryKey(quesIds.get(i));
+
+            }else{
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("有部分题目已经关联了试卷，不可以删除");
+                return responseEntity;
+            }
+        }
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("删除成功");
         return responseEntity;
     }
 }

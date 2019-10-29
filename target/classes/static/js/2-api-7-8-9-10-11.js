@@ -134,5 +134,31 @@ $(function(){
     });
 
 
+    $("#2-api-11").click(function() {
+
+        var json11={
+            question_id:[25,24]
+        };
+
+        $.ajax({
+            url: "/question/del",
+            type: "delete",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json11),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
+
 
 });

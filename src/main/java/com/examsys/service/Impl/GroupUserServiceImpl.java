@@ -217,5 +217,32 @@ public class GroupUserServiceImpl{
         return responseEntity;
     }
 
+    public ResponseEntity selectOfNoStart(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+        int groupId = Integer.valueOf(map.get("group_id").toString());
+        ArrayList<Integer> stuIds = (ArrayList<Integer>)map.get("student_id");
+        List<GroupUser> groupUserList = groupUserMapper.selectOfNoStart(groupId);
+        if(groupUserList == null || groupUserList.size() == 0){
+            //进行delete
+
+            int flag =200;
+            for(int i=0;i<stuIds.size();i++){
+                int res = groupUserMapper.delete(groupId,stuIds.get(i));
+                if(res<0){
+                    flag = -1;
+                }
+            }
+            responseEntity.setStatus(flag);
+            responseEntity.setMsg("删除成功");
+            //responseEntity.setData(groupUserList);
+            return responseEntity;
+        }else{
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("该组关联的考试已经开始或者结束，组成员不可以修改");
+
+        }
+        return responseEntity;
+    }
+
 
 }

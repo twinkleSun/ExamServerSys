@@ -10,6 +10,14 @@
     </resultMap>
 
 
+    <select id="selectOfNoStart" parameterType="java.lang.Integer" resultMap="groupUser">
+        SELECT gu.group_id,gu.student_id
+        from  group_user gu
+        inner JOIN exam_group eg on eg.group_id = gu.group_id
+        inner join exam e on e.id = eg.exam_id and (e.status = "进行中" or  e.status = "已结束")
+        where gu.group_id=#{groupId}
+    </select>
+
     <!--resultMap  组+用户信息-->
     <resultMap id="groupUser" type="com.examsys.model.entity.GroupUserEntity">
         <id column="group_id" property="group_id" jdbcType="INTEGER" />
@@ -72,6 +80,9 @@
         LEFT JOIN `user` u on gu.student_id=u.id
         where g.id=#{groupId}
     </select>
+
+
+
 
     <!--向组内添加学生-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.GroupUser">

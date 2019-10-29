@@ -75,4 +75,10 @@ public class GroupUserController {
         return responseEntity;
     }
 
+    @DeleteMapping("/usergroup/del")
+    public ResponseEntity deleteRelation(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = groupUserService.selectOfNoStart(map);
+        return responseEntity;
+    }
+
 }

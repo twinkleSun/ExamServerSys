@@ -11,6 +11,16 @@
     <result column="category_content" property="categoryContent" jdbcType="VARCHAR" />
   </resultMap>
 
+   <select id="selectByQuesId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, paper_code, question_id, must_or_not, score, def_answer, category_content
+    from test_paper_detail
+    where question_id = #{quesId,jdbcType=INTEGER}
+  </select>
+
+
+
+
+
   <!--resultMap 获取单个试卷-->
   <resultMap id="testPaperEntity" type="com.examsys.model.entity.TestPaperListEntity">
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
