@@ -10,6 +10,7 @@ import com.examsys.model.entity.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +107,39 @@ public class GroupServiceImpl{
         }
 
         return responseEntity;
+    }
+
+    public ResponseEntity copyGroup(Map<String,Object> map){
+
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        Integer groupId = Integer.valueOf(map.get("group_id").toString());
+        String groupName = String.valueOf(map.get("group_name"));
+
+        List<GroupUser> groupUserList= groupUserMapper.selectByGroupId(groupId);
+
+        Group groupAl = groupMapper.selectByName(groupName);
+        if(groupAl == null ){
+
+            Group group = new Group();
+            group.setName(groupName);
+            int res2 = groupMapper.insert(group);
+            int newGroupId = group.getId();
+            for(int i=0;i<groupUserList.size();i++){
+                GroupUser groupUser = groupUserList.get(i);
+                groupUser.setGroupId(newGroupId);
+                int res = groupUserMapper.insert(groupUser);
+            }
+        }else{
+
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("组名已存在");
+        }
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("成功");
+
+        return responseEntity;
+
     }
 
 }
