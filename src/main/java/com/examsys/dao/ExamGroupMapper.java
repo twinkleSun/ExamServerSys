@@ -21,4 +21,8 @@ public interface ExamGroupMapper {
     List<ExamGroup> selectAll();
 
     int updateByPrimaryKey(ExamGroup record);
+
+    int deleteByExamId(Integer examId);
+
+    List<ExamGroup> selectByGroupId(Integer groupId);
 }

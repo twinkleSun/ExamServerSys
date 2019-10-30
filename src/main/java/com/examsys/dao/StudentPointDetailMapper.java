@@ -32,4 +32,6 @@ public interface StudentPointDetailMapper {
 
     int updateByPK(StudentPointDetail studentPointDetail);
 
+    int updateStuAnswer(StudentPointDetail studentPointDetail);
+
 }

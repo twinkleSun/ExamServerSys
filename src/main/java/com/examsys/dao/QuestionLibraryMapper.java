@@ -30,7 +30,9 @@ public interface QuestionLibraryMapper {
                                          @Param("type")String type,
                                          @Param("kname")String kname);
 
-//    int deleteByPrimaryKey(Integer id);
+    int updateByPK(QuestionLibrary record);
+
+    int deleteByPrimaryKey(Integer id);
 //
 //
 //
@@ -38,5 +40,5 @@ public interface QuestionLibraryMapper {
 //
 
 //
-//    int updateByPrimaryKey(Questioninfo record);
+
 }

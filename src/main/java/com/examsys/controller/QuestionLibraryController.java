@@ -50,6 +50,15 @@ public class QuestionLibraryController {
         return responseEntity;
     }
 
+
+    @PostMapping(value = "/single")
+    @Transactional
+    public ResponseEntity addSingleQusetionsByFront(@RequestBody Map<String,Object> mapRes) {
+        ResponseEntity responseEntity = questionLibraryService.addSingleQuestion(mapRes);
+        return responseEntity;
+    }
+
+
     /**
      * 获取所有题目
      * @return
@@ -67,6 +76,14 @@ public class QuestionLibraryController {
     @PostMapping(value = "/filter")
     public ResponseEntity getQuestionsByFlitEr(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity=questionLibraryService.getQuestionsByFilter(map);
+        return responseEntity;
+    }
+
+
+
+    @DeleteMapping(value = "/del")
+    public ResponseEntity delQues(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=questionLibraryService.delQues(map);
         return responseEntity;
     }
 

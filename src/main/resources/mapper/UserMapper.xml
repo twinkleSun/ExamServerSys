@@ -16,6 +16,11 @@
     SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
   </select>
 
+
+  <select id="selectByUser" parameterType="com.examsys.model.User" resultMap="BaseResultMap">
+    SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{name} and password = #{password}
+  </select>
+
   <!--插入单个用户-->
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.User">
     insert into `user` (id, `name`, `password`,role) values (#{id}, #{name}, #{password},#{role})

@@ -16,15 +16,15 @@ public interface ExamMapper {
 
     int updateExamStatus(Exam exam);
 
-//    int deleteByPrimaryKey(Integer id);
-//
+    List<Exam> selectAll();
 
-//
-//    Examinfo selectByPrimaryKey(Integer id);
-//
-//    List<Examinfo> selectAll();
-//
-//    int updateByPrimaryKey(Examinfo record);
+    List<Exam> selectByPaperCode(String paperCode);
+
+    Exam selectByPrimaryKey(Integer id);
+
+   int deleteByPrimaryKey(Integer id);
+
+   int updateByPrimaryKey(Exam record);
 
 
 }

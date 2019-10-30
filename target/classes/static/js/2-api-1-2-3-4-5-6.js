@@ -13,13 +13,13 @@ $(function(){
          category_content: "一、数据库基础",
          option_list: [{
                 "id": 0,
-                "option": "选项一内容"
+                "content": "选项一内容"
             }, {
                 "id": 1,
-                "option": "选项二内容"
+                "content": "选项二内容"
             }],
 
-        answer_list: [0, 1]
+        answer_list: [{"id":0, "content":"选项一内容"},{"id":1, "content":"选项二内容"}]
     };
     var json1_2={
         type: "multi",
@@ -30,16 +30,16 @@ $(function(){
         category_content: "一、数据库基础",
         option_list: [{
             "id": 0,
-            "option": "选项一内容"
+            "content": "选项一内容"
         }, {
             "id": 1,
-            "option": "选项二内容"
+            "content": "选项二内容"
         }, {
             "id": 2,
-            "option": "选项三内容"
+            "content": "选项三内容"
         }],
 
-        answer_list: ["1", 1]
+        answer_list: [{"id":0, "content":"选项一内容"},{"id":1, "content":"选项二内容"}]
     };
     var json1_3={
         type: "single",
@@ -50,43 +50,43 @@ $(function(){
         category_content: "一、数据库基础",
         option_list: [{
             "id": 0,
-            "option": "选项一内容"
+            "content": "选项一内容"
         }, {
             "id": 1,
-            "option": "选项二内容"
+            "content": "选项二内容"
         }, {
             "id": 2,
-            "option": "选项三内容"
+            "content": "选项三内容"
         }, {
             "id": 3,
-            "option": "选项四内容"
+            "content": "选项四内容"
         }],
 
-        answer_list: ["1"]
+        answer_list: [{"id":1, "content":"选项一内容"}]
     };
     var json1_4={
         type: "subjective",
-        score: 20,
+        // score: 20,
         content: "简答题测试",
         description:"描述测试1",
-        must_or_not: 1,
-        category_content: "二、计算机网络",
+        // must_or_not: 1,
+        // category_content: "二、计算机网络",
         option_list: [],
         answer_list: ["参考答案测试"]
     };
     var json1_5={
         type: "judge",
-        score: 20,
+        // score: 20,
         content: "判断题测试2",
         description:"描述测试1",
-        must_or_not: 1,
-        category_content: "二、计算机网络",
+        // must_or_not: 1,
+        // category_content: "二、计算机网络",
         option_list: [{
             "id": 0,
-            "option": "选项一内容"
+            "content": "选项一内容"
         }, {
             "id": 1,
-            "option": "选项二内容"
+            "content": "选项二内容"
         }],
         answer_list: [{"id":0, "content":"选项一内容"}]
     };

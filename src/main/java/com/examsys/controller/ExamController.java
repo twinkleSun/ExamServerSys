@@ -38,9 +38,14 @@ public class ExamController {
     }
 
     @PostMapping(value = "/techend")
-    @ResponseBody
     public ResponseEntity endExam(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = examService.endExam(Integer.valueOf(map.get("exam_id").toString()));
+        return responseEntity;
+    }
+
+    @DeleteMapping(value = "/del")
+    public ResponseEntity delExam(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = examService.delExam(map);
         return responseEntity;
     }
 

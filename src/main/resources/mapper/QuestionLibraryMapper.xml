@@ -11,6 +11,17 @@
     <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
 
+  <update id="updateByPK" parameterType="com.examsys.model.QuestionLibrary" >
+    update question_library
+    set content = #{content,jdbcType=VARCHAR},
+      options = #{options,jdbcType=VARCHAR},
+      answer = #{answer,jdbcType=VARCHAR},
+      description=#{description},
+      `type` = #{type,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
   <!--新建试卷-->
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.QuestionLibrary" >
     insert into question_library (id, content, options,

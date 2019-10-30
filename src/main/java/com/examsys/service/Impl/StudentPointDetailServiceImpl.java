@@ -121,8 +121,11 @@ public class StudentPointDetailServiceImpl {
 
 
 
-    public ResponseEntity getStuExamPaper(String paper_code){
-        TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paper_code);
+    public ResponseEntity getStuExamPaper(Map<String,Object> map){
+        String paperCode = String.valueOf(map.get("paper_code"));
+        int stuId = Integer.valueOf(map.get("stu_id").toString());
+        int examId = Integer.valueOf(map.get("exam_id").toString());
+        TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
         ResponseEntity responseEntity=new ResponseEntity();
         if(testPaperList==null){
             responseEntity.setStatus(-1);

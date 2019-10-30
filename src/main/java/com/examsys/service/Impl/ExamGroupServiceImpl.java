@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,6 +34,7 @@ public class ExamGroupServiceImpl {
             return responseEntity;
         }
 
+        List<Exam> examNotEnd = new ArrayList<>();
         int len = examList.size();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String current = simpleDateFormat.format(new java.util.Date());
@@ -46,11 +48,55 @@ public class ExamGroupServiceImpl {
                 } else if(current.compareTo(exam.getEndTime()) > 0) {
                     exam.setStatus("已结束");
                 }
+
+
+                if(!exam.getStatus().equals("已结束")){
+                    examNotEnd.add(exam);
+                }
             }
+
+            int res = examMapper.updateExamStatus(exam);
         }
         responseEntity.setStatus(200);
         responseEntity.setMsg("查询成功");
-        responseEntity.setData(examList);
+        responseEntity.setData(examNotEnd);
+
+        return responseEntity;
+    }
+
+
+
+    public ResponseEntity getExamListByAdmin() {
+        List<Exam> exams=examMapper.selectAll();
+        ResponseEntity responseEntity=new ResponseEntity();
+
+        if(exams==null || exams.size()==0){
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("没有考试列表");
+            return responseEntity;
+        }
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String curTime = simpleDateFormat.format(new java.util.Date());
+        for(int i = 0; i < exams.size(); i++) {
+            Exam exam = exams.get(i);
+            if(exam.getStatus().equals("未开始") || exam.getStatus().equals("0")) {
+                if(curTime.compareTo(exam.getBeginTime()) <= 0)  {
+                    exam.setStatus("未开始");
+                } else if(curTime.compareTo(exam.getBeginTime()) > 0 && curTime.compareTo(exam.getEndTime()) <= 0){
+                    exam.setStatus("进行中");
+                } else if(curTime.compareTo(exam.getEndTime()) > 0) {
+                    exam.setStatus("已结束");
+                }
+            }
+
+            int res = examMapper.updateExamStatus(exam);
+        }
+
+
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("查询成功");
+        responseEntity.setData(exams);
 
         return responseEntity;
     }

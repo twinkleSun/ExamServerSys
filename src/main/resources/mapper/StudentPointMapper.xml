@@ -38,6 +38,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <update id="updateTotalPoint" parameterType="com.examsys.model.StudentPoint" >
+    update student_point
+    set  paper_total_point = #{paperTotalPoint,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
 
 
 

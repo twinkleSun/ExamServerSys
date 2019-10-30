@@ -31,11 +31,13 @@ public class UserServiceImpl{
 
     /**
      * 用户登陆
+     * todo: youdaixiugai
      * @param username
      * @param password
      * @return
      */
     public ResponseEntity userLogin(String username,String password){
+
         User user=userMapper.selectByUsername(username);
         ResponseEntity responseEntity=new ResponseEntity();
         if(user==null){

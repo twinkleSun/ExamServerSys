@@ -16,7 +16,7 @@ $(function(){
                     description: "描述测试1",
                     total_point: 10,
                     mustOrNot: 0,
-                    student_answer: "[0, 1]"
+                    student_answer: [{id:0, content:"选项一内容"}]
                 },
                 {
                     id: 4,
@@ -25,7 +25,7 @@ $(function(){
                     description: "简答题2追加描述",
                     total_point: 20,
                     mustOrNot: 0,
-                    student_answer: "学生1填写的答案"
+                    student_answer: "学生1填写的答案2"
                 }
             ]
         };

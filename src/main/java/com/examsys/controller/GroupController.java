@@ -32,15 +32,10 @@ public class GroupController {
         return responseEntity;
     }
 
-    /**
-     * 删除单个组
-     * todo:暂不可用
-     * @param map
-     * @return
-     */
-    @DeleteMapping("/single")
-    public ResponseEntity deleteUsers(@RequestBody Map<String,Integer> map) {
-        ResponseEntity responseEntity = groupService.deleteSingleGroup(map);
+
+    @DeleteMapping("/del")
+    public ResponseEntity deleteGroups(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = groupService.deleteGroups(map);
         return responseEntity;
     }
 

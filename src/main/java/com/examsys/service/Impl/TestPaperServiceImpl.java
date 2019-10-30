@@ -2,15 +2,14 @@ package com.examsys.service.Impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.examsys.dao.ExamMapper;
 import com.examsys.dao.GroupUserMapper;
 import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.dao.TestPaperMapper;
-import com.examsys.model.GroupUser;
-import com.examsys.model.QuestionLibrary;
-import com.examsys.model.TestPaper;
-import com.examsys.model.TestPaperDetail;
+import com.examsys.model.*;
 import com.examsys.model.entity.GroupUserEntity;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.model.entity.TestPaperAdminEntity;
 import com.examsys.model.entity.TestPaperListEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,83 +35,69 @@ public class TestPaperServiceImpl {
     @Autowired
     GroupUserMapper groupUserMapper;
 
+    @Autowired
+    ExamMapper examMapper;
+
+
     /**
      * 处理添加试卷的数据
      * @param TestpaperMap
      * @return
      */
-    public Map<String,Object> handleNewPaper(Map<String,Object> TestpaperMap){
-        Map<String,Object> mapRes=new HashMap<>();
-        List<QuestionLibrary> questionList=new ArrayList<>();
-        List<TestPaperDetail> testPaperList=new ArrayList<>();
+    public List<TestPaperDetail> handleNewPaper(Map<String,Object> TestpaperMap){
+
         TestPaper testPaper=new TestPaper();
         Date now = new Date();
         SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        testPaper.setCreateTime(dateFormatTime.format(now));
-
         SimpleDateFormat dateFormatCode = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        String paper_code=dateFormatCode.format(now);
-//        Calendar cal=Calendar.getInstance();
-//        String paper_code=""+cal.get(Calendar.YEAR)+cal.get(Calendar.MONTH)+cal.get(Calendar.DATE)+cal.get(Calendar.HOUR_OF_DAY)
-//                +cal.get(Calendar.MINUTE)+cal.get(Calendar.SECOND);
 
-        List<Map<String,Object>> map=(List<Map<String,Object>>)TestpaperMap.get("question_list");
-        testPaper.setPaperCode(paper_code);
+
         testPaper.setDescription(String.valueOf(TestpaperMap.get("description")));
         testPaper.setTitle(String.valueOf(TestpaperMap.get("title")));
         testPaper.setCreateUserId(Integer.valueOf(TestpaperMap.get("user_id").toString()));
 
-        TestPaper testPaperAlready=testPaperMapper.selectByPaperCode(paper_code);
-        if(testPaperAlready!=null){
-            throw new RuntimeException("试卷已存在");
-        }else{
+        String paper_code;
+        if (TestpaperMap.get("paper_code") == null || TestpaperMap.get("paper_code") == "") {
+            testPaper.setCreateTime(dateFormatTime.format(now));
+            paper_code=dateFormatCode.format(now);
+            testPaper.setPaperCode(paper_code);
             int res=testPaperMapper.insert(testPaper);
+            if(res<0){
+                throw new RuntimeException("数据库错误");
+            }
+        }else {
+            paper_code = String.valueOf(TestpaperMap.get("paper_code"));
+            testPaper.setPaperCode(paper_code);
+            testPaper.setLastModifiedTime(dateFormatTime.format(now));
+            int res = testPaperMapper.updateByPaperCode(testPaper);
             if(res<0){
                 throw new RuntimeException("数据库错误");
             }
         }
 
+
+
+        List<TestPaperDetail> testPaperList=new ArrayList<>();
+        List<Map<String,Object>> map=(List<Map<String,Object>>)TestpaperMap.get("question_list");
         for(int i=0;i<map.size();i++){
-            QuestionLibrary question=new QuestionLibrary();
-            TestPaperDetail testpaper=new TestPaperDetail();
+            TestPaperDetail testpaper2=new TestPaperDetail();
             Map<String,Object> map1=map.get(i);
 
-            question.setType(String.valueOf(map1.get("type")));
-            question.setContent(String.valueOf(map1.get("content")));
-
-            question.setDescription(String.valueOf(map1.get("description")));
-
-            if( map1.get("option_list") == null || map1.get("option_list")== ""){
-                question.setOptions("");
-            }else {
-                question.setOptions(JSON.toJSONString(map1.get("option_list")));
-            }
-
-            if( map1.get("description") == null || map1.get("description")== ""){
-                question.setDescription("");
-            }else {
-                question.setDescription(String.valueOf(map1.get("description")));
-            }
-
-            question.setAnswer(JSON.toJSONString(map1.get("answer_list")));
-
-
             double score=Double.parseDouble(String.valueOf(map1.get("score")));
-            testpaper.setScore(score);
-            testpaper.setDefAnswer(map1.get("answer_list").toString());
-            testpaper.setPaperCode(paper_code);
-            testpaper.setMustOrNot(Integer.valueOf(map1.get("must_or_not").toString()));
-            testpaper.setCategoryContent(String.valueOf(map1.get("category_content")));
+            testpaper2.setScore(score);
+            testpaper2.setDefAnswer(JSON.toJSONString(map1.get("answer_list")));
+            testpaper2.setPaperCode(paper_code);
+            testpaper2.setMustOrNot(Integer.valueOf(map1.get("must_or_not").toString()));
+            testpaper2.setCategoryContent(String.valueOf(map1.get("category_content")));
 
-            questionList.add(question);
-            testPaperList.add(testpaper);
+            testpaper2.setQuestionId(Integer.valueOf(map1.get("id").toString()));
+            testPaperList.add(testpaper2);
         }
 
-        mapRes.put("questionList",questionList);
-        mapRes.put("testPaperList",testPaperList);
 
-        return mapRes;
+
+        return testPaperList;
     }
 
 
@@ -135,6 +120,16 @@ public class TestPaperServiceImpl {
         }
         responseEntity.setStatus(200);
         return responseEntity;
+    }
+
+
+    public void deletePaper(List<TestPaperDetail> testPaperList){
+        String paperCode = testPaperList.get(0).getPaperCode();
+        int res = testPaperDetailMapper.deleteByPaperCode(paperCode);
+        if(res<0){
+            throw new RuntimeException("数据库错误");
+        }
+
     }
 
 
@@ -161,7 +156,7 @@ public class TestPaperServiceImpl {
      * @return
      */
     public ResponseEntity getAllPaperList(){
-        List<TestPaper> testPaperList = testPaperMapper.selectAll();
+        List<TestPaperAdminEntity>  testPaperList = testPaperMapper.selectAllWithAdmin();
         ResponseEntity responseEntity=new ResponseEntity();
         if(testPaperList==null | testPaperList.size()==0){
             responseEntity.setStatus(-1);
@@ -206,6 +201,35 @@ public class TestPaperServiceImpl {
             responseEntity.setMsg("获取成员信息成功");
             responseEntity.setData(StudentList);
         }
+        return responseEntity;
+    }
+
+
+    public ResponseEntity delByPaperCode(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<String> paperCodes = (List<String>)map.get("paper_code");
+
+        for(int i=0;i<paperCodes.size();i++){
+            String paperCode = paperCodes.get(i);
+            List<Exam> examList = examMapper.selectByPaperCode(paperCode);
+            if(examList == null || examList.size()==0){
+                int res = testPaperMapper.deleteByPaperCode(paperCode);
+                if(res<0){
+                    throw new RuntimeException("数据库错误");
+                }
+                int res2 = testPaperDetailMapper.deleteByPaperCode(paperCode);
+                if(res2<0){
+                    throw new RuntimeException("数据库错误");
+                }
+            }else{
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("该试卷已与考试关联，请更换考试关联的试卷再删除");
+                return responseEntity;
+            }
+        }
+
+        responseEntity.setMsg("删除成功");
+        responseEntity.setStatus(200);
         return responseEntity;
     }
 

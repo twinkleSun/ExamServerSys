@@ -15,6 +15,7 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
 
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Knowledge" >
     insert into knowledge (id, `name`, description, `level`, parent_id)
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
@@ -23,9 +24,9 @@
 
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.Knowledge" >
     update knowledge
-    set name = #{name,jdbcType=VARCHAR},
+    set `name` = #{name,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
-      level = #{level,jdbcType=INTEGER},
+      `level` = #{level,jdbcType=INTEGER},
       parent_id = #{parentId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -45,7 +46,7 @@
   <select id="selectByKnowledge" parameterType="com.examsys.model.Knowledge" resultMap="BaseResultMap">
     select id, `name`, description, `level`, parent_id
     from knowledge
-    where name = #{name}
+    where `name` = #{name}
   </select>
 
   <resultMap id="KeypointResultMap" type="com.examsys.model.entity.Keypoint" >
@@ -55,7 +56,7 @@
   </resultMap>
 
   <select id="selectAllKeyPoint" resultMap="KeypointResultMap">
-    select `name` title, `name` `key` from knowledge
+    select `name` title, id `key` from knowledge
   </select>
 
 </mapper>

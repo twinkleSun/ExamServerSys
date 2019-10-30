@@ -1,7 +1,12 @@
 package com.examsys.service.Impl;
 
 import com.alibaba.fastjson.JSON;
+import com.examsys.dao.KnowledgeMapper;
+import com.examsys.dao.QuesKnowledgeMapper;
 import com.examsys.dao.QuestionLibraryMapper;
+import com.examsys.dao.TestPaperDetailMapper;
+import com.examsys.model.Knowledge;
+import com.examsys.model.QuesKnowledge;
 import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.QuesKnowNameEntity;
@@ -10,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 /**
@@ -22,6 +28,15 @@ public class QuestionLibraryServiceImpl {
 
     @Autowired
     QuestionLibraryMapper questionLibraryMapper;
+
+    @Autowired
+    KnowledgeMapper knowledgeMapper;
+
+    @Autowired
+    QuesKnowledgeMapper quesKnowledgeMapper;
+
+    @Autowired
+    TestPaperDetailMapper testPaperDetailMapper;
 
     /**
      * 处理题库数据
@@ -48,11 +63,97 @@ public class QuestionLibraryServiceImpl {
                 questionList.setDescription(String.valueOf(map1.get("description")));
             }
 
-            //questionList.setDescription(String.valueOf(map1.get("description")));
             questioninfoList.add(questionList);
         }
 
         return questioninfoList;
+    }
+
+
+
+    public ResponseEntity addSingleQuestion(Map<String,Object> map){
+
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        int quesId;
+        QuestionLibrary question=new QuestionLibrary();
+        question.setType(String.valueOf(map.get("type")));
+        question.setContent(String.valueOf(map.get("content")));
+        question.setAnswer(JSON.toJSONString(map.get("answer_list")));
+        if(map.get("option_list") ==null || map.get("option_list")==""){
+            question.setOptions("");
+        }else {
+            question.setOptions(JSON.toJSONString(map.get("option_list")));
+        }
+
+        if( map.get("description") == null || map.get("description")== ""){
+            question.setDescription("");
+        }else {
+            question.setDescription(String.valueOf(map.get("description")));
+        }
+
+        if(map.get("id")== null || map.get("id")==""){
+            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
+            if(questionAlready != null){
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("该题已存在");
+                return responseEntity;
+            }else{
+                int tmp= questionLibraryMapper.insert(question);
+                quesId = question.getId();
+                if(tmp<0){
+                    throw new RuntimeException("数据库错误");
+                }
+            }
+        }else{
+            question.setId(Integer.valueOf(map.get("id").toString()));
+            quesId = question.getId();
+            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
+            if(questionAlready !=null &&  questionAlready.getId() != question.getId()){
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("相同的content/options记录已经存在，不可如此修改");
+                return responseEntity;
+            }else{
+                int tmp= questionLibraryMapper.updateByPK(question);
+                if(tmp<0){
+                    throw new RuntimeException("数据库错误");
+                }
+            }
+        }
+
+        if(map.get("knowledge_list") ==null || map.get("knowledge_list")==""){
+
+        }else{
+            List<String> knameList = (List<String>)map.get("knowledge_list");
+            int dres = quesKnowledgeMapper.deleteByQuesId(quesId);
+            if(dres<0){
+                throw new RuntimeException("数据库错误");
+            }
+
+            for(int i=0;i<knameList.size();i++){
+                String kname = knameList.get(i);
+                Knowledge tmpKnow = new Knowledge();
+                tmpKnow.setName(kname);
+                Knowledge knowledge = knowledgeMapper.selectByKnowledge(tmpKnow);
+                int kId = knowledge.getId();
+
+                QuesKnowledge quesKnowledge = new QuesKnowledge();
+                quesKnowledge.setKnowledgeId(kId);
+                quesKnowledge.setQuestionId(quesId);
+                int res = quesKnowledgeMapper.insert(quesKnowledge);
+                if(res <0){
+                    throw new RuntimeException("数据库错误");
+                }
+
+
+            }
+        }
+
+
+        responseEntity.setMsg("操作成功");
+        responseEntity.setStatus(200);
+
+        return responseEntity;
     }
 
 
@@ -69,7 +170,7 @@ public class QuestionLibraryServiceImpl {
         for(int i=0;i<length;i++){
             QuestionLibrary question=questionList.get(i);
             QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready!=null){
+            if(questionAlready != null){
                 questionLibraryList.add(questionAlready);
             }else{
                 int tmp= questionLibraryMapper.insert(question);
@@ -91,32 +192,32 @@ public class QuestionLibraryServiceImpl {
         return responseEntity;
     }
 
-    /**
-     * 添加试卷的试题
-     * @param questionList
-     * @param testPaperList
-     * @return
-     */
-    public List<TestPaperDetail> addNewQuestions(List<QuestionLibrary> questionList, List<TestPaperDetail> testPaperList){
-        int length=questionList.size();
-        for(int i=0;i<length;i++){
-            QuestionLibrary question=questionList.get(i);
-            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready!=null){
-                testPaperList.get(i).setQuestionId(questionAlready.getId());
-            }else{
-                int tmp= questionLibraryMapper.insert(question);
-                if(tmp<0){
-                    throw new RuntimeException("数据库错误");
-                }else {
-
-                    testPaperList.get(i).setQuestionId(question.getId());
-                }
-            }
-
-        }
-        return testPaperList;
-    }
+//    /**
+//     * 添加试卷的试题
+//     * @param questionList
+//     * @param testPaperList
+//     * @return
+//     */
+//    public List<TestPaperDetail> addNewQuestions( List<TestPaperDetail> testPaperList){
+//        //int length=questionList.size();
+//        for(int i=0;i<length;i++){
+//            QuestionLibrary question=questionList.get(i);
+//            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
+//            if(questionAlready!=null){
+//                testPaperList.get(i).setQuestionId(questionAlready.getId());
+//            }else{
+//                int tmp= questionLibraryMapper.insert(question);
+//                if(tmp<0){
+//                    throw new RuntimeException("数据库错误");
+//                }else {
+//
+//                    testPaperList.get(i).setQuestionId(question.getId());
+//                }
+//            }
+//
+//        }
+//        return testPaperList;
+//    }
 
 
     public ResponseEntity getAllQuestion(){
@@ -181,6 +282,31 @@ public class QuestionLibraryServiceImpl {
             responseEntity.setData(questionList);
         }
 
+        return responseEntity;
+    }
+
+
+    public ResponseEntity delQues(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+
+        ArrayList<Integer> quesIds = (ArrayList<Integer>)map.get("question_id");
+
+        for(int i=0;i<quesIds.size();i++){
+            List<TestPaperDetail> testPaperDetails = testPaperDetailMapper.selectByQuesId(quesIds.get(i));
+            if(testPaperDetails == null || testPaperDetails.size()==0){
+                //可以删除
+
+                int res2 = quesKnowledgeMapper.deleteByQuesId(quesIds.get(i));
+                int res  = questionLibraryMapper.deleteByPrimaryKey(quesIds.get(i));
+
+            }else{
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("有部分题目已经关联了试卷，不可以删除");
+                return responseEntity;
+            }
+        }
+        responseEntity.setStatus(200);
+        responseEntity.setMsg("删除成功");
         return responseEntity;
     }
 }

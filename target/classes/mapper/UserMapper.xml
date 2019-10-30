@@ -16,6 +16,11 @@
     SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
   </select>
 
+
+  <select id="selectByUser" parameterType="com.examsys.model.User" resultMap="BaseResultMap">
+    SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{name} and password = #{password}
+  </select>
+
   <!--插入单个用户-->
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.User">
     insert into `user` (id, `name`, `password`,role) values (#{id}, #{name}, #{password},#{role})
@@ -30,6 +35,7 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+
   <!--根据用户ID删除用户-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `user`
@@ -39,23 +45,6 @@
   <select id="selectStudentByExam" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT id, `name`, password, role  FROM `user` WHERE `name` = #{username}
   </select>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <!--<select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">-->
     <!--select id, user_name, `password`, user_type-->
@@ -74,7 +63,5 @@
   <!--<select id="selectTest" resultType="java.lang.String">-->
     <!--select user_name from userinfo-->
   <!--</select>-->
-
-
 
 </mapper>

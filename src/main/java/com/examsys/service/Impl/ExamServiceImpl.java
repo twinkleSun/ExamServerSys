@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,10 +29,18 @@ public class ExamServiceImpl{
 
     public ResponseEntity addNewExam(Map<String,Object> map){
         ResponseEntity responseEntity=new ResponseEntity();
+
+
         Exam exam=new Exam();
         exam.setExamName(String.valueOf(map.get("exam_name")));
+
+        if (map.get("paper_code") == null || map.get("paper_code") == "") {
+
+            responseEntity.setStatus(-1);
+            responseEntity.setMsg("请选择试卷");
+            return responseEntity;
+        }
         exam.setPaperCode(String.valueOf(map.get("paper_code")));
-        Date now = new Date();
         SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         exam.setBeginTime(String.valueOf(map.get("begin_time")));
         exam.setEndTime(String.valueOf(map.get("end_time")));
@@ -49,16 +58,42 @@ public class ExamServiceImpl{
 
         }
 
-        exam.setStatus("0");
+        int examId;
+        if(map.get("id") == null ||map.get("id") ==""){
+            //新建
+            int res=examMapper.insert(exam);
+            exam.setStatus("未开始");
+            examId=exam.getId();
+        }else{
+            examId = Integer.valueOf(String.valueOf(map.get("id")));
+            exam.setId(examId);
 
-        int res=examMapper.insert(exam);
+            String status = String.valueOf(map.get("status"));
+            if(status.equals("未开始")){
+                //xiugai
+                int res= examMapper.updateByPrimaryKey(exam);
 
-        int examId=exam.getId();
-        ArrayList<Integer> groupIds=(ArrayList<Integer>)map.get("group_ids");
+                int res2 =examGroupMapper.deleteByExamId(examId);
+            }else {
+                responseEntity.setMsg("已完成或进行中的考试信息不允许修改");
+                responseEntity.setStatus(-1);
+                return responseEntity;
+            }
 
-        responseEntity=addExamGroup(examId,groupIds);
+        }
 
-        return responseEntity;
+
+        if(map.get("group_ids") == null || map.get("group_ids") == ""){
+            responseEntity.setMsg("未添加组");
+            responseEntity.setStatus(-1);
+            return responseEntity;
+        }else {
+            ArrayList<Integer> groupIds=(ArrayList<Integer>)map.get("group_ids");
+            responseEntity=addExamGroup(examId,groupIds);
+            return responseEntity;
+        }
+
+
     }
 
 
@@ -78,7 +113,7 @@ public class ExamServiceImpl{
         }
         ResponseEntity responseEntity=new ResponseEntity();
         responseEntity.setStatus(200);
-        responseEntity.setMsg("创建成功");
+        responseEntity.setMsg("操作成功");
         return responseEntity;
     }
 
@@ -94,6 +129,32 @@ public class ExamServiceImpl{
             responseEntity.setStatus(200);
             responseEntity.setMsg("更新成功");
         }
+        return responseEntity;
+    }
+
+    public ResponseEntity delExam(Map<String,Object> map){
+        ResponseEntity responseEntity = new ResponseEntity();
+        List<Integer> examIds = (List<Integer>)map.get("exam_id");
+        for(int i=0;i<examIds.size();i++){
+
+            int examId = examIds.get(i);
+            Exam exam = examMapper.selectByPrimaryKey(examId);
+            if(!exam.getStatus().equals("未开始")){
+                responseEntity.setStatus(-1);
+                responseEntity.setMsg("考试已结束或正在继续进行中，不得删除");
+                return responseEntity;
+            }else{
+
+                int res2 = examGroupMapper.deleteByExamId(examId);
+
+                int res = examMapper.deleteByPrimaryKey(examId);
+
+
+            }
+        }
+
+        responseEntity.setMsg("删除成功");
+        responseEntity.setStatus(200);
         return responseEntity;
     }
 

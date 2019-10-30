@@ -82,13 +82,16 @@ public class TestPaperController {
     @PostMapping(value = "/new")
     @Transactional
     public ResponseEntity addNewPaperByFront(@RequestBody Map<String,Object> mapRes) {
+        List<TestPaperDetail> testPaperList = testPaperService.handleNewPaper(mapRes);
 
-        Map<String,Object> map=testPaperService.handleNewPaper(mapRes);
-        List<QuestionLibrary> questionList=(List<QuestionLibrary>)map.get("questionList");
-        List<TestPaperDetail> testPaperList=(List<TestPaperDetail>)map.get("testPaperList");
-        List<TestPaperDetail> paperQuestion=questionLibraryService.addNewQuestions(questionList,testPaperList);
-        ResponseEntity responseEntity=testPaperService.addNewPaper(paperQuestion);
+        if(mapRes.get("paper_code") == null || mapRes.get("paper_code") == "" ){
+
+        }else{
+            testPaperService.deletePaper(testPaperList);
+        }
+        ResponseEntity responseEntity=testPaperService.addNewPaper(testPaperList);
         return responseEntity;
+
 
     }
 
@@ -136,6 +139,14 @@ public class TestPaperController {
     @Transactional
     public ResponseEntity getStudents(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity=testPaperService.getStudent((Integer) map.get("exam_id"));
+        return responseEntity;
+
+    }
+
+
+    @DeleteMapping(value = "/del")
+    public ResponseEntity delTestPaper(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity=testPaperService.delByPaperCode(map);
         return responseEntity;
 
     }
