@@ -2,6 +2,7 @@ com\examsys\model\entity\UserGroupEntity.class
 com\examsys\model\entity\ResponseEntity.class
 com\examsys\model\entity\StuObjQuesEntity.class
 com\examsys\model\TestPaper.class
+com\examsys\model\entity\TestPaperAdminEntity.class
 com\examsys\model\Exam.class
 com\examsys\controller\GroupController.class
 com\examsys\dao\TestPaperMapper.class
@@ -60,4 +61,5 @@ com\examsys\controller\ExamGroupController.class
 com\examsys\model\entity\StudentAnswersDetail.class
 com\examsys\controller\StudentPointDetailController.class
 com\examsys\service\Impl\ExamGroupServiceImpl.class
+com\examsys\util\error\ErrorMsgEnum.class
 com\examsys\model\entity\TestPaperEntity.class

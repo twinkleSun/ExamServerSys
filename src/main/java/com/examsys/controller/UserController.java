@@ -31,7 +31,7 @@ public class UserController {
 
     /**
      * 用户登陆
-     * 参数：userName,password
+     * 参数：user_name,password
      * @param map
      * @return
      */
@@ -72,11 +72,12 @@ public class UserController {
     }
 
     /**
-     * 删除若干考生
+     * todo:删除若干考生
      * @param map
      * @return
      */
     @DeleteMapping("/multi")
+    @Transactional
     public ResponseEntity deleteUsers(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = userService.deleteUsers(map);
         return responseEntity;

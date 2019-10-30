@@ -38,6 +38,8 @@ public interface GroupUserMapper {
 
     List<GroupUser> selectOfNoStart(int groupId);
 
+    GroupUser selectByGroupUser(GroupUser groupUser);
+
 
 
 

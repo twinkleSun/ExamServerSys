@@ -81,7 +81,9 @@
         where g.id=#{groupId}
     </select>
 
-
+    <select id="selectByGroupUser" parameterType="com.examsys.model.GroupUser" resultMap="BaseResultMap">
+        select id, group_id, student_id from group_user WHERE group_id=#{groupId} and student_id =#{studentId}
+    </select>
 
 
     <!--向组内添加学生-->

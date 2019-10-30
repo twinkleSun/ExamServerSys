@@ -20,4 +20,13 @@ public class Group {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Group(){
+
+    }
+
+    public Group(int gId,String gName){
+        id = gId;
+        name = gName;
+    }
 }

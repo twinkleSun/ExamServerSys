@@ -5,6 +5,7 @@ import com.examsys.dao.UserMapper;
 import com.examsys.model.GroupUser;
 import com.examsys.model.User;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.util.error.ErrorMsgEnum;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -29,29 +30,22 @@ public class UserServiceImpl{
     @Autowired
     GroupUserMapper groupUserMapper;
 
+
     /**
-     * 用户登陆
-     * todo: youdaixiugai
+     * 用户登录，通过用户名查找
      * @param username
      * @param password
      * @return
      */
     public ResponseEntity userLogin(String username,String password){
-
-        User user=userMapper.selectByUsername(username);
-        ResponseEntity responseEntity=new ResponseEntity();
-        if(user==null){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("该用户不存在");
-        }else if(!password.equals(user.getPassword())){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("用户名或密码错误");
+        User userDB = userMapper.selectByUsername(username);
+        if(userDB == null){
+            return new ResponseEntity(ErrorMsgEnum.USER_NOT_EXIT);
+        }else if(!password.equals(userDB.getPassword())){
+            return new ResponseEntity(ErrorMsgEnum.USERNAME_OR_PASSWORD_INCORRECT);
         }else{
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("查询成功");
-            responseEntity.setData(user);
+            return new ResponseEntity(200,"查询成功",userDB);
         }
-        return responseEntity;
     }
 
 

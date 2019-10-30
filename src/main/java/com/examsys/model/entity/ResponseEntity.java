@@ -53,5 +53,16 @@ public class ResponseEntity {
         data = obj;
     }
 
+    public ResponseEntity(int code,String info){
+        status = code;
+        msg = info;
+    }
+
+    public ResponseEntity(int code,String info,Object obj){
+        status = code;
+        msg = info;
+        data = obj;
+    }
+
 
 }

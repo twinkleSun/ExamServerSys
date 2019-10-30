@@ -72,7 +72,7 @@ $(function(){
 
     $("#1-api-4").click(function() {
         var json4={
-            groupName:"测试组名5"
+            groupName:"测试组名6"
         };
 
         $.ajax({

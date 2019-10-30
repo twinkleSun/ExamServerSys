@@ -3,6 +3,8 @@ package com.examsys.controller;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.Impl.GroupUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
@@ -23,22 +25,22 @@ public class GroupUserController {
      * @return
      */
     @GetMapping(value = "/groupuser/all")
-    @ResponseBody
-    public ResponseEntity getGroupUser() {
-        ResponseEntity responseEntity = groupUserService.getGroupUser();
+    public ResponseEntity getGroupAndUserList() {
+        ResponseEntity responseEntity = groupUserService.getAllGroupAndUserList();
         return responseEntity;
     }
+
 
     /**
      * 获取所有考生和其所属的组的列表
      * @return
      */
     @GetMapping(value = "/usergroup/all")
-    @ResponseBody
     public ResponseEntity getUserGroup() {
-        ResponseEntity responseEntity = groupUserService.getUserGroup();
+        ResponseEntity responseEntity = groupUserService.getAllUserAndGroupList();
         return responseEntity;
     }
+
 
     /**
      * 根据组ID获取所有学生
@@ -51,17 +53,21 @@ public class GroupUserController {
         return responseEntity;
     }
 
+
     /**
-     * 向某个组添加学生
+     * 向某个组添加学生,添加失败则回滚
      * @param map
      * @return
      */
     @PostMapping("/groupuser")
+    @Transactional
     public ResponseEntity addNewStudent(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = groupUserService.addNewGroupUser(map);
+        if(responseEntity.getStatus() != 200){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return responseEntity;
     }
-
 
 
     /**
@@ -70,10 +76,15 @@ public class GroupUserController {
      * @return
      */
     @PostMapping("/usergroup/relation")
+    @Transactional
     public ResponseEntity updateRelation(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = groupUserService.updateUserGroupRelation(map);
+        ResponseEntity responseEntity = groupUserService.updateUserWithRelation(map);
+        if(responseEntity.getStatus()!=200){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return responseEntity;
     }
+
 
     @DeleteMapping("/usergroup/del")
     public ResponseEntity deleteRelation(@RequestBody Map<String,Object> map) {
