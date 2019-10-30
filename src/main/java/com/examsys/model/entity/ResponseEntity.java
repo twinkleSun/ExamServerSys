@@ -1,5 +1,7 @@
 package com.examsys.model.entity;
 
+import com.examsys.util.error.ErrorMsgEnum;
+
 /**
  * Created by twinkleStar on 2018/12/9.
  */
@@ -33,4 +35,23 @@ public class ResponseEntity {
     public void setData(Object data) {
         this.data = data;
     }
+
+
+    public ResponseEntity(){
+
+    }
+
+    public ResponseEntity(ErrorMsgEnum type){
+        msg = type.getMsg();
+        status = type.getCode();
+    }
+
+
+    public ResponseEntity(ErrorMsgEnum etype, Object obj){
+        msg = etype.getMsg();
+        status = etype.getCode();
+        data = obj;
+    }
+
+
 }

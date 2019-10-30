@@ -18,11 +18,13 @@ E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\dao\StudentPointDet
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\GroupUser.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\GroupServiceImpl.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\dao\TestPaperDetailMapper.java
+E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\entity\StuObjQuesEntity.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\QuesKnowledgeServiceImpl.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\StudentPointDetail.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\controller\KnowledgeController.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\entity\TestPaperEntity.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\QuestionLibrary.java
+E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\entity\StuObjJudgeEntity.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\StudentPointServiceImpl.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\controller\ExamGroupController.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\controller\QuesKnowledgeController.java
@@ -46,6 +48,7 @@ E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\Studen
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\ExamServiceImpl.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\Exam.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\dao\UserMapper.java
+E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\entity\TestPaperAdminEntity.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\StudentPoint.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\Group.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\TestPaperDetail.java
@@ -54,6 +57,7 @@ E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\controller\Question
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\dao\StudentPointMapper.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\TestPaper.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\KnowledgeServiceImpl.java
+E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\model\entity\QuesKnowNameEntity.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\service\Impl\GroupUserServiceImpl.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\util\OtherUtil.java
 E:\3_workspace\2_git\ExamServerSys\src\main\java\com\examsys\controller\TestPaperController.java
