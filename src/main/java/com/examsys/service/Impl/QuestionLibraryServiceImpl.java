@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 /**
@@ -261,7 +260,6 @@ public class QuestionLibraryServiceImpl {
             ques_type=ques_type.substring(0,ques_type.length()-1);
         }
 
-
         for(int i=0;i<ques_knowledge_filter.size();i++){
             ques_knowledge = ques_knowledge+ques_knowledge_filter.get(i)+"|";
         }
@@ -296,7 +294,6 @@ public class QuestionLibraryServiceImpl {
                 return new ResponseEntity(ErrorMsgEnum.QUESTION_ASSISTANT_WITH_PAPER,testPaperDetailsDB.get(0).getQuestionId());
             }
         }
-
         return new ResponseEntity(200,"删除成功");
     }
 }

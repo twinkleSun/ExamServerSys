@@ -10,6 +10,7 @@ import com.examsys.model.entity.ResponseEntity;
 import com.examsys.util.error.ErrorMsgEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -21,6 +22,7 @@ import java.util.Map;
  */
 
 @Repository
+@Service
 public class GroupServiceImpl{
 
     @Autowired
@@ -44,13 +46,8 @@ public class GroupServiceImpl{
             return new ResponseEntity(ErrorMsgEnum.GROUP_ALREADY_EXIST);
         }else{
             Group groupFront = new Group(0,groupName);
-            int res = groupMapper.insert(groupFront);
-
-            if(res<0){
-                return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
-            }else{
-                return new ResponseEntity(200,"添加成功",groupFront);
-            }
+            groupMapper.insert(groupFront);
+            return new ResponseEntity(200,"添加成功",groupFront);
         }
     }
 
@@ -70,7 +67,6 @@ public class GroupServiceImpl{
             if(examGroups == null || examGroups.size() == 0){
                 //删除组-用户关系
                 int tmp1 = groupUserMapper.deleteByGroupId(groupId);
-
                 //删除组
                 int tmp2 = groupMapper.deleteByPrimaryKey(groupId);
 

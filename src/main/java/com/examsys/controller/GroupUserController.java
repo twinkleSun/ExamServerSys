@@ -20,6 +20,7 @@ public class GroupUserController {
     @Autowired
     GroupUserServiceImpl groupUserService;
 
+
     /**
      * 获取所有组及其成员列表
      * @return

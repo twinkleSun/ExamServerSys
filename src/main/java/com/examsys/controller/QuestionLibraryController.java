@@ -3,11 +3,9 @@ package com.examsys.controller;
 import com.examsys.model.QuestionLibrary;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.Impl.QuestionLibraryServiceImpl;
-import com.examsys.util.ExcelAnalysisUtil;
-import com.examsys.util.ExcelTemplateUtil;
-import com.examsys.util.OtherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -82,6 +80,9 @@ public class QuestionLibraryController {
     @Transactional
     public ResponseEntity delQues(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = questionLibraryService.delQues(map);
+        if(responseEntity.getStatus() != 200){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return responseEntity;
     }
 

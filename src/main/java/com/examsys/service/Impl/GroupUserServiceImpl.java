@@ -106,9 +106,7 @@ public class GroupUserServiceImpl{
             }
 
         }
-
         return new ResponseEntity(200,"组内添加学生成功");
-
     }
 
     /**
@@ -198,7 +196,6 @@ public class GroupUserServiceImpl{
                     return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
                 }
             }
-
             return new ResponseEntity(200,"删除成功");
         }else{
             return new ResponseEntity(ErrorMsgEnum.GROUP_ASSISTANT_EXAM_BEGIN);

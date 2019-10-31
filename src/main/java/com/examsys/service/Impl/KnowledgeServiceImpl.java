@@ -1,6 +1,5 @@
 package com.examsys.service.Impl;
 
-import com.alibaba.fastjson.JSON;
 import com.examsys.dao.KnowledgeMapper;
 import com.examsys.dao.QuesKnowledgeMapper;
 import com.examsys.dao.QuestionLibraryMapper;
@@ -10,13 +9,11 @@ import com.examsys.model.QuestionLibrary;
 import com.examsys.model.entity.Keypoint;
 import com.examsys.model.entity.QuesKnowEntity;
 import com.examsys.model.entity.ResponseEntity;
-import com.examsys.model.entity.UserGroupEntity;
 import com.examsys.util.error.ErrorMsgEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +50,6 @@ public class KnowledgeServiceImpl {
             knowledge.setParentId(0);
             knowledgeList.add(knowledge);
         }
-
         return knowledgeList;
     }
 
@@ -87,9 +83,9 @@ public class KnowledgeServiceImpl {
                 knowledgeMapper.updateByPrimaryKey(knowledge);
             }
         }
-
         return new ResponseEntity(200,"更新/编辑成功");
     }
+
 
     /**
      * 添加知识点
@@ -113,7 +109,6 @@ public class KnowledgeServiceImpl {
                     KnowledgeList.add(knowledge);
                 }
             }
-
         }
 
         if(flag!=0){
@@ -134,13 +129,13 @@ public class KnowledgeServiceImpl {
      */
     public ResponseEntity getAllKnowledge(){
         List<Keypoint> knowledgeList = knowledgeMapper.selectAllKeyPoint();
-
         if(knowledgeList == null || knowledgeList.size()==0){
             return new ResponseEntity(ErrorMsgEnum.NO_KNOWLEDGE_IN_DATABASE);
         }else {
             return new ResponseEntity(200,"获取知识点成功",knowledgeList);
         }
     }
+
 
     /**
      * 给多个题目添加知识点
@@ -168,6 +163,7 @@ public class KnowledgeServiceImpl {
         }
         return QuesKnowList;
     }
+
 
     /**
      * 给多个题目添加知识点

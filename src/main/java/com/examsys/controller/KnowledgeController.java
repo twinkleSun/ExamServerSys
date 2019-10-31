@@ -1,16 +1,15 @@
 package com.examsys.controller;
 
 import com.examsys.model.Knowledge;
-import com.examsys.model.QuestionLibrary;
 import com.examsys.model.entity.QuesKnowEntity;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.Impl.KnowledgeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/keypoint")
@@ -54,6 +53,7 @@ public class KnowledgeController {
         return responseEntity;
     }
 
+
     /**
      * 给多个题目添加知识点
      * @param mapRes
@@ -66,6 +66,7 @@ public class KnowledgeController {
         return responseEntity;
     }
 
+
     /**
      * 根据知识点获取题目
      * @param map
@@ -76,6 +77,7 @@ public class KnowledgeController {
         ResponseEntity responseEntity = knowledgeService.getQuesByKonw(map);
         return responseEntity;
     }
+
 
     /**
      * 批量删除知识点

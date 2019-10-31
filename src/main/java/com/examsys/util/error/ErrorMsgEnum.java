@@ -16,6 +16,7 @@ public enum ErrorMsgEnum {
      */
     DATABASE_ERROR(0,"数据库错误"),
 
+
     /**
      * 1开头为用户类错误码
      */
@@ -35,7 +36,6 @@ public enum ErrorMsgEnum {
     /**
      * 2开头为知识点/题库类错误码
      */
-
     NO_QUESTIONS_IN_DATABASE(200001,"数据库中没有题目，请新建"),
     NO_KNOWLEDGE_IN_DATABASE(200002,"数据库中没有知识点，请新建"),
     QUESTION_LIST_IS_NULL(200003,"没有选择题目，请重新选择"),
@@ -45,8 +45,31 @@ public enum ErrorMsgEnum {
     CONTENT_OPTION_IS_DUPLICATE(200007,"相同的题目已存在，请重新修改（题目和选项相同则视为相同）"),
     KNOWLEDGE_ALREADY_EXIST(200008,"相同的知识点已存在，请重新编辑"),
     SAME_KNOWLEDGE_EXIST(200009,"相同的知识点已存在，请重新修改"),
-    QUESTION_ASSISTANT_WITH_PAPER(200010,"有部分题目关联了试卷，不可以删除，题目ID见data")
+    QUESTION_ASSISTANT_WITH_PAPER(200010,"有部分题目关联了试卷，不可以删除，题目ID见data"),
+
+
+    /**
+     * 3开头为试卷相关错误码
+     */
+    NO_PAPERS_EXIST(300001,"不存在试卷"),
+    PAPER_ASSISTANT_WITH_EXAM(300002,"该试卷已和考试关联，不可以删除。被关联的试卷ID见data"),
+    ADMIN_HAS_NO_PAPERS(300003,"该管理员名下没有试卷"),
+
+
+    /**
+     * 4开头为考试相关错误码
+     */
+    NOT_CHOOSE_PAPER(400001,"没有选择试卷，请选择试卷后再提交"),
+    END_EARLY_THAN_BEGIN(400002,"开始日期在结束日期之后,请重新提交"),
+    INCORRECT_DATA_FORMAT(400003,"日期格式错误，请重新编辑"),
+    BEGIN_CAN_NOT_DELETE(400004,"已完成或进行中的考试信息不允许修改"),
+    EXAM_HAS_NO_GROUP(400005,"未添加组,请重新编辑"),
+    STUDENT_HAS_NO_EXAM(400006,"该考生没有考试"),
+    EXAM_HAS_NO_STUDENT(400007,"该场考试还没考生，请添加"),
+    NO_EXAM_LIST(400008,"没有任何考试场次"),
+    EXAM_BEGINS_CAN_NOT_DELETE(400009,"考试已结束或正在继续进行中,不得删除")
     ;
+
 
     /**
      * 错误码
