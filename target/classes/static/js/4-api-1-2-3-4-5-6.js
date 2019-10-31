@@ -134,7 +134,7 @@ $(function(){
     $("#4-api-6").click(function() {
         var str6={
             paper_code: "20191024222222",
-            exam_id:3,
+            exam_id:5,
             stu_id:1
         };
         $.ajax({
