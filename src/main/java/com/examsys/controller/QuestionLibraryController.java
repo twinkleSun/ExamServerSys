@@ -6,15 +6,10 @@ import com.examsys.service.Impl.QuestionLibraryServiceImpl;
 import com.examsys.util.ExcelAnalysisUtil;
 import com.examsys.util.ExcelTemplateUtil;
 import com.examsys.util.OtherUtil;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +22,8 @@ import java.util.Map;
 public class QuestionLibraryController {
 
     @Autowired
-    ExcelAnalysisUtil excelAnalysisUtil;
-
-    @Autowired
     QuestionLibraryServiceImpl questionLibraryService;
 
-    @Autowired
-    ExcelTemplateUtil excelUtil;
-    @Autowired
-    OtherUtil otherUtil;
 
     /**
      * 批量添加题目
@@ -44,17 +32,22 @@ public class QuestionLibraryController {
      */
     @PostMapping(value = "/multi")
     @Transactional
-    public ResponseEntity addNewQusetionsByFront(@RequestBody List<Map<String,Object>> mapRes) {
+    public ResponseEntity addQusetions(@RequestBody List<Map<String,Object>> mapRes) {
         List<QuestionLibrary> questionList=questionLibraryService.handleNewQuestions(mapRes);
         ResponseEntity responseEntity=questionLibraryService.addNewQuestions(questionList);
         return responseEntity;
     }
 
 
+    /**
+     * 添加/编辑题目
+     * @param mapRes
+     * @return
+     */
     @PostMapping(value = "/single")
     @Transactional
-    public ResponseEntity addSingleQusetionsByFront(@RequestBody Map<String,Object> mapRes) {
-        ResponseEntity responseEntity = questionLibraryService.addSingleQuestion(mapRes);
+    public ResponseEntity adOrUpdateQusetion(@RequestBody Map<String,Object> mapRes) {
+        ResponseEntity responseEntity = questionLibraryService.addOrUpdateQuestion(mapRes);
         return responseEntity;
     }
 
@@ -64,13 +57,14 @@ public class QuestionLibraryController {
      * @return
      */
     @GetMapping(value = "/all")
-    public ResponseEntity getAllQuestion() {
+    public ResponseEntity getQuestions() {
         ResponseEntity responseEntity=questionLibraryService.getAllQuestion();
         return responseEntity;
     }
 
+
     /**
-     * 获取所有题目
+     * 根据过滤条件获取题目
      * @return
      */
     @PostMapping(value = "/filter")
@@ -79,11 +73,15 @@ public class QuestionLibraryController {
         return responseEntity;
     }
 
-
-
+    /**
+     * 删除若干题目
+     * @param map
+     * @return
+     */
     @DeleteMapping(value = "/del")
+    @Transactional
     public ResponseEntity delQues(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity=questionLibraryService.delQues(map);
+        ResponseEntity responseEntity = questionLibraryService.delQues(map);
         return responseEntity;
     }
 

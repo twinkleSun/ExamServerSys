@@ -31,7 +31,7 @@ $(function(){
     $("#1-api-10").click(function() {
         var json10={
             id:"",
-            userName:"user",
+            userName:"user1031",
             password:"password2",
             userType:"student",
             group_list:[{

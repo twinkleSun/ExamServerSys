@@ -11,9 +11,12 @@ import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.QuesKnowNameEntity;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.util.error.ErrorMsgEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
@@ -70,17 +73,20 @@ public class QuestionLibraryServiceImpl {
     }
 
 
-
-    public ResponseEntity addSingleQuestion(Map<String,Object> map){
-
-        ResponseEntity responseEntity = new ResponseEntity();
+    /**
+     * 添加/编辑单个题目
+     * @param map
+     * @return
+     */
+    @Transactional
+    public ResponseEntity addOrUpdateQuestion(Map<String,Object> map){
 
         int quesId;
         QuestionLibrary question=new QuestionLibrary();
         question.setType(String.valueOf(map.get("type")));
         question.setContent(String.valueOf(map.get("content")));
         question.setAnswer(JSON.toJSONString(map.get("answer_list")));
-        if(map.get("option_list") ==null || map.get("option_list")==""){
+        if(map.get("option_list") == null || map.get("option_list") ==""){
             question.setOptions("");
         }else {
             question.setOptions(JSON.toJSONString(map.get("option_list")));
@@ -92,48 +98,46 @@ public class QuestionLibraryServiceImpl {
             question.setDescription(String.valueOf(map.get("description")));
         }
 
-        if(map.get("id")== null || map.get("id")==""){
-            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready != null){
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("该题已存在");
-                return responseEntity;
+        //开始处理题目
+        if(map.get("id") == null || map.get("id") == ""){
+            QuestionLibrary questionDB =questionLibraryMapper.selectByQuestion(question);
+            if(questionDB != null){
+                return new ResponseEntity(ErrorMsgEnum.QUESTION_ALREADY_EXIST);
             }else{
                 int tmp= questionLibraryMapper.insert(question);
                 quesId = question.getId();
                 if(tmp<0){
-                    throw new RuntimeException("数据库错误");
+                    return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
                 }
             }
         }else{
             question.setId(Integer.valueOf(map.get("id").toString()));
             quesId = question.getId();
-            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready !=null &&  questionAlready.getId() != question.getId()){
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("相同的content/options记录已经存在，不可如此修改");
-                return responseEntity;
+            QuestionLibrary questionDB =questionLibraryMapper.selectByQuestion(question);
+            if(questionDB !=null &&  questionDB.getId() != question.getId()){
+                return new ResponseEntity(ErrorMsgEnum.CONTENT_OPTION_IS_DUPLICATE);
             }else{
                 int tmp= questionLibraryMapper.updateByPK(question);
                 if(tmp<0){
-                    throw new RuntimeException("数据库错误");
+                    return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
                 }
             }
         }
 
-        if(map.get("knowledge_list") ==null || map.get("knowledge_list")==""){
-
+        //开始处理知识点
+        if(map.get("knowledge_list") == null || map.get("knowledge_list")==""){
+            //知识点为空不处理
         }else{
             List<String> knameList = (List<String>)map.get("knowledge_list");
             int dres = quesKnowledgeMapper.deleteByQuesId(quesId);
-            if(dres<0){
-                throw new RuntimeException("数据库错误");
+            if(dres < 0){
+                return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
             }
 
             for(int i=0;i<knameList.size();i++){
-                String kname = knameList.get(i);
+
                 Knowledge tmpKnow = new Knowledge();
-                tmpKnow.setName(kname);
+                tmpKnow.setName(knameList.get(i));
                 Knowledge knowledge = knowledgeMapper.selectByKnowledge(tmpKnow);
                 int kId = knowledge.getId();
 
@@ -142,18 +146,12 @@ public class QuestionLibraryServiceImpl {
                 quesKnowledge.setQuestionId(quesId);
                 int res = quesKnowledgeMapper.insert(quesKnowledge);
                 if(res <0){
-                    throw new RuntimeException("数据库错误");
+                    return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
                 }
-
-
             }
         }
 
-
-        responseEntity.setMsg("操作成功");
-        responseEntity.setStatus(200);
-
-        return responseEntity;
+        return new ResponseEntity(200,"编辑/更新成功");
     }
 
 
@@ -220,29 +218,31 @@ public class QuestionLibraryServiceImpl {
 //    }
 
 
+    /**
+     * 获取所有题目
+     * @return
+     */
     public ResponseEntity getAllQuestion(){
-        ResponseEntity responseEntity=new ResponseEntity();
         List<QuesKnowNameEntity> questionList = questionLibraryMapper.selectAllWithKnowledgeName();
-
         if(questionList == null || questionList.size()==0){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("没有题目信息");
+            return new ResponseEntity(ErrorMsgEnum.NO_QUESTIONS_IN_DATABASE);
         }else {
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("获取题目成功");
-            responseEntity.setData(questionList);
+            return new ResponseEntity(200,"获取题目成功",questionList);
         }
-
-        return responseEntity;
     }
 
 
+    /**
+     * 根据过滤条件获取题目
+     * @param map
+     * @return
+     */
     public ResponseEntity getQuestionsByFilter(Map<String,Object> map){
-        ResponseEntity responseEntity=new ResponseEntity();
 
         List<String> ques_name_filter=(List<String>)map.get("ques_name_filter");
         List<String> ques_type_filter=(List<String>)map.get("ques_type_filter");
         List<String> ques_knowledge_filter=(List<String>)map.get("ques_knowledge_filter");
+
         String ques_name = "";
         String ques_type = "";
         String ques_knowledge = "";
@@ -250,63 +250,53 @@ public class QuestionLibraryServiceImpl {
         for(int i=0;i<ques_name_filter.size();i++){
             ques_name=ques_name+ques_name_filter.get(i)+"|";
         }
-        if(ques_name!=""){
+        if(ques_name != ""){
             ques_name=ques_name.substring(0,ques_name.length()-1);
         }
-
 
         for(int i=0;i<ques_type_filter.size();i++){
             ques_type=ques_type+ques_type_filter.get(i)+"|";
         }
-        if(ques_type!=""){
+        if(ques_type != ""){
             ques_type=ques_type.substring(0,ques_type.length()-1);
         }
 
 
         for(int i=0;i<ques_knowledge_filter.size();i++){
-            ques_knowledge=ques_knowledge+ques_knowledge_filter.get(i)+"|";
+            ques_knowledge = ques_knowledge+ques_knowledge_filter.get(i)+"|";
         }
-        if(ques_knowledge!=""){
-            ques_knowledge=ques_knowledge.substring(0,ques_knowledge.length()-1);
+        if(ques_knowledge != ""){
+            ques_knowledge = ques_knowledge.substring(0,ques_knowledge.length()-1);
         }
-
 
         List<QuesKnowNameEntity> questionList = questionLibraryMapper.selectByFilter(ques_name,ques_type,ques_knowledge);
-
-        if(questionList == null || questionList.size()==0){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("不存在满足条件的题目");
+        if(questionList == null || questionList.size() == 0){
+            return new ResponseEntity(ErrorMsgEnum.NO_QUESTIONS_FILTER);
         }else {
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("获取成功");
-            responseEntity.setData(questionList);
+            return new ResponseEntity(200,"查询成功",questionList);
         }
-
-        return responseEntity;
     }
 
 
+    /**
+     * 删除若干题目,失败回滚
+     * @param map
+     * @return
+     */
+    @Transactional
     public ResponseEntity delQues(Map<String,Object> map){
-        ResponseEntity responseEntity = new ResponseEntity();
-
         ArrayList<Integer> quesIds = (ArrayList<Integer>)map.get("question_id");
-
-        for(int i=0;i<quesIds.size();i++){
-            List<TestPaperDetail> testPaperDetails = testPaperDetailMapper.selectByQuesId(quesIds.get(i));
-            if(testPaperDetails == null || testPaperDetails.size()==0){
-                //可以删除
-
-                int res2 = quesKnowledgeMapper.deleteByQuesId(quesIds.get(i));
-                int res  = questionLibraryMapper.deleteByPrimaryKey(quesIds.get(i));
-
+        for(int i=0; i<quesIds.size(); i++){
+            List<TestPaperDetail> testPaperDetailsDB = testPaperDetailMapper.selectByQuesId(quesIds.get(i));
+            if(testPaperDetailsDB == null || testPaperDetailsDB.size()==0){
+                quesKnowledgeMapper.deleteByQuesId(quesIds.get(i));
+                questionLibraryMapper.deleteByPrimaryKey(quesIds.get(i));
             }else{
-                responseEntity.setStatus(-1);
-                responseEntity.setMsg("有部分题目已经关联了试卷，不可以删除");
-                return responseEntity;
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return new ResponseEntity(ErrorMsgEnum.QUESTION_ASSISTANT_WITH_PAPER,testPaperDetailsDB.get(0).getQuestionId());
             }
         }
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("删除成功");
-        return responseEntity;
+
+        return new ResponseEntity(200,"删除成功");
     }
 }

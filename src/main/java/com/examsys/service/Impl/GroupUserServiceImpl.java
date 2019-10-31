@@ -157,7 +157,6 @@ public class GroupUserServiceImpl{
         //todo:或者设置下ID索引
         groupUserMapper.deleteByUserId(userId);
 
-
         List<Map<String,Object>> groupList= (List<Map<String, Object>>)map.get("group_list");
 
         //更新用户的组关系
@@ -179,31 +178,31 @@ public class GroupUserServiceImpl{
         return new ResponseEntity(200,"更新用户信息成功");
     }
 
-    public ResponseEntity selectOfNoStart(Map<String,Object> map){
-        ResponseEntity responseEntity = new ResponseEntity();
+    /**
+     * 组删除若干学生
+     * @param map
+     * @return
+     */
+    @Transactional
+    public ResponseEntity groupDelStudents(Map<String,Object> map){
         int groupId = Integer.valueOf(map.get("group_id").toString());
         ArrayList<Integer> stuIds = (ArrayList<Integer>)map.get("student_id");
-        List<GroupUser> groupUserList = groupUserMapper.selectOfNoStart(groupId);
-        if(groupUserList == null || groupUserList.size() == 0){
-            //进行delete
 
-            int flag =200;
+        List<GroupUser> groupUserDB = groupUserMapper.selectOfNoStart(groupId);
+        if(groupUserDB == null || groupUserDB.size() == 0){
+            //进行delete
             for(int i=0;i<stuIds.size();i++){
                 int res = groupUserMapper.delete(groupId,stuIds.get(i));
                 if(res<0){
-                    flag = -1;
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                    return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
                 }
             }
-            responseEntity.setStatus(flag);
-            responseEntity.setMsg("删除成功");
-            //responseEntity.setData(groupUserList);
-            return responseEntity;
-        }else{
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("该组关联的考试已经开始或者结束，组成员不可以修改");
 
+            return new ResponseEntity(200,"删除成功");
+        }else{
+            return new ResponseEntity(ErrorMsgEnum.GROUP_ASSISTANT_EXAM_BEGIN);
         }
-        return responseEntity;
     }
 
 

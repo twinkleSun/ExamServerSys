@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -52,10 +51,9 @@ public class GroupServiceImpl{
             }else{
                 return new ResponseEntity(200,"添加成功",groupFront);
             }
-
         }
-
     }
+
 
     /**
      * 删除若干组
@@ -91,6 +89,7 @@ public class GroupServiceImpl{
         return new ResponseEntity(200,"删除成功");
     }
 
+
     /**
      * 根据学生ID获取所在组
      * @param userId
@@ -106,38 +105,34 @@ public class GroupServiceImpl{
     }
 
 
+    /**
+     * 复制组
+     * @param map
+     * @return
+     */
     public ResponseEntity copyGroup(Map<String,Object> map){
-
-        ResponseEntity responseEntity = new ResponseEntity();
 
         Integer groupId = Integer.valueOf(map.get("group_id").toString());
         String groupName = String.valueOf(map.get("group_name"));
 
-        List<GroupUser> groupUserList= groupUserMapper.selectByGroupId(groupId);
-
-        Group groupAl = groupMapper.selectByName(groupName);
-        if(groupAl == null ){
-
+        Group groupDB = groupMapper.selectByName(groupName);
+        if(groupDB == null ){
+            //开始复制
             Group group = new Group();
             group.setName(groupName);
-            int res2 = groupMapper.insert(group);
+            groupMapper.insert(group);//插入组
+
             int newGroupId = group.getId();
+            List<GroupUser> groupUserList= groupUserMapper.selectByGroupId(groupId);
             for(int i=0;i<groupUserList.size();i++){
                 GroupUser groupUser = groupUserList.get(i);
                 groupUser.setGroupId(newGroupId);
-                int res = groupUserMapper.insert(groupUser);
+                groupUserMapper.insert(groupUser);//插入组-学生关系
             }
+            return new ResponseEntity(200,"组复制成功");
         }else{
-
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("组名已存在");
-            return responseEntity;
+            return new ResponseEntity(ErrorMsgEnum.GROUP_ALREADY_EXIST);
         }
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("成功");
-
-        return responseEntity;
-
     }
 
 }

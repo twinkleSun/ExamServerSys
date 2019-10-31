@@ -86,9 +86,18 @@ public class GroupUserController {
     }
 
 
+    /**
+     * 组删除若干学生
+     * @param map
+     * @return
+     */
     @DeleteMapping("/usergroup/del")
+    @Transactional
     public ResponseEntity deleteRelation(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = groupUserService.selectOfNoStart(map);
+        ResponseEntity responseEntity = groupUserService.groupDelStudents(map);
+        if(responseEntity.getStatus() != 200){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return responseEntity;
     }
 
