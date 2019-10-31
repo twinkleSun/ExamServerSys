@@ -31,7 +31,7 @@
     select t.id, paper_code, t.create_time, t.last_modified_time, t.create_user_id user_id, t.title, t.description,
     u.name user_name
     from test_paper t
-    left join `user` u on u.id = t.create_user_id and u.del_tag=1
+    left join `user` u on u.id = t.create_user_id
 
   </select>
 

@@ -95,11 +95,11 @@
         <result column="must_or_not" property="mustOrNot"></result>
         <result column="description" property="description"></result>
         <result column="student_answer" property="student_answer"></result>
+        <result column="stamp" property="stamp"></result>
       </collection>
     </collection>
   </resultMap>
 
-  <!--获取单个试卷详情-->
   <select id="selectStuPaper" resultMap="stuPaperEntity">
         SELECT t.paper_code paper_code,t.category_content category_content,
                t.question_id qid,t.must_or_not must_or_not,t.score score,
@@ -107,7 +107,8 @@
                p.create_time create_time,p.last_modified_time last_modified_time,
                p.title title,p.description paper_description,p.create_user_id create_user_id,
                q.id ques_id,
-               if(IFNULL(spd.student_answer,"")="","",spd.student_answer) student_answer
+               if(IFNULL(spd.student_answer,"")="","",spd.student_answer) student_answer,
+               spd.stamp stamp
         FROM test_paper_detail t
         left join test_paper p on t.paper_code=p.paper_code
         LEFT JOIN question_library q on q.id=t.question_id

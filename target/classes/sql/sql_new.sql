@@ -9,7 +9,6 @@ CREATE TABLE `user` (
   `name` varchar(20) NOT NULL COMMENT '用户名',
   `password` varchar(45) NOT NULL COMMENT '用户密码',
   `role` VARCHAR (10) NOT NULL COMMENT '用户类型:student/admin',
-  `del_tag` int(2) default null comment '用户删除标志',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
@@ -161,6 +160,7 @@ CREATE TABLE `student_point`(
   `extra_point` DOUBLE(4,2) default null comment '附加分',
   `paper_total_point` DOUBLE(4,2) default null comment '总分',
   `student_total_point` DOUBLE(4,2) default null comment '学生总分',
+  `end_flag` int(11) default 1 comment'结束考试标志',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -181,6 +181,7 @@ CREATE TABLE `student_point_detail` (
   `student_answer` VARCHAR (255) DEFAULT NULL COMMENT '考生答案',
   `student_point` DOUBLE(4,2) DEFAULT NULL COMMENT '考生分数',
   `question_status` int(11) default null comment '1为已批改，0为未批改',
+  `stamp` int(2) default 0 comment'学生前端标记',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

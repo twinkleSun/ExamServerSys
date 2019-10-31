@@ -34,4 +34,6 @@ public interface StudentPointDetailMapper {
 
     int updateStuAnswer(StudentPointDetail studentPointDetail);
 
+    int deleteByStuId(int stuId);
+
 }

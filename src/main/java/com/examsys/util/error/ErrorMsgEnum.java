@@ -67,7 +67,8 @@ public enum ErrorMsgEnum {
     STUDENT_HAS_NO_EXAM(400006,"该考生没有考试"),
     EXAM_HAS_NO_STUDENT(400007,"该场考试还没考生，请添加"),
     NO_EXAM_LIST(400008,"没有任何考试场次"),
-    EXAM_BEGINS_CAN_NOT_DELETE(400009,"考试已结束或正在继续进行中,不得删除")
+    EXAM_BEGINS_CAN_NOT_DELETE(400009,"考试已结束或正在继续进行中,不得删除"),
+    EXAM_END_CANNOT_IN(400010,"考试已结束，不可再次进入")
     ;
 
 

@@ -8,6 +8,7 @@ $(function(){
             exam_id: 3,
             paper_code: 20191008193539,
             student_id: 1,
+            end_flag:0,
             paper_status: [
                 {
                     id: 6,
@@ -16,6 +17,7 @@ $(function(){
                     description: "描述测试1",
                     total_point: 10,
                     mustOrNot: 0,
+                    stamp:1,
                     student_answer: [{id:0, content:"选项一内容"}]
                 },
                 {
@@ -25,6 +27,7 @@ $(function(){
                     description: "简答题2追加描述",
                     total_point: 20,
                     mustOrNot: 0,
+                    stamp:0,
                     student_answer: "学生1填写的答案2"
                 }
             ]

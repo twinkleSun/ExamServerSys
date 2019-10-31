@@ -9,6 +9,7 @@ import com.examsys.dao.TestPaperDetailMapper;
 import com.examsys.model.StudentPoint;
 import com.examsys.model.StudentPointDetail;
 import com.examsys.model.entity.*;
+import com.examsys.util.error.ErrorMsgEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class StudentPointServiceImpl {
         String paper_code = String.valueOf(map.get("paper_code"));
         int exam_id = Integer.valueOf(map.get("exam_id").toString());
         int student_id = Integer.valueOf(map.get("student_id").toString());
+        int endFlag =  Integer.valueOf(map.get("end_flag").toString());
         List<Map<String,Object>> paper_status = (List<Map<String,Object>>)map.get("paper_status");
 
         double def_total_point = 0.0;
@@ -46,7 +48,18 @@ public class StudentPointServiceImpl {
             Map<String,Object> stuQues = paper_status.get(i);
             int id = Integer.valueOf(stuQues.get("id").toString());//question的ID
             double total_point = Double.valueOf(stuQues.get("total_point").toString());
-            String student_answer = JSON.toJSONString(stuQues.get("student_answer"));
+            String student_answer;
+            if (stuQues.get("student_answer") == null || stuQues.get("student_answer") == "") {
+                student_answer = JSON.toJSONString("");
+            }else{
+                student_answer = JSON.toJSONString(stuQues.get("student_answer"));
+            }
+            int stamp;
+            if (stuQues.get("stamp") == null || stuQues.get("stamp") == "") {
+                stamp =0;
+            }else {
+                stamp = (int)stuQues.get("stamp");
+            }
 
             StudentPointDetail studentPointDetail = new StudentPointDetail();
             studentPointDetail.setQuestionId(id);
@@ -56,11 +69,13 @@ public class StudentPointServiceImpl {
             studentPointDetail.setQuestionStatus(0);
             studentPointDetail.setDefPoint(total_point);
             studentPointDetail.setStudentAnswer(student_answer);
+            studentPointDetail.setStamp(stamp);
             def_total_point = def_total_point + total_point;
 
             StudentPointDetail alreadyStuRecord = studentPointDetailMapper.selectByIds(studentPointDetail);
             if (alreadyStuRecord != null){
                 alreadyStuRecord.setStudentAnswer(studentPointDetail.getStudentAnswer());
+                alreadyStuRecord.setStamp(studentPointDetail.getStamp());
                 studentPointDetailMapper.updateStuAnswer(alreadyStuRecord);
             }else {
                 studentPointDetailMapper.insert(studentPointDetail);
@@ -75,10 +90,12 @@ public class StudentPointServiceImpl {
         studentPoint.setSubjectiveStatus(0);
         studentPoint.setObjectiveStatus(0);
         studentPoint.setPaperCode(paper_code);
+        studentPoint.setEndFlag(endFlag);
 
         StudentPoint alreadyStuRecord = studentPointMapper.selectByIds(studentPoint);
         if(alreadyStuRecord != null){
             alreadyStuRecord.setPaperTotalPoint(studentPoint.getPaperTotalPoint());
+            alreadyStuRecord.setEndFlag(studentPoint.getEndFlag());
             studentPointMapper.updateTotalPoint(alreadyStuRecord);
         }else{
             studentPointMapper.insert(studentPoint);
@@ -169,8 +186,18 @@ public class StudentPointServiceImpl {
         String paperCode = String.valueOf(map.get("paper_code"));
         int stuId = Integer.valueOf(map.get("stu_id").toString());
         int examId = Integer.valueOf(map.get("exam_id").toString());
-        TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
-        return new ResponseEntity(200,"查询成功",testPaperList);
+
+        StudentPoint studentPoint = new StudentPoint();
+        studentPoint.setExamId(examId);
+        studentPoint.setStudentId(stuId);
+        StudentPoint studentPointDB = studentPointMapper.selectByIds(studentPoint);
+        if( studentPointDB == null ||studentPointDB.getEndFlag() == 1){
+            TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
+            return new ResponseEntity(200,"查询成功",testPaperList);
+        }else{
+            return new ResponseEntity(ErrorMsgEnum.EXAM_END_CANNOT_IN);
+        }
+
     }
 
 

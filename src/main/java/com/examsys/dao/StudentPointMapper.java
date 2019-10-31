@@ -27,4 +27,6 @@ public interface StudentPointMapper {
     int updateByPK(StudentPoint studentPoint);
 
     int updateTotalPoint(StudentPoint studentPoint);
+
+    int deleteByStuId(int stuId);
 }

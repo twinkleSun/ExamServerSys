@@ -23,7 +23,7 @@
     select g.id id, g.name name from `group` g
     left join group_user gu on g.id=gu.group_id
     left join `user` u on gu.student_id=u.id
-    where u.id = #{userId} and u.del_tag =1
+    where u.id = #{userId}
   </select>
 
 

@@ -1,6 +1,8 @@
 package com.examsys.service.Impl;
 
 import com.examsys.dao.GroupUserMapper;
+import com.examsys.dao.StudentPointDetailMapper;
+import com.examsys.dao.StudentPointMapper;
 import com.examsys.dao.UserMapper;
 import com.examsys.model.GroupUser;
 import com.examsys.model.User;
@@ -10,6 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,6 +32,10 @@ public class UserServiceImpl{
     UserMapper userMapper;
     @Autowired
     GroupUserMapper groupUserMapper;
+    @Autowired
+    StudentPointDetailMapper studentPointDetailMapper;
+    @Autowired
+    StudentPointMapper studentPointMapper;
 
 
     /**
@@ -132,11 +139,16 @@ public class UserServiceImpl{
      * @param map
      * @return
      */
+    @Transactional
     public ResponseEntity deleteUsers(Map<String,Object> map){
         ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("student_id");
         for(int i=0;i<userIds.size();i++){
             int userId = userIds.get(i);
-            userMapper.updateDelTagById(userId);
+            studentPointDetailMapper.deleteByStuId(userId);
+            studentPointMapper.deleteByStuId(userId);
+            groupUserMapper.deleteByUserId(userId);
+            userMapper.deleteByPrimaryKey(userId);
+
         }
         return new ResponseEntity(200,"删除成功");
     }
