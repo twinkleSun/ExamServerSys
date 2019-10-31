@@ -7,27 +7,23 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
   </resultMap>
 
-  <!--根据组名查找组-->
   <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select id, `name` from `group` where `name` = #{groupName}
   </select>
 
-  <!--新建组,设置主键自增-->
   <insert id="insert"  useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Group">
     insert into `group` (id, `name`) values (#{id}, #{name})
   </insert>
 
-  <!--删除组-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `group` where id = #{id,jdbcType=INTEGER}
   </delete>
 
-  <!--根据组名查找组-->
   <select id="selectByUserId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select g.id id, g.name name from `group` g
     left join group_user gu on g.id=gu.group_id
-    left join user u on gu.student_id=u.id
-    where u.id = #{userId}
+    left join `user` u on gu.student_id=u.id
+    where u.id = #{userId} and u.del_tag =1
   </select>
 
 
@@ -42,12 +38,12 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, name
+    select id, `name`
     from `group`
     where id = #{id,jdbcType=INTEGER}
   </select>
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, name from `group`
+    select id, `name` from `group`
   </select>
 
 

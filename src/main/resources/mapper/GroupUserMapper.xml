@@ -2,19 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.examsys.dao.GroupUserMapper">
 
-
     <resultMap id="BaseResultMap" type="com.examsys.model.GroupUser" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="group_id" property="groupId" jdbcType="INTEGER" />
         <result column="student_id" property="studentId" jdbcType="INTEGER" />
     </resultMap>
 
-
     <select id="selectOfNoStart" parameterType="java.lang.Integer" resultMap="groupUser">
         SELECT gu.group_id,gu.student_id
         from  group_user gu
         inner JOIN exam_group eg on eg.group_id = gu.group_id
         inner join exam e on e.id = eg.exam_id and (e.status = "进行中" or  e.status = "已结束")
+        inner join `user` u on u.id = gu.student_id and u.del_tag = 1
         where gu.group_id=#{groupId}
     </select>
 
@@ -33,7 +32,7 @@
         SELECT g.id group_id,g.name group_name,u.id id,u.name user_name
         FROM `group` g
         LEFT JOIN  group_user gu on g.id=gu.group_id
-        LEFT JOIN `user` u on gu.student_id=u.id
+        LEFT JOIN `user` u on gu.student_id=u.id and u.del_tag = 1
     </select>
 
     <!--获取考生所有列表-->
@@ -41,7 +40,7 @@
         SELECT eg.group_id group_id,g.name group_name,u.id id,u.name user_name
         FROM `exam_group` eg, `group` g,`group_user` gu,`user` u
         where eg.group_id = g.id and eg.group_id = gu.group_id and gu.student_id = u.id
-            and eg.exam_id = #{exam_id,jdbcType=INTEGER}
+            and eg.exam_id = #{exam_id,jdbcType=INTEGER} and u.del_tag=1
     </select>
 
 
@@ -64,7 +63,7 @@
         FROM `user` u
         LEFT JOIN  group_user gu on u.id=gu.student_id
         LEFT JOIN `group` g on gu.group_id=g.id
-        where u.role="student"
+        where u.role="student" and u.del_tag=1
     </select>
 
     <!--根据组ID查询学生,删除组时用到-->
@@ -78,7 +77,7 @@
         FROM `group` g
         LEFT JOIN  group_user gu on g.id=gu.group_id
         LEFT JOIN `user` u on gu.student_id=u.id
-        where g.id=#{groupId}
+        where g.id=#{groupId} and u.del_tag=1
     </select>
 
     <select id="selectByGroupUser" parameterType="com.examsys.model.GroupUser" resultMap="BaseResultMap">

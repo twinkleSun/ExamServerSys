@@ -9,6 +9,7 @@ CREATE TABLE `user` (
   `name` varchar(20) NOT NULL COMMENT '用户名',
   `password` varchar(45) NOT NULL COMMENT '用户密码',
   `role` VARCHAR (10) NOT NULL COMMENT '用户类型:student/admin',
+  `del_tag` int(2) default null comment '用户删除标志',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 

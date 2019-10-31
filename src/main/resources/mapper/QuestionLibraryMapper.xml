@@ -22,7 +22,6 @@
   </update>
 
 
-  <!--新建试卷-->
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.QuestionLibrary" >
     insert into question_library (id, content, options,
       answer, `type`,description)
@@ -30,19 +29,16 @@
       #{answer,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR})
   </insert>
 
-  <!--根据内容和选项查询-->
   <select id="selectByQuestion" parameterType="com.examsys.model.QuestionLibrary" resultMap="BaseResultMap">
     select id, content, options, answer, `type`,description
     from question_library
     where content = #{content} and options=#{options}
   </select>
 
-  <!--获取所有题目-->
   <select id="selectAll" resultMap="BaseResultMap">
     select id, content, options, answer, `type`,description
     from question_library
   </select>
-
 
   <resultMap id="quesKnowNameEntity" type="com.examsys.model.entity.QuesKnowNameEntity">
     <id column="id" property="id" jdbcType="INTEGER" />
@@ -65,8 +61,6 @@
     left join knowledge k on k.id = qk.knowledge_id
   </select>
 
-
-  <!--根据内容和选项查询-->
   <select id="selectByFilter" parameterType="java.lang.String" resultMap="quesKnowNameEntity">
     select q1.id ,q1.content,q1.options, q1.answer,q1.type,q1.description,
            kl.name knowledge

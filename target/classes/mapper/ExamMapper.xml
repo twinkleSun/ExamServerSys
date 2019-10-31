@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.examsys.dao.ExamMapper">
 
-
   <resultMap id="BaseResultMap" type="com.examsys.model.Exam" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="exam_name" property="examName" jdbcType="VARCHAR" />
@@ -25,21 +24,17 @@
   </update>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
+    select id, exam_name, paper_code, begin_time, end_time, duration,status from exam
     where id = #{id,jdbcType=INTEGER}
   </select>
-
 
   <select id="selectByPaperCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
-    where paper_code = #{paperCode}
+    from exam where paper_code = #{paperCode}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from exam
-    where id = #{id,jdbcType=INTEGER}
+    delete from exam where id = #{id,jdbcType=INTEGER}
   </delete>
 
   <!--根据用户ID查询考试列表-->
@@ -52,46 +47,15 @@
   </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
-        insert into exam (id, exam_name, paper_code,
-        begin_time, end_time, duration,status
-        )
+        insert into exam (id, exam_name, paper_code,begin_time, end_time, duration,status)
         values (#{id,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR},
         #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR},
-        #{status,jdbcType=VARCHAR}
-        )
+        #{status,jdbcType=VARCHAR})
     </insert>
 
-
-
   <update id="updateExamStatus" parameterType="com.examsys.model.Exam">
-    update exam set
-      status = #{status,jdbcType=VARCHAR}
+    update exam set status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
-  </select>
-
-
 
 </mapper>

@@ -61,6 +61,31 @@ $(function(){
     });
 
 
+
+
+    $("#1-api-11").click(function() {
+        var json11={
+            student_id: [1,3]
+        };
+        $.ajax({
+            url: "/upi/user/multi",
+            type: "delete",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(json11),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
     $("#1-api-12").click(function() {
         var json12={
             group_id:[4]

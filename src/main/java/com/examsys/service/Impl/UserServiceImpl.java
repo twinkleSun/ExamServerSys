@@ -128,30 +128,17 @@ public class UserServiceImpl{
 
 
     /**
-     * 删除若干考生
-     * todo：暂不可用
+     * 删除若干考生,设置del_tag=0
      * @param map
      * @return
      */
     public ResponseEntity deleteUsers(Map<String,Object> map){
-        ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("id");
-
+        ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("student_id");
         for(int i=0;i<userIds.size();i++){
-            List<GroupUser> groupUsers=groupUserMapper.selectByUserId(userIds.get(i));
-            if (groupUsers==null ||groupUsers.size()==0){
-
-                //todo:加上试卷后需要改动
-            }else {
-                int delRelation=groupUserMapper.deleteByUserId(userIds.get(i));
-            }
-
-            int delRes=userMapper.deleteByPrimaryKey(userIds.get(i));
+            int userId = userIds.get(i);
+            userMapper.updateDelTagById(userId);
         }
-
-        ResponseEntity responseEntity=new ResponseEntity();
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("删除成功");
-        return responseEntity;
+        return new ResponseEntity(200,"删除成功");
     }
 
 

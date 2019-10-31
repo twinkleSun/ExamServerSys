@@ -54,7 +54,7 @@ public class UserController {
     public ResponseEntity addNewStudent(
             @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles)throws IllegalStateException, IOException{
         MultipartFile file=multipartFiles[0];
-        ResponseEntity responseEntity=userService.addNewUsers(file);
+        ResponseEntity responseEntity = userService.addNewUsers(file);
         return responseEntity;
     }
 
@@ -77,12 +77,11 @@ public class UserController {
 
 
     /**
-     * todo:删除若干考生
+     * 删除若干考生
      * @param map
      * @return
      */
     @DeleteMapping("/multi")
-    @Transactional
     public ResponseEntity deleteUsers(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = userService.deleteUsers(map);
         return responseEntity;
