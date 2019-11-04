@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +94,7 @@ public class QuestionLibraryController {
 //    public ResponseEntity addNewQuestionByExcel(
 //            @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles)throws IllegalStateException, IOException {
 //        MultipartFile file=multipartFiles[0];
-//        List<Questioninfo> questioninfoList=excelAnalysisUtil.addNewQuestion(file);
+//        List<QuestionLibrary> questioninfoList=excelAnalysisUtil.addNewQuestion(file);
 //        ResponseEntity responseEntity=questioninfoService.addNewQuestions(questioninfoList);
 //        return responseEntity;
 //    }
