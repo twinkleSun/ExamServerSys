@@ -1,5 +1,12 @@
 package com.examsys.model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Setter
+@Getter
 public class StudentPoint {
     private Integer id;
 
@@ -23,9 +30,11 @@ public class StudentPoint {
 
     private Integer examId;
 
-
-
     private Integer endFlag;
+
+    private String inTime;
+
+    private Long leftTime;
 
     public Integer getId() {
         return id;

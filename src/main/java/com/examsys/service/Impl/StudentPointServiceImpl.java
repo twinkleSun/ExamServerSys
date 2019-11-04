@@ -3,9 +3,11 @@ package com.examsys.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.examsys.dao.ExamMapper;
 import com.examsys.dao.StudentPointDetailMapper;
 import com.examsys.dao.StudentPointMapper;
 import com.examsys.dao.TestPaperDetailMapper;
+import com.examsys.model.Exam;
 import com.examsys.model.StudentPoint;
 import com.examsys.model.StudentPointDetail;
 import com.examsys.model.entity.*;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,10 @@ public class StudentPointServiceImpl {
     StudentPointMapper studentPointMapper;
     @Autowired
     TestPaperDetailMapper testPaperDetailMapper;
+    @Autowired
+    ExamMapper examMapper;
+
+
     /**
      * 学生答题
      * @param map
@@ -190,9 +198,39 @@ public class StudentPointServiceImpl {
         StudentPoint studentPoint = new StudentPoint();
         studentPoint.setExamId(examId);
         studentPoint.setStudentId(stuId);
+        studentPoint.setPaperCode(paperCode);
         StudentPoint studentPointDB = studentPointMapper.selectByIds(studentPoint);
-        if( studentPointDB == null ||studentPointDB.getEndFlag() == 1){
+        if( studentPointDB == null || studentPointDB.getEndFlag() == 1){
+            Exam exam = examMapper.selectByPrimaryKey(examId);
+            if(studentPointDB == null){
+                //新建
+                Date now = new Date();
+                studentPoint.setInTime(String.valueOf(now.getTime()));
+                studentPoint.setLeftTime(exam.getDuration());
+                studentPointMapper.insertIds(studentPoint);
+            }else{
+                try{
+                    SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    Date endDate = dateFormatTime.parse(exam.getEndTime());
+                    Long endTime = endDate.getTime();
+
+                    Long inTime = Long.valueOf(studentPointDB.getInTime());
+                    Long durationTime = exam.getDuration();
+                    Date now = new Date();
+                    Long nowTime = now.getTime();
+
+                    Long leftTime = Math.min(inTime + durationTime -nowTime,endTime-nowTime);
+
+                    studentPoint.setLeftTime(leftTime);
+
+                }catch (Exception e){
+
+                }
+
+            }
+
             TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
+            testPaperList.setLeftTime(studentPoint.getLeftTime());
             return new ResponseEntity(200,"查询成功",testPaperList);
         }else{
             return new ResponseEntity(ErrorMsgEnum.EXAM_END_CANNOT_IN);

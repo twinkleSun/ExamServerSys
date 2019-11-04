@@ -45,7 +45,7 @@ public class ExamServiceImpl{
         SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         exam.setBeginTime(String.valueOf(map.get("begin_time")));
         exam.setEndTime(String.valueOf(map.get("end_time")));
-        exam.setDuration(String.valueOf(map.get("duration")));
+        exam.setDuration(Long.valueOf(map.get("duration").toString()));
 
         try{
             Date dtBegin = dateFormatTime.parse(exam.getBeginTime());

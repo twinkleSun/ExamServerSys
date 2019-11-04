@@ -12,7 +12,10 @@ import java.util.List;
 public interface StudentPointMapper {
 
     StudentPoint selectByIds(StudentPoint studentPoint);
+
     int deleteByPrimaryKey(Integer id);
+
+    int insertIds(StudentPoint studentPoint);
 
     int insert(StudentPoint record);
 

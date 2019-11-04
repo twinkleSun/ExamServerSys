@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ExamsysApplicationTests {
@@ -42,6 +45,24 @@ public class ExamsysApplicationTests {
 //            e.printStackTrace();
 //        }
 //
+
+        Date now = new Date();
+        SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        dateFormatTime.format(now);
+        try{
+            Date date=dateFormatTime.parse("2019-11-04 21:00:00");//将String字符串类型转换为date时间类型
+            Long zero=date.getTime();//获取date的值
+            System.out.println("zero="+zero);
+            Date date2 = new Date();
+
+            date2.getTime();
+            System.out.println("date2="+date2.getTime());
+        }catch (Exception w){
+
+        }
+
+
 
     }
 

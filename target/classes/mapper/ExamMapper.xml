@@ -8,7 +8,7 @@
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
     <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
-    <result column="duration" property="duration" jdbcType="VARCHAR" />
+    <result column="duration" property="duration" />
     <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
 
@@ -19,7 +19,7 @@
       begin_time = #{beginTime,jdbcType=VARCHAR},
       end_time = #{endTime,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      duration = #{duration,jdbcType=VARCHAR}
+      duration = #{duration}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -49,7 +49,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
         insert into exam (id, exam_name, paper_code,begin_time, end_time, duration,status)
         values (#{id,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR},
-        #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR},
+        #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration},
         #{status,jdbcType=VARCHAR})
     </insert>
 
@@ -68,7 +68,7 @@
         <result column="exam_name" property="examName" jdbcType="VARCHAR" />
         <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
         <result column="end_time" property="endTime" jdbcType="VARCHAR" />
-        <result column="duration" property="duration" jdbcType="VARCHAR" />
+        <result column="duration" property="duration" />
         <result column="status" property="status" jdbcType="VARCHAR" />
         <collection property="paper_info" ofType="java.util.Map">
             <id column="pid" property="id" jdbcType="INTEGER" />

@@ -21,7 +21,7 @@ public class ExamEntity {
 
     private String endTime;
 
-    private String duration;
+    private int duration;
 
     private String status;
 

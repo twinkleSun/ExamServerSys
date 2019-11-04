@@ -76,13 +76,12 @@
 
   <resultMap id="stuPaperEntity" type="com.examsys.model.entity.TestPaperListEntity">
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
-
     <result column="create_time" property="createTime" jdbcType="VARCHAR" />
     <result column="last_modified_time" property="lastModifiedTime" jdbcType="VARCHAR" />
     <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
     <result column="title" property="title" jdbcType="VARCHAR" />
     <result column="paper_description" property="paperDescription" jdbcType="VARCHAR" />
-
+    <result column="left_time" property="leftTime" />
     <collection property="categoryList" ofType="com.examsys.model.entity.TestPaperEntity">
       <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
       <result column="category_content" property="categoryContent" jdbcType="VARCHAR" />
@@ -107,11 +106,13 @@
                p.create_time create_time,p.last_modified_time last_modified_time,
                p.title title,p.description paper_description,p.create_user_id create_user_id,
                q.id ques_id,
+               sp.left_time left_time,
                if(IFNULL(spd.stamp ,"")="",0,spd.stamp ) stamp,
                if(IFNULL(spd.student_answer,"")="","",spd.student_answer) student_answer
         FROM test_paper_detail t
         left join test_paper p on t.paper_code=p.paper_code
         LEFT JOIN question_library q on q.id=t.question_id
+        left join student_point sp on sp.student_id=#{stuId} and sp.exam_id = #{examId}
         left join student_point_detail spd on spd.question_id = t.question_id and spd.student_id=#{stuId} and spd.exam_id = #{examId}
         where t.paper_code=#{paperCode}
     </select>
