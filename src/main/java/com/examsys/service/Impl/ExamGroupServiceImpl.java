@@ -2,6 +2,7 @@ package com.examsys.service.Impl;
 
 import com.examsys.dao.ExamMapper;
 import com.examsys.model.Exam;
+import com.examsys.model.entity.ExamEntity;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.util.error.ErrorMsgEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,22 +67,45 @@ public class ExamGroupServiceImpl {
     }
 
 
+
+    /**
+     * 处理考试状态
+     * @param examEntity
+     * @return
+     */
+    public ExamEntity handleExamEntity(ExamEntity examEntity){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String current = simpleDateFormat.format(new java.util.Date());
+
+        if(current.compareTo(examEntity.getBeginTime()) <= 0)  {
+            examEntity.setStatus("未开始");
+        } else if(current.compareTo(examEntity.getBeginTime()) > 0 && current.compareTo(examEntity.getEndTime()) <= 0){
+            examEntity.setStatus("进行中");
+        } else if(current.compareTo(examEntity.getEndTime()) > 0) {
+            examEntity.setStatus("已结束");
+        }
+        return examEntity;
+    }
+
     /**
      * 管理员获取考试列表
      * @return
      */
     public ResponseEntity getExamListByAdmin() {
-        List<Exam> examList = examMapper.selectAll();
+        List<ExamEntity> examList = examMapper.selectWithPaper();
         if(examList == null || examList.size()==0){
             return new ResponseEntity(ErrorMsgEnum.NO_EXAM_LIST);
         }
 
         for(int i = 0; i < examList.size(); i++) {
-            Exam exam = examList.get(i);
-            if(exam.getStatus().equals("未开始") || exam.getStatus().equals("0")) {
-                exam = handleExamStatus(exam);
+            ExamEntity examEntity = examList.get(i);
+            if(examEntity.getStatus().equals("未开始") || examEntity.getStatus().equals("0")) {
+                examEntity = handleExamEntity(examEntity);
             }
-            examMapper.updateExamStatus(exam);
+            Exam examDB = new Exam();
+            examDB.setId(examEntity.getId());
+            examDB.setStatus(examEntity.getStatus());
+            examMapper.updateExamStatus(examDB);
         }
         return new ResponseEntity(200,"查询成功",examList);
     }

@@ -58,4 +58,36 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, exam_name, paper_code, begin_time, end_time, duration,status from exam
+  </select>
+
+
+    <resultMap id="examWithPaper" type="com.examsys.model.entity.ExamEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="exam_name" property="examName" jdbcType="VARCHAR" />
+        <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
+        <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+        <result column="duration" property="duration" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <collection property="paper_info" ofType="java.util.Map">
+            <id column="pid" property="id" jdbcType="INTEGER" />
+            <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+            <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+            <result column="last_modified_time" property="lastModifiedTime" jdbcType="VARCHAR" />
+            <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+            <result column="title" property="title" jdbcType="VARCHAR" />
+            <result column="description" property="description" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+   <select id="selectWithPaper" resultMap="examWithPaper" >
+    select e.id, e.exam_name, e.paper_code, e.begin_time, e.end_time, e.duration,e.status,
+          t.id pid, t.create_time, t.last_modified_time, t.create_user_id, t.title, t.description
+     from exam e
+     left join test_paper t on e.paper_code = t.paper_code
+
+  </select>
+
+
 </mapper>

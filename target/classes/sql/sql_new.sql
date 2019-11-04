@@ -161,6 +161,8 @@ CREATE TABLE `student_point`(
   `paper_total_point` DOUBLE(4,2) default null comment '总分',
   `student_total_point` DOUBLE(4,2) default null comment '学生总分',
   `end_flag` int(11) default 1 comment'结束考试标志',
+  `left_time` varchar(255) default null comment'距离考试剩余时间',
+  `in_time` varchar(255) default null comment'进场时间',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`exam_id`) REFERENCES `exam` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
