@@ -6,8 +6,8 @@ $(function(){
 
     $("#1-api-7").click(function() {
         var json7={
-            group_id: "1",
-            student_id: [ 2, 3]
+            group_id: 1,
+            student_id: [5, 9]
         };
         $.ajax({
             url: "/upi/groupuser",

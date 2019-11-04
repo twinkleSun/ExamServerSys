@@ -36,19 +36,31 @@ public class GroupServiceImpl{
 
 
     /**
-     * 添加单个组
-     * @param groupName
+     * 添加单个组/修改组名
+     * @param map
      * @return
      */
-    public ResponseEntity addSingleGroup(String groupName){
+    public ResponseEntity addSingleGroup(Map<String,Object> map){
+        String groupName = map.get("groupName").toString();
+        int id = (int)map.get("id");
         Group groupDB = groupMapper.selectByName(groupName);
-        if(groupDB!=null){
-            return new ResponseEntity(ErrorMsgEnum.GROUP_ALREADY_EXIST);
+        Group groupFront = new Group(id,groupName);
+        if(id == 0){
+            if(groupDB!=null){
+                return new ResponseEntity(ErrorMsgEnum.GROUP_ALREADY_EXIST);
+            }else{
+                groupMapper.insert(groupFront);
+                return new ResponseEntity(200,"添加成功",groupFront);
+            }
         }else{
-            Group groupFront = new Group(0,groupName);
-            groupMapper.insert(groupFront);
-            return new ResponseEntity(200,"添加成功",groupFront);
+            if(groupDB != null && groupDB.getId() != id){
+                return new ResponseEntity(ErrorMsgEnum.GROUP_ALREADY_EXIST);
+            }else{
+                groupMapper.updateByPrimaryKey(groupFront);
+                return new ResponseEntity(200,"修改成功",groupFront);
+            }
         }
+
     }
 
 

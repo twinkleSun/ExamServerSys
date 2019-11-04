@@ -81,7 +81,7 @@ public class GroupUserServiceImpl{
      * @return
      */
     @Transactional
-    public ResponseEntity addNewGroupUser(Map<String,Object> map){
+    public ResponseEntity updateGroupUser(Map<String,Object> map){
 
         int groupId=Integer.parseInt(String.valueOf(map.get("group_id")));
         ArrayList<Integer> stuObj=(ArrayList<Integer>)map.get("student_id");
@@ -89,22 +89,16 @@ public class GroupUserServiceImpl{
         GroupUser groupUser=new GroupUser();
         groupUser.setGroupId(groupId);
 
+        //删除所有关系
+        groupUserMapper.deleteByGroupId(groupId);
+
         for(int i=0; i<stuObj.size(); i++){
             groupUser.setStudentId(stuObj.get(i));
-            //查询数据库中关系是否存在
-            GroupUser groupUserDB = groupUserMapper.selectByGroupUser(groupUser);
-            if(groupUserDB == null){
-                int res = groupUserMapper.insert(groupUser);
-                if(res<0){
-                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                    return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
-                }
-            }else{
-                String errMsg = "该组已经包含此学生，组ID为"+groupId+",学生ID为"+stuObj.get(i);
+            int res = groupUserMapper.insert(groupUser);
+            if(res<0){
                 TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-                return new ResponseEntity(ErrorMsgEnum.GROUP_CONTAINS_STUDENT_ALREADY,errMsg);
+                return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
             }
-
         }
         return new ResponseEntity(200,"组内添加学生成功");
     }

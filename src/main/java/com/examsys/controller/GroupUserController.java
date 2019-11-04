@@ -56,14 +56,14 @@ public class GroupUserController {
 
 
     /**
-     * 向某个组添加学生,添加失败则回滚
+     * 组内编辑学生，添加/删除
      * @param map
      * @return
      */
     @PostMapping("/groupuser")
     @Transactional
     public ResponseEntity addNewStudent(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = groupUserService.addNewGroupUser(map);
+        ResponseEntity responseEntity = groupUserService.updateGroupUser(map);
         if(responseEntity.getStatus() != 200){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         }

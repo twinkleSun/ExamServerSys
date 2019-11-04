@@ -21,13 +21,13 @@ public class GroupController {
 
 
     /**
-     * 添加单个组
+     * 添加单个组/修改组名
      * @param map
      * @return
      */
     @PostMapping("/single")
-    public ResponseEntity addSingleGroup(@RequestBody Map<String,String> map) {
-        ResponseEntity responseEntity=groupService.addSingleGroup(map.get("groupName"));
+    public ResponseEntity addSingleGroup(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = groupService.addSingleGroup(map);
         return responseEntity;
     }
 

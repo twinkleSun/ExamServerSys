@@ -19,6 +19,7 @@ public interface GroupMapper {
 
     List<Group> selectByUserId(Integer userId);
 
+    int updateByPrimaryKey(Group record);
 
 
 
@@ -28,7 +29,7 @@ public interface GroupMapper {
 //
 //    List<Groupinfo> selectAll();
 //
-//    int updateByPrimaryKey(Groupinfo record);
+
 
 
 
