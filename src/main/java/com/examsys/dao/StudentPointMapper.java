@@ -23,6 +23,8 @@ public interface StudentPointMapper {
 
     List<StudentPoint> selectAll();
 
+    List<StudentPoint> selectAllByExamId(int examId);
+
     int updateByPrimaryKey(StudentPoint record);
 
     int updateSubStatus(StudentPoint studentPoint);

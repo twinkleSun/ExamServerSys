@@ -44,4 +44,12 @@
     where exam_id = #{examId,jdbcType=INTEGER} and group_id=#{groupId}
   </select>
 
+  <select id="judgeStudentExist" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select eg.id, eg.exam_id, eg.group_id
+    from exam_group eg
+    left join group_user gu on eg.group_id = gu.group_id
+    where eg.exam_id = #{examId} and gu.student_id =#{studentId}
+  </select>
+
+
 </mapper>

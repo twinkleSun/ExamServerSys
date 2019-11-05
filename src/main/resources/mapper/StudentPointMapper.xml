@@ -57,7 +57,7 @@
   <insert id="insertIds" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPoint" >
     insert into student_point (id, paper_code, student_id,exam_id,end_flag,in_time,left_time)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER},
-      #{examId},"1",#{inTime},#{leftTime})
+      #{examId},#{endFlag},#{inTime},#{leftTime})
   </insert>
 
 
@@ -93,7 +93,11 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-
+  <select id="selectAllByExamId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, paper_code, student_id, objective_grade, subjective_grade, extra_point,
+    paper_total_point, student_total_point,exam_id,objective_status, subjective_status
+    from student_point where exam_id =#{examId}
+  </select>
 
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

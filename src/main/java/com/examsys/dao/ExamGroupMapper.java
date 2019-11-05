@@ -2,6 +2,7 @@ package com.examsys.dao;
 
 import com.examsys.model.ExamGroup;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,4 +26,8 @@ public interface ExamGroupMapper {
     int deleteByExamId(Integer examId);
 
     List<ExamGroup> selectByGroupId(Integer groupId);
+
+    List<ExamGroup> judgeStudentExist(@Param("examId")Integer examId,
+                                      @Param("studentId")Integer studentId);
+
 }

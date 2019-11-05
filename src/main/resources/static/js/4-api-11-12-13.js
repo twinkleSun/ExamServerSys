@@ -52,4 +52,28 @@ $(function(){
 
     });
 
+
+    $("#4-api-13").click(function() {
+        var str13={
+            exam_id:3
+        };
+        $.ajax({
+            url: "/spi/stupoint",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(str13),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
 });

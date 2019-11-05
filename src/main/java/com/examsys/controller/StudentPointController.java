@@ -79,5 +79,17 @@ public class StudentPointController {
     }
 
 
+    /**
+     * 管理员获取考生成绩表
+     * @param map
+     * @return
+     */
+    @PostMapping(value = "/stupoint")
+    public ResponseEntity selectAllByExamId(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = studentPointService.selectAllByExamId(Integer.valueOf(map.get("exam_id").toString()));
+        return responseEntity;
+    }
+
+
 
 }

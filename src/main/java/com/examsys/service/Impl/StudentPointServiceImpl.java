@@ -3,11 +3,9 @@ package com.examsys.service.Impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.examsys.dao.ExamMapper;
-import com.examsys.dao.StudentPointDetailMapper;
-import com.examsys.dao.StudentPointMapper;
-import com.examsys.dao.TestPaperDetailMapper;
+import com.examsys.dao.*;
 import com.examsys.model.Exam;
+import com.examsys.model.ExamGroup;
 import com.examsys.model.StudentPoint;
 import com.examsys.model.StudentPointDetail;
 import com.examsys.model.entity.*;
@@ -35,6 +33,8 @@ public class StudentPointServiceImpl {
     TestPaperDetailMapper testPaperDetailMapper;
     @Autowired
     ExamMapper examMapper;
+    @Autowired
+    ExamGroupMapper examGroupMapper;
 
 
     /**
@@ -195,18 +195,24 @@ public class StudentPointServiceImpl {
         int stuId = Integer.valueOf(map.get("stu_id").toString());
         int examId = Integer.valueOf(map.get("exam_id").toString());
 
+        List<ExamGroup> examGroupDB = examGroupMapper.judgeStudentExist(examId,stuId);
+        if(examGroupDB == null ||examGroupDB.size() == 0){
+            return new ResponseEntity(ErrorMsgEnum.STUDENT_NOT_IN_EXAM);
+        }
+
         StudentPoint studentPoint = new StudentPoint();
         studentPoint.setExamId(examId);
         studentPoint.setStudentId(stuId);
         studentPoint.setPaperCode(paperCode);
         StudentPoint studentPointDB = studentPointMapper.selectByIds(studentPoint);
-        if( studentPointDB == null || studentPointDB.getEndFlag() == 1){
+        if( studentPointDB == null || studentPointDB.getEndFlag() == 0){
             Exam exam = examMapper.selectByPrimaryKey(examId);
             if(studentPointDB == null){
                 //新建
                 Date now = new Date();
                 studentPoint.setInTime(String.valueOf(now.getTime()));
                 studentPoint.setLeftTime(exam.getDuration());
+                studentPoint.setEndFlag(0);
                 studentPointMapper.insertIds(studentPoint);
             }else{
                 try{
@@ -324,5 +330,20 @@ public class StudentPointServiceImpl {
             studentPointMapper.updateByPK(studentPoint);
         }
         return new ResponseEntity(200,"客观题判题结束");
+    }
+
+
+    /**
+     * 管理员获取考生成绩表
+     * @param examId
+     * @return
+     */
+    public ResponseEntity selectAllByExamId(int examId){
+        List<StudentPoint> studentPointList =  studentPointMapper.selectAllByExamId(examId);
+        if(studentPointList == null || studentPointList.size() ==0){
+            return new ResponseEntity(ErrorMsgEnum.NO_STUDENT_POINT_INFO);
+        }else{
+            return new ResponseEntity(200,"查询成功",studentPointList);
+        }
     }
 }

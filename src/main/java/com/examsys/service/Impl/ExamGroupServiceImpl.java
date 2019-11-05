@@ -35,15 +35,39 @@ public class ExamGroupServiceImpl {
         List<Exam> examNotEnd = new ArrayList<>();
         for(int i = 0; i < examList.size(); i++) {
             Exam exam = examList.get(i);
-            if(exam.getStatus().equals("未开始")) {
+            if(!exam.getStatus().equals("已结束")) {
                 exam = handleExamStatus(exam);
-                if(!exam.getStatus().equals("已结束")){
+                if(!exam.getStatus().equals("已结束") && !exam.getStatus().equals("判题中")){
                     examNotEnd.add(exam);
                 }
             }
             examMapper.updateExamStatus(exam);
         }
         return new ResponseEntity(200,"查询成功",examNotEnd);
+    }
+
+
+    /**
+     * 管理员获取考试列表
+     * @return
+     */
+    public ResponseEntity getExamListByAdmin() {
+        List<ExamEntity> examList = examMapper.selectWithPaper();
+        if(examList == null || examList.size()==0){
+            return new ResponseEntity(ErrorMsgEnum.NO_EXAM_LIST);
+        }
+
+        for(int i = 0; i < examList.size(); i++) {
+            ExamEntity examEntity = examList.get(i);
+            if(!examEntity.getStatus().equals("已结束")) {
+                examEntity = handleExamEntity(examEntity);
+            }
+            Exam examDB = new Exam();
+            examDB.setId(examEntity.getId());
+            examDB.setStatus(examEntity.getStatus());
+            examMapper.updateExamStatus(examDB);
+        }
+        return new ResponseEntity(200,"查询成功",examList);
     }
 
 
@@ -61,7 +85,7 @@ public class ExamGroupServiceImpl {
         } else if(current.compareTo(exam.getBeginTime()) > 0 && current.compareTo(exam.getEndTime()) <= 0){
             exam.setStatus("进行中");
         } else if(current.compareTo(exam.getEndTime()) > 0) {
-            exam.setStatus("已结束");
+            exam.setStatus("判卷中");
         }
         return exam;
     }
@@ -82,31 +106,9 @@ public class ExamGroupServiceImpl {
         } else if(current.compareTo(examEntity.getBeginTime()) > 0 && current.compareTo(examEntity.getEndTime()) <= 0){
             examEntity.setStatus("进行中");
         } else if(current.compareTo(examEntity.getEndTime()) > 0) {
-            examEntity.setStatus("已结束");
+            examEntity.setStatus("判卷中");
         }
         return examEntity;
     }
 
-    /**
-     * 管理员获取考试列表
-     * @return
-     */
-    public ResponseEntity getExamListByAdmin() {
-        List<ExamEntity> examList = examMapper.selectWithPaper();
-        if(examList == null || examList.size()==0){
-            return new ResponseEntity(ErrorMsgEnum.NO_EXAM_LIST);
-        }
-
-        for(int i = 0; i < examList.size(); i++) {
-            ExamEntity examEntity = examList.get(i);
-            if(examEntity.getStatus().equals("未开始") || examEntity.getStatus().equals("0")) {
-                examEntity = handleExamEntity(examEntity);
-            }
-            Exam examDB = new Exam();
-            examDB.setId(examEntity.getId());
-            examDB.setStatus(examEntity.getStatus());
-            examMapper.updateExamStatus(examDB);
-        }
-        return new ResponseEntity(200,"查询成功",examList);
-    }
 }

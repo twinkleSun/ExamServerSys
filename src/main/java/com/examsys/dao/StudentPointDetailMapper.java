@@ -24,6 +24,8 @@ public interface StudentPointDetailMapper {
 
     List<StudentPointDetail> selectAll();
 
+    List<StudentPointDetail> selectAllByExamId(int examId);
+
     int updateByPrimaryKey(StudentPointDetail record);
 
     int updateByIds(StudentPointDetail studentPointDetail);
