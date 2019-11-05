@@ -3,13 +3,19 @@ package com.examsys.controller;
 import com.examsys.model.QuestionLibrary;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.Impl.QuestionLibraryServiceImpl;
+import com.examsys.util.ExcelAnalysisUtil;
+import com.examsys.util.ExcelTemplateUtil;
+import com.examsys.util.OtherUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +29,12 @@ public class QuestionLibraryController {
 
     @Autowired
     QuestionLibraryServiceImpl questionLibraryService;
+    @Autowired
+    ExcelAnalysisUtil excelAnalysisUtil;
+    @Autowired
+    ExcelTemplateUtil excelTemplateUtil;
+    @Autowired
+    OtherUtil otherUtil;
 
 
     /**
@@ -89,33 +101,51 @@ public class QuestionLibraryController {
     }
 
 
-//    @PostMapping(value = "/excel")
-//    @Transactional
-//    public ResponseEntity addNewQuestionByExcel(
-//            @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles)throws IllegalStateException, IOException {
-//        MultipartFile file=multipartFiles[0];
-//        List<QuestionLibrary> questioninfoList=excelAnalysisUtil.addNewQuestion(file);
-//        ResponseEntity responseEntity=questioninfoService.addNewQuestions(questioninfoList);
-//        return responseEntity;
-//    }
+    /**
+     * excel批量上传题目
+     * @param multipartFiles
+     * @return
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    @PostMapping(value = "/excel")
+    @Transactional
+    public ResponseEntity addQuestionsByExcel(
+            @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles)throws IllegalStateException, IOException {
+        MultipartFile file=multipartFiles[0];
+        //处理数据
+        ResponseEntity tmpResponse = excelAnalysisUtil.addQuestions(file);
+        if(tmpResponse.getStatus() != 200){
+            return tmpResponse;
+        }
+        ResponseEntity responseEntity = questionLibraryService.addNewQuestions((List<QuestionLibrary>)tmpResponse.getData());
+        if(responseEntity.getStatus()!=200){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
+        return responseEntity;
+    }
 
 
 
-
-//    @GetMapping("/template")
-//    public void userTemplate(HttpServletResponse response) throws Exception {
-//        String fileName = "添加题库模板.xls";
-//        HSSFWorkbook wb=excelUtil.addQuestionsTemplate(); //调用excelUtil生成excel
-//        try {
-//            otherUtil.setResponseHeader(response, fileName);
-//            OutputStream os = response.getOutputStream();
-//            wb.write(os);
-//            os.flush();
-//            os.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    /**
+     * 获取题目excel模板
+     * @param response
+     * @throws Exception
+     */
+    @GetMapping("/template")
+    public void userTemplate(HttpServletResponse response) throws Exception {
+        String fileName = "添加题库模板.xls";
+        HSSFWorkbook wb = excelTemplateUtil.addQuestionsTemplate(); //调用excelUtil生成excel
+        try {
+            otherUtil.setResponseHeader(response, fileName,wb);
+            OutputStream os = response.getOutputStream();
+            wb.write(os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

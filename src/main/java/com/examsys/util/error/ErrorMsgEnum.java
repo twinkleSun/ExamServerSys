@@ -15,6 +15,7 @@ public enum ErrorMsgEnum {
      * 数据库错误，一般不会出现
      */
     DATABASE_ERROR(0,"数据库错误"),
+    EXCEPTION_ERROR(1,"exception"),
 
 
     /**
@@ -46,6 +47,13 @@ public enum ErrorMsgEnum {
     KNOWLEDGE_ALREADY_EXIST(200008,"相同的知识点已存在，请重新编辑"),
     SAME_KNOWLEDGE_EXIST(200009,"相同的知识点已存在，请重新修改"),
     QUESTION_ASSISTANT_WITH_PAPER(200010,"有部分题目关联了试卷，不可以删除，题目ID见data"),
+    INDEX_FORMAT_NOT_CORRECT(200011,"选项的序号不正确，或超过了最大数字9（选项不得超过10个）"),
+    CONTENT_CAN_NOT_BE_NULL(200012,"题干不得为空"),
+    ANSWER_CAN_NOT_BE_NULL(200013,"参考答案不得为空"),
+    OPTION_CAN_NOT_BE_NULL(200014,"客观题选项不得为空"),
+    OPTION_IS_TOO_SHORT(200015,"选项太短"),
+    ANSWER_INDEX_FORMAT_INCORRECT(200016,"答案的选项序号不正确"),
+    ANSWER_FORMAT_INCORRECT(200017,"答案格式不正确，不包含#"),
 
 
     /**
