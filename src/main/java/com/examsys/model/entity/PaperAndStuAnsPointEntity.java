@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @Setter
 @Getter
-public class TestPaperListEntity {
+public class PaperAndStuAnsPointEntity{
 
     private String paperCode;
 
@@ -24,7 +23,19 @@ public class TestPaperListEntity {
 
     private Integer createUserId;
 
-    private Long leftTime;
+    private Double objectiveGrade;
+
+    private Integer objectiveStatus;
+
+    private Double subjectiveGrade;
+
+    private Integer subjectiveStatus;
+
+    private Double paperTotalPoint;
+
+    private Double studentTotalPoint;
+
+    private Integer endFlag;
 
     private List<TestPaperEntity> categoryList;
 }

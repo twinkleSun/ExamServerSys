@@ -68,6 +68,19 @@ public class StudentPointController {
 
 
     /**
+     * 获取学生答卷详情，包括主观题和客观题
+     * @param map
+     * @return
+     */
+    @PostMapping(value = "/stuans")
+    public ResponseEntity getPaperStuAnsPoint(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = studentPointService.getPaperStuAnsPoint(map);
+        return responseEntity;
+
+    }
+
+
+    /**
      * 开始客观题判题
      * @param map
      * @return

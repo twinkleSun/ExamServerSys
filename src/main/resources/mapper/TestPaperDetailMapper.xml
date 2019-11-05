@@ -125,10 +125,78 @@
 
 
 
+    <resultMap id="stuPaperAnsDetail" type="com.examsys.model.entity.PaperAndStuAnsPointEntity">
+        <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+        <result column="last_modified_time" property="lastModifiedTime" jdbcType="VARCHAR" />
+        <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="paper_description" property="paperDescription" jdbcType="VARCHAR" />
+        <result column="objective_grade" property="objectiveGrade" jdbcType="DOUBLE" />
+        <result column="subjective_grade" property="subjectiveGrade" jdbcType="DOUBLE" />
+        <result column="objective_status" property="objectiveStatus" jdbcType="INTEGER" />
+        <result column="subjective_status" property="subjectiveStatus" jdbcType="INTEGER" />
+        <result column="paper_total_point" property="paperTotalPoint" jdbcType="DOUBLE" />
+        <result column="student_total_point" property="studentTotalPoint" jdbcType="DOUBLE" />
+        <result column="end_flag" property="endFlag" jdbcType="INTEGER" />
+        <collection property="categoryList" ofType="com.examsys.model.entity.QuesStuPointEntity">
+            <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+            <result column="category_content" property="categoryContent" jdbcType="VARCHAR" />
+            <collection property="questionList" ofType="com.examsys.model.entity.QuestionAns">
+                <id column="ques_id" property="ques_id" jdbcType="INTEGER"></id>
+                <result column="content" property="content" jdbcType="VARCHAR" ></result>
+                <result column="options" property="options" jdbcType="VARCHAR" ></result>
+                <result column="type" property="type" jdbcType="VARCHAR" ></result>
+                <result column="score" property="score" jdbcType="DOUBLE" ></result>
+                <result column="description" property="description" jdbcType="VARCHAR" ></result>
+                <result column="student_answer" property="student_answer" jdbcType="VARCHAR" ></result>
+                <result column="student_point" property="student_point" jdbcType="DOUBLE" ></result>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="selectStuPaperAnsDetail" resultMap="stuPaperAnsDetail">
+        SELECT t.paper_code paper_code,t.category_content category_content,
+        t.question_id qid,t.score score,
+        q.content content,q.options options,q.type `type`,q.description description,
+        p.create_time create_time,p.last_modified_time last_modified_time,
+        p.title title,p.description paper_description,p.create_user_id create_user_id,
+        q.id ques_id,
+        sp.objective_grade objective_grade, sp.subjective_grade subjective_grade,
+        sp.paper_total_point paper_total_point,sp.student_total_point student_total_point,
+        sp.objective_status objective_status,sp.subjective_status subjective_status,
+        sp.end_flag end_flag,
+        if(IFNULL(spd.student_answer,"")="","",spd.student_answer) student_answer,
+        spd.student_point student_point
+        FROM test_paper_detail t
+        left join test_paper p on t.paper_code=p.paper_code
+        LEFT JOIN question_library q on q.id=t.question_id
+        left join student_point sp on sp.student_id=#{stuId}
+        left join student_point_detail spd on spd.question_id = t.question_id  and spd.exam_id = #{examId}
+        where t.paper_code in(select e.paper_code from exam e where e.id =#{examId})
+        and sp.exam_id = #{examId} and spd.student_id=#{stuId}
+    </select>
 
 
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from test_paper_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>

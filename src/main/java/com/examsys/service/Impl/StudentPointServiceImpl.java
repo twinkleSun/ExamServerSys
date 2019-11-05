@@ -228,18 +228,33 @@ public class StudentPointServiceImpl {
                     Long leftTime = Math.min(inTime + durationTime -nowTime,endTime-nowTime);
 
                     studentPoint.setLeftTime(leftTime);
-
                 }catch (Exception e){
 
                 }
-
             }
-
             TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
             testPaperList.setLeftTime(studentPoint.getLeftTime());
             return new ResponseEntity(200,"查询成功",testPaperList);
         }else{
             return new ResponseEntity(ErrorMsgEnum.EXAM_END_CANNOT_IN);
+        }
+
+    }
+
+
+    /**
+     * 获取学生答卷详情，包括主观题和客观题
+     * @param map
+     * @return
+     */
+    public ResponseEntity getPaperStuAnsPoint(Map<String,Object> map){
+        int stuId = Integer.valueOf(map.get("stu_id").toString());
+        int examId = Integer.valueOf(map.get("exam_id").toString());
+        PaperAndStuAnsPointEntity stuPaperAnsPoint = testPaperDetailMapper.selectStuPaperAnsDetail(examId,stuId);
+        if(stuPaperAnsPoint == null){
+            return new ResponseEntity(ErrorMsgEnum.STUDENT_NOT_TAKE_PART_IN);
+        }else{
+            return new ResponseEntity(200,"查询成功",stuPaperAnsPoint);
         }
 
     }

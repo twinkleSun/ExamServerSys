@@ -91,7 +91,7 @@
     </select>
 
 
-  
+
 
 
   <update id="updateByPK" parameterType="com.examsys.model.StudentPointDetail">
