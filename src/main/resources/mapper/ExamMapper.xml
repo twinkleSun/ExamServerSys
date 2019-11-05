@@ -2,14 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.examsys.dao.ExamMapper">
 
-
   <resultMap id="BaseResultMap" type="com.examsys.model.Exam" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="exam_name" property="examName" jdbcType="VARCHAR" />
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
     <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
     <result column="end_time" property="endTime" jdbcType="VARCHAR" />
-    <result column="duration" property="duration" jdbcType="VARCHAR" />
+    <result column="duration" property="duration" />
     <result column="status" property="status" jdbcType="VARCHAR" />
   </resultMap>
 
@@ -20,26 +19,22 @@
       begin_time = #{beginTime,jdbcType=VARCHAR},
       end_time = #{endTime,jdbcType=VARCHAR},
       status = #{status,jdbcType=VARCHAR},
-      duration = #{duration,jdbcType=VARCHAR}
+      duration = #{duration}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
+    select id, exam_name, paper_code, begin_time, end_time, duration,status from exam
     where id = #{id,jdbcType=INTEGER}
   </select>
-
 
   <select id="selectByPaperCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
-    where paper_code = #{paperCode}
+    from exam where paper_code = #{paperCode}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from exam
-    where id = #{id,jdbcType=INTEGER}
+    delete from exam where id = #{id,jdbcType=INTEGER}
   </delete>
 
   <!--根据用户ID查询考试列表-->
@@ -52,46 +47,47 @@
   </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
-        insert into exam (id, exam_name, paper_code,
-        begin_time, end_time, duration,status
-        )
+        insert into exam (id, exam_name, paper_code,begin_time, end_time, duration,status)
         values (#{id,jdbcType=INTEGER}, #{examName,jdbcType=VARCHAR}, #{paperCode,jdbcType=VARCHAR},
-        #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration,jdbcType=VARCHAR},
-        #{status,jdbcType=VARCHAR}
-        )
+        #{beginTime,jdbcType=VARCHAR}, #{endTime,jdbcType=VARCHAR}, #{duration},
+        #{status,jdbcType=VARCHAR})
     </insert>
 
-
-
   <update id="updateExamStatus" parameterType="com.examsys.model.Exam">
-    update exam set
-      status = #{status,jdbcType=VARCHAR}
+    update exam set status = #{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, exam_name, paper_code, begin_time, end_time, duration,status
-    from exam
+    select id, exam_name, paper_code, begin_time, end_time, duration,status from exam
   </select>
 
+
+    <resultMap id="examWithPaper" type="com.examsys.model.entity.ExamEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="exam_name" property="examName" jdbcType="VARCHAR" />
+        <result column="begin_time" property="beginTime" jdbcType="VARCHAR" />
+        <result column="end_time" property="endTime" jdbcType="VARCHAR" />
+        <result column="duration" property="duration" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <collection property="paper_info" ofType="java.util.Map">
+            <id column="pid" property="id" jdbcType="INTEGER" />
+            <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+            <result column="create_time" property="createTime" jdbcType="VARCHAR" />
+            <result column="last_modified_time" property="lastModifiedTime" jdbcType="VARCHAR" />
+            <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+            <result column="title" property="title" jdbcType="VARCHAR" />
+            <result column="description" property="description" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+   <select id="selectWithPaper" resultMap="examWithPaper" >
+    select e.id, e.exam_name, e.paper_code, e.begin_time, e.end_time, e.duration,e.status,
+          t.id pid, t.create_time, t.last_modified_time, t.create_user_id, t.title, t.description
+     from exam e
+     left join test_paper t on e.paper_code = t.paper_code
+
+  </select>
 
 
 </mapper>

@@ -36,6 +36,7 @@
   </update>
 
 
+
   <!--根据用户ID删除用户-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from `user`

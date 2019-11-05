@@ -1,5 +1,12 @@
 package com.examsys.model;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Setter
+@Getter
 public class Exam{
 
     private Integer id;
@@ -12,7 +19,7 @@ public class Exam{
 
     private String endTime;
 
-    private String duration;
+    private Long duration;
 
     private String status;
 
@@ -54,14 +61,6 @@ public class Exam{
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
     }
 
     public String getStatus() {

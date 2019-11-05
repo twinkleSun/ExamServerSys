@@ -2,13 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.examsys.dao.GroupUserMapper">
 
-
     <resultMap id="BaseResultMap" type="com.examsys.model.GroupUser" >
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="group_id" property="groupId" jdbcType="INTEGER" />
         <result column="student_id" property="studentId" jdbcType="INTEGER" />
     </resultMap>
-
 
     <select id="selectOfNoStart" parameterType="java.lang.Integer" resultMap="groupUser">
         SELECT gu.group_id,gu.student_id
@@ -81,7 +79,9 @@
         where g.id=#{groupId}
     </select>
 
-
+    <select id="selectByGroupUser" parameterType="com.examsys.model.GroupUser" resultMap="BaseResultMap">
+        select id, group_id, student_id from group_user WHERE group_id=#{groupId} and student_id =#{studentId}
+    </select>
 
 
     <!--向组内添加学生-->

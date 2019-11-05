@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.Exam;
+import com.examsys.model.entity.ExamEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,8 @@ public interface ExamMapper {
     int updateExamStatus(Exam exam);
 
     List<Exam> selectAll();
+
+    List<ExamEntity> selectWithPaper();
 
     List<Exam> selectByPaperCode(String paperCode);
 

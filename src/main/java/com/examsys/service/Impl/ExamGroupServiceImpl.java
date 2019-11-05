@@ -2,7 +2,9 @@ package com.examsys.service.Impl;
 
 import com.examsys.dao.ExamMapper;
 import com.examsys.model.Exam;
+import com.examsys.model.entity.ExamEntity;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.util.error.ErrorMsgEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -18,86 +20,95 @@ public class ExamGroupServiceImpl {
     @Autowired
     ExamMapper examMapper;
 
+
     /**
-     * 根据用户ID查询考试列表
+     * 考生查询还未开始或进行中的考试
      * @param userId
      * @return
      */
     public ResponseEntity getExamListByStudent(int userId) {
-        List<Exam> examList=examMapper.selectExamByUserId(userId);
-        ResponseEntity responseEntity=new ResponseEntity();
-
-
+        List<Exam> examList = examMapper.selectExamByUserId(userId);
         if(examList==null || examList.size()==0){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("没有考试列表信息");
-            return responseEntity;
+            return new ResponseEntity(ErrorMsgEnum.STUDENT_HAS_NO_EXAM);
         }
 
         List<Exam> examNotEnd = new ArrayList<>();
-        int len = examList.size();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String current = simpleDateFormat.format(new java.util.Date());
-        for(int i = 0; i < len; i++) {
+        for(int i = 0; i < examList.size(); i++) {
             Exam exam = examList.get(i);
-            if(exam.getStatus().equals("未开始")) {
-                if(current.compareTo(exam.getBeginTime()) <= 0)  {
-                    exam.setStatus("未开始");
-                } else if(current.compareTo(exam.getBeginTime()) > 0 && current.compareTo(exam.getEndTime()) <= 0){
-                    exam.setStatus("进行中");
-                } else if(current.compareTo(exam.getEndTime()) > 0) {
-                    exam.setStatus("已结束");
-                }
-
-
-                if(!exam.getStatus().equals("已结束")){
+            if(!exam.getStatus().equals("已结束")) {
+                exam = handleExamStatus(exam);
+                if(!exam.getStatus().equals("已结束") && !exam.getStatus().equals("判题中")){
                     examNotEnd.add(exam);
                 }
             }
-
-            int res = examMapper.updateExamStatus(exam);
+            examMapper.updateExamStatus(exam);
         }
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("查询成功");
-        responseEntity.setData(examNotEnd);
-
-        return responseEntity;
+        return new ResponseEntity(200,"查询成功",examNotEnd);
     }
 
 
-
+    /**
+     * 管理员获取考试列表
+     * @return
+     */
     public ResponseEntity getExamListByAdmin() {
-        List<Exam> exams=examMapper.selectAll();
-        ResponseEntity responseEntity=new ResponseEntity();
-
-        if(exams==null || exams.size()==0){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("没有考试列表");
-            return responseEntity;
+        List<ExamEntity> examList = examMapper.selectWithPaper();
+        if(examList == null || examList.size()==0){
+            return new ResponseEntity(ErrorMsgEnum.NO_EXAM_LIST);
         }
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String curTime = simpleDateFormat.format(new java.util.Date());
-        for(int i = 0; i < exams.size(); i++) {
-            Exam exam = exams.get(i);
-            if(exam.getStatus().equals("未开始") || exam.getStatus().equals("0")) {
-                if(curTime.compareTo(exam.getBeginTime()) <= 0)  {
-                    exam.setStatus("未开始");
-                } else if(curTime.compareTo(exam.getBeginTime()) > 0 && curTime.compareTo(exam.getEndTime()) <= 0){
-                    exam.setStatus("进行中");
-                } else if(curTime.compareTo(exam.getEndTime()) > 0) {
-                    exam.setStatus("已结束");
-                }
+        for(int i = 0; i < examList.size(); i++) {
+            ExamEntity examEntity = examList.get(i);
+            if(!examEntity.getStatus().equals("已结束")) {
+                examEntity = handleExamEntity(examEntity);
             }
-
-            int res = examMapper.updateExamStatus(exam);
+            Exam examDB = new Exam();
+            examDB.setId(examEntity.getId());
+            examDB.setStatus(examEntity.getStatus());
+            examMapper.updateExamStatus(examDB);
         }
-
-
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("查询成功");
-        responseEntity.setData(exams);
-
-        return responseEntity;
+        return new ResponseEntity(200,"查询成功",examList);
     }
+
+
+    /**
+     * 处理考试状态
+     * @param exam
+     * @return
+     */
+    public Exam handleExamStatus(Exam exam){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String current = simpleDateFormat.format(new java.util.Date());
+
+        if(current.compareTo(exam.getBeginTime()) <= 0)  {
+            exam.setStatus("未开始");
+        } else if(current.compareTo(exam.getBeginTime()) > 0 && current.compareTo(exam.getEndTime()) <= 0){
+            exam.setStatus("进行中");
+        } else if(current.compareTo(exam.getEndTime()) > 0) {
+            exam.setStatus("判卷中");
+        }
+        return exam;
+    }
+
+
+
+    /**
+     * 处理考试状态
+     * @param examEntity
+     * @return
+     */
+    public ExamEntity handleExamEntity(ExamEntity examEntity){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String current = simpleDateFormat.format(new java.util.Date());
+
+        if(current.compareTo(examEntity.getBeginTime()) <= 0)  {
+            examEntity.setStatus("未开始");
+        } else if(current.compareTo(examEntity.getBeginTime()) > 0 && current.compareTo(examEntity.getEndTime()) <= 0){
+            examEntity.setStatus("进行中");
+        } else if(current.compareTo(examEntity.getEndTime()) > 0) {
+            examEntity.setStatus("判卷中");
+        }
+        return examEntity;
+    }
+
 }

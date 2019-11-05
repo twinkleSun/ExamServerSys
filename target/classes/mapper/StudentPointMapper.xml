@@ -13,6 +13,9 @@
     <result column="extra_point" property="extraPoint" jdbcType="DOUBLE" />
     <result column="paper_total_point" property="paperTotalPoint" jdbcType="DOUBLE" />
     <result column="student_total_point" property="studentTotalPoint" jdbcType="DOUBLE" />
+    <result column="end_flag" property="endFlag" jdbcType="INTEGER" />
+    <result column="in_time" property="inTime" jdbcType="VARCHAR" />
+    <result column="left_time" property="leftTime" />
   </resultMap>
 
 
@@ -40,27 +43,39 @@
 
   <update id="updateTotalPoint" parameterType="com.examsys.model.StudentPoint" >
     update student_point
-    set  paper_total_point = #{paperTotalPoint,jdbcType=DOUBLE}
+    set  paper_total_point = #{paperTotalPoint,jdbcType=DOUBLE},
+    end_flag = #{endFlag}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
 
+  <delete id="deleteByStuId" parameterType="java.lang.Integer">
+    delete from student_point
+    where student_id = #{stuId,jdbcType=INTEGER}
+  </delete>
 
-
+  <insert id="insertIds" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPoint" >
+    insert into student_point (id, paper_code, student_id,exam_id,end_flag,in_time,left_time)
+    values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER},
+      #{examId},#{endFlag},#{inTime},#{leftTime})
+  </insert>
 
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from student_point
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPoint" >
     insert into student_point (id, paper_code, student_id, 
       objective_grade, subjective_grade, extra_point, 
-      paper_total_point, student_total_point,exam_id,objective_status, subjective_status)
+      paper_total_point, student_total_point,exam_id,objective_status, subjective_status,end_flag,in_time,left_time)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER}, 
       #{objectiveGrade,jdbcType=DOUBLE}, #{subjectiveGrade,jdbcType=DOUBLE}, #{extraPoint,jdbcType=DOUBLE}, 
-      #{paperTotalPoint,jdbcType=DOUBLE}, #{studentTotalPoint,jdbcType=DOUBLE},#{examId},#{objectiveStatus},#{subjectiveStatus})
+      #{paperTotalPoint,jdbcType=DOUBLE}, #{studentTotalPoint,jdbcType=DOUBLE},
+      #{examId},#{objectiveStatus},#{subjectiveStatus},#{endFlag},#{inTime},#{leftTime})
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.StudentPoint" >
     update student_point
     set paper_code = #{paperCode,jdbcType=VARCHAR},
@@ -72,11 +87,17 @@
       student_total_point = #{studentTotalPoint,jdbcType=DOUBLE},
       exam_id=#{examId},
       objective_status=#{objectiveStatus},
-      subjective_status=#{subjectiveStatus}
+      subjective_status=#{subjectiveStatus},
+      in_time = #{inTime},
+      left_time = #{leftTime}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-
+  <select id="selectAllByExamId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select id, paper_code, student_id, objective_grade, subjective_grade, extra_point,
+    paper_total_point, student_total_point,exam_id,objective_status, subjective_status
+    from student_point where exam_id =#{examId}
+  </select>
 
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

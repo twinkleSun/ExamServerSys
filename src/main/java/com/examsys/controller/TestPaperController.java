@@ -1,15 +1,11 @@
 package com.examsys.controller;
 
-import com.examsys.model.QuestionLibrary;
 import com.examsys.model.TestPaperDetail;
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.Impl.TestPaperServiceImpl;
-import com.examsys.service.Impl.QuestionLibraryServiceImpl;
-import com.examsys.util.ExcelAnalysisUtil;
-import com.examsys.util.ExcelTemplateUtil;
-import com.examsys.util.OtherUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,16 +20,7 @@ import java.util.Map;
 public class TestPaperController {
 
     @Autowired
-    ExcelAnalysisUtil excelAnalysisUtil;
-    @Autowired
     TestPaperServiceImpl testPaperService;
-    @Autowired
-    QuestionLibraryServiceImpl questionLibraryService;
-
-    @Autowired
-    ExcelTemplateUtil excelUtil;
-    @Autowired
-    OtherUtil otherUtil;
 
 //    /**
 //     * 通过上传模板excel的方式批量添加试题
@@ -81,18 +68,18 @@ public class TestPaperController {
      */
     @PostMapping(value = "/new")
     @Transactional
-    public ResponseEntity addNewPaperByFront(@RequestBody Map<String,Object> mapRes) {
+    public ResponseEntity addPaper(@RequestBody Map<String,Object> mapRes) {
+        //添加试卷，并处理试卷-题目关联关系
         List<TestPaperDetail> testPaperList = testPaperService.handleNewPaper(mapRes);
 
         if(mapRes.get("paper_code") == null || mapRes.get("paper_code") == "" ){
-
+            //没有paper_code则为新建
         }else{
-            testPaperService.deletePaper(testPaperList);
+            testPaperService.deletePaperDetail(testPaperList);
         }
-        ResponseEntity responseEntity=testPaperService.addNewPaper(testPaperList);
+        //添加试卷-题目关联关系
+        ResponseEntity responseEntity = testPaperService.addTestPaperDetail(testPaperList);
         return responseEntity;
-
-
     }
 
 
@@ -102,17 +89,17 @@ public class TestPaperController {
      */
     @GetMapping(value = "/all")
     public ResponseEntity getAllPapers() {
-        ResponseEntity responseEntity=testPaperService.getAllPaperList();
+        ResponseEntity responseEntity = testPaperService.getPapersList();
         return responseEntity;
     }
 
     /**
-     * 获取所有试卷
+     * 管理员查看自己创建的试卷
      * @return
      */
     @PostMapping(value = "/adminpaper")
-    public ResponseEntity getAllPapersByAdmin(@RequestBody Map<String,Object> mapRes) {
-        ResponseEntity responseEntity=testPaperService.getPaperListByAdmin(mapRes);
+    public ResponseEntity getPapersByAdmin(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = testPaperService.getPaperListByAdmin(map);
         return responseEntity;
     }
 
@@ -125,30 +112,36 @@ public class TestPaperController {
     @PostMapping(value = "/single")
     @Transactional
     public ResponseEntity getSinglePaper(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity=testPaperService.getTestPaperDetail(map.get("paper_code").toString());
+        ResponseEntity responseEntity = testPaperService.getTestPaperDetail(map.get("paper_code").toString());
         return responseEntity;
-
     }
 
+
     /**
-     * 获取参与考试的考生
+     * 获取某场考试参与考试的考生
      * @param map
      * @return
      */
     @PostMapping(value = "/student")
-    @Transactional
-    public ResponseEntity getStudents(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity=testPaperService.getStudent((Integer) map.get("exam_id"));
+    public ResponseEntity getStudentsByExam(@RequestBody Map<String,Object> map) {
+        ResponseEntity responseEntity = testPaperService.getStudent((Integer)map.get("exam_id"));
         return responseEntity;
-
     }
 
 
+    /**
+     * 管理员删除试卷
+     * @param map
+     * @return
+     */
     @DeleteMapping(value = "/del")
+    @Transactional
     public ResponseEntity delTestPaper(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity=testPaperService.delByPaperCode(map);
+        ResponseEntity responseEntity = testPaperService.delByPaperCode(map);
+        if(responseEntity.getStatus()!=200){
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        }
         return responseEntity;
-
     }
 
 }

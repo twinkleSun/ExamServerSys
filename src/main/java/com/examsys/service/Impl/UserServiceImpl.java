@@ -1,14 +1,18 @@
 package com.examsys.service.Impl;
 
 import com.examsys.dao.GroupUserMapper;
+import com.examsys.dao.StudentPointDetailMapper;
+import com.examsys.dao.StudentPointMapper;
 import com.examsys.dao.UserMapper;
 import com.examsys.model.GroupUser;
 import com.examsys.model.User;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.util.error.ErrorMsgEnum;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -28,30 +32,27 @@ public class UserServiceImpl{
     UserMapper userMapper;
     @Autowired
     GroupUserMapper groupUserMapper;
+    @Autowired
+    StudentPointDetailMapper studentPointDetailMapper;
+    @Autowired
+    StudentPointMapper studentPointMapper;
+
 
     /**
-     * 用户登陆
-     * todo: youdaixiugai
+     * 用户登录，通过用户名查找
      * @param username
      * @param password
      * @return
      */
     public ResponseEntity userLogin(String username,String password){
-
-        User user=userMapper.selectByUsername(username);
-        ResponseEntity responseEntity=new ResponseEntity();
-        if(user==null){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("该用户不存在");
-        }else if(!password.equals(user.getPassword())){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("用户名或密码错误");
+        User userDB = userMapper.selectByUsername(username);
+        if(userDB == null){
+            return new ResponseEntity(ErrorMsgEnum.USER_NOT_EXIT);
+        }else if(!password.equals(userDB.getPassword())){
+            return new ResponseEntity(ErrorMsgEnum.USERNAME_OR_PASSWORD_INCORRECT);
         }else{
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("查询成功");
-            responseEntity.setData(user);
+            return new ResponseEntity(200,"查询成功",userDB);
         }
-        return responseEntity;
     }
 
 
@@ -132,36 +133,25 @@ public class UserServiceImpl{
         return responseEntity;
     }
 
+
     /**
-     * 删除若干考生
-     * todo：暂不可用
+     * 删除若干考生,设置del_tag=0
      * @param map
      * @return
      */
+    @Transactional
     public ResponseEntity deleteUsers(Map<String,Object> map){
-        ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("id");
-
+        ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("student_id");
         for(int i=0;i<userIds.size();i++){
-            List<GroupUser> groupUsers=groupUserMapper.selectByUserId(userIds.get(i));
-            if (groupUsers==null ||groupUsers.size()==0){
+            int userId = userIds.get(i);
+            studentPointDetailMapper.deleteByStuId(userId);
+            studentPointMapper.deleteByStuId(userId);
+            groupUserMapper.deleteByUserId(userId);
+            userMapper.deleteByPrimaryKey(userId);
 
-                //todo:加上试卷后需要改动
-            }else {
-                int delRelation=groupUserMapper.deleteByUserId(userIds.get(i));
-            }
-
-            int delRes=userMapper.deleteByPrimaryKey(userIds.get(i));
         }
-
-        ResponseEntity responseEntity=new ResponseEntity();
-        responseEntity.setStatus(200);
-        responseEntity.setMsg("删除成功");
-        return responseEntity;
+        return new ResponseEntity(200,"删除成功");
     }
-
-
-
-
 
 
 }

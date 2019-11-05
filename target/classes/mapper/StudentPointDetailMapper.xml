@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.examsys.dao.StudentPointDetailMapper" >
+<mapper namespace="com.examsys.dao.StudentPointDetailMapper">
+
   <resultMap id="BaseResultMap" type="com.examsys.model.StudentPointDetail" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
@@ -11,6 +12,7 @@
     <result column="student_answer" property="studentAnswer" jdbcType="VARCHAR" />
     <result column="student_point" property="studentPoint" jdbcType="DOUBLE" />
     <result column="question_status" property="questionStatus" jdbcType="INTEGER" />
+    <result column="stamp" property="stamp" jdbcType="INTEGER" />
   </resultMap>
 
 
@@ -26,7 +28,7 @@
         <collection property="subjective_answers" ofType="Map" javaType="java.util.List">
           <id column="id" property="id"></id>
           <result column="content" property="content"></result>
-          <result column="description" property="description"></result>
+          <result column="descriptiinon" property="description"></result>
           <result column="total_point" property="total_point"></result>
           <result column="answer" property="answer"></result>
           <result column="student_answer" property="student_answer"></result>
@@ -89,6 +91,7 @@
     </select>
 
 
+  
 
 
   <update id="updateByPK" parameterType="com.examsys.model.StudentPointDetail">
@@ -101,14 +104,17 @@
 
   <update id="updateStuAnswer" parameterType="com.examsys.model.StudentPointDetail">
     update student_point_detail
-    set  student_answer = #{studentAnswer,jdbcType=VARCHAR}
+    set  student_answer = #{studentAnswer,jdbcType=VARCHAR},
+    stamp = #{stamp}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
 
-
-
-
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, paper_code, question_id, student_id, def_point, student_answer, student_point,
+    question_status,exam_id
+    from student_point_detail
+  </select>
 
 
 
@@ -131,14 +137,18 @@
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPointDetail" >
     insert into student_point_detail (id, paper_code, question_id,
       student_id, def_point, student_answer,
-      student_point, question_status,exam_id)
+      student_point, question_status,exam_id,stamp)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{questionId,jdbcType=INTEGER},
       #{studentId,jdbcType=INTEGER}, #{defPoint,jdbcType=DOUBLE}, #{studentAnswer,jdbcType=VARCHAR},
-      #{studentPoint,jdbcType=DOUBLE}, #{questionStatus,jdbcType=INTEGER},#{examId})
+      #{studentPoint,jdbcType=DOUBLE}, #{questionStatus,jdbcType=INTEGER},#{examId},#{stamp})
   </insert>
 
 
 
+  <delete id="deleteByStuId" parameterType="java.lang.Integer">
+    delete from student_point_detail
+    where student_id = #{stuId,jdbcType=INTEGER}
+  </delete>
 
 
 
@@ -165,11 +175,7 @@
     from student_point_detail
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select id, paper_code, question_id, student_id, def_point, student_answer, student_point,
-    question_status,exam_id
-    from student_point_detail
-  </select>
+
 
 
 

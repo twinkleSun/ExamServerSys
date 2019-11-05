@@ -26,12 +26,14 @@ public class UserController {
 
     @Autowired
     ExcelTemplateUtil excelUtil;
+
     @Autowired
     OtherUtil otherUtil;
 
+
     /**
      * 用户登陆
-     * 参数：userName,password
+     * 参数：user_name,password
      * @param map
      * @return
      */
@@ -40,6 +42,7 @@ public class UserController {
         ResponseEntity responseEntity = userService.userLogin(map.get("user_name"), map.get("password"));
         return responseEntity;
     }
+
 
     /**
      * 通过上传模板excel的方式批量添加用户
@@ -51,9 +54,10 @@ public class UserController {
     public ResponseEntity addNewStudent(
             @RequestParam( value="files[]",required=false)MultipartFile[] multipartFiles)throws IllegalStateException, IOException{
         MultipartFile file=multipartFiles[0];
-        ResponseEntity responseEntity=userService.addNewUsers(file);
+        ResponseEntity responseEntity = userService.addNewUsers(file);
         return responseEntity;
     }
+
 
     /**
      * 下载批量导入用户的excel模板
@@ -70,6 +74,7 @@ public class UserController {
             e.printStackTrace();
         }
     }
+
 
     /**
      * 删除若干考生

@@ -19,6 +19,10 @@ public class StudentPointDetail {
 
     private Integer examId;
 
+
+
+    private Integer stamp;
+
     public Integer getExamId() {
         return examId;
     }
@@ -90,6 +94,14 @@ public class StudentPointDetail {
 
     public void setDefPoint(Double defPoint) {
         this.defPoint = defPoint;
+    }
+
+    public Integer getStamp() {
+        return stamp;
+    }
+
+    public void setStamp(Integer stamp) {
+        this.stamp = stamp;
     }
 
 }

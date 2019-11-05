@@ -12,13 +12,18 @@ import java.util.List;
 public interface StudentPointMapper {
 
     StudentPoint selectByIds(StudentPoint studentPoint);
+
     int deleteByPrimaryKey(Integer id);
+
+    int insertIds(StudentPoint studentPoint);
 
     int insert(StudentPoint record);
 
     StudentPoint selectByPrimaryKey(Integer id);
 
     List<StudentPoint> selectAll();
+
+    List<StudentPoint> selectAllByExamId(int examId);
 
     int updateByPrimaryKey(StudentPoint record);
 
@@ -27,4 +32,6 @@ public interface StudentPointMapper {
     int updateByPK(StudentPoint studentPoint);
 
     int updateTotalPoint(StudentPoint studentPoint);
+
+    int deleteByStuId(int stuId);
 }

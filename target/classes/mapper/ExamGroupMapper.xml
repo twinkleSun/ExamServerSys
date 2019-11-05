@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.examsys.dao.ExamGroupMapper">
+
   <resultMap id="BaseResultMap" type="com.examsys.model.ExamGroup" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="exam_id" property="examId" jdbcType="INTEGER" />
@@ -8,44 +9,47 @@
   </resultMap>
 
   <select id="selectByGroupId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, exam_id, group_id
-    from exam_group
-    where group_id = #{groupId,jdbcType=INTEGER}
+    select id, exam_id, group_id from exam_group where group_id = #{groupId,jdbcType=INTEGER}
   </select>
 
   <delete id="deleteByExamId" parameterType="java.lang.Integer" >
-    delete from exam_group
-    where exam_id = #{examId,jdbcType=INTEGER}
+    delete from exam_group where exam_id = #{examId,jdbcType=INTEGER}
   </delete>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from exam_group
-    where id = #{id,jdbcType=INTEGER}
+    delete from exam_group where id = #{id,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.ExamGroup">
     insert into exam_group (id, exam_id, group_id)
     values (#{id,jdbcType=INTEGER}, #{examId,jdbcType=INTEGER}, #{groupId,jdbcType=INTEGER})
   </insert>
+
   <update id="updateByPrimaryKey" parameterType="com.examsys.model.ExamGroup" >
     update exam_group
-    set exam_id = #{examId,jdbcType=INTEGER},
-      group_id = #{groupId,jdbcType=INTEGER}
+    set exam_id = #{examId,jdbcType=INTEGER},group_id = #{groupId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select id, exam_id, group_id
-    from exam_group
-    where id = #{id,jdbcType=INTEGER}
+    select id, exam_id, group_id from exam_group where id = #{id,jdbcType=INTEGER}
   </select>
+
   <select id="selectAll" resultMap="BaseResultMap" >
-    select id, exam_id, group_id
-    from exam_group
+    select id, exam_id, group_id from exam_group
   </select>
 
   <select id="selectByExamGroup" resultMap="BaseResultMap" parameterType="com.examsys.model.ExamGroup">
-    select id, exam_id, group_id
-    from exam_group
+    select id, exam_id, group_id from exam_group
     where exam_id = #{examId,jdbcType=INTEGER} and group_id=#{groupId}
   </select>
+
+  <select id="judgeStudentExist" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select eg.id, eg.exam_id, eg.group_id
+    from exam_group eg
+    left join group_user gu on eg.group_id = gu.group_id
+    where eg.exam_id = #{examId} and gu.student_id =#{studentId}
+  </select>
+
 
 </mapper>

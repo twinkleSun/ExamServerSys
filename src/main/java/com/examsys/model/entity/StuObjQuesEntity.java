@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class StuObjQuesEntity {
 
-    private Integer sdId;
+    private Integer sdId;//student_point_detail ID
 
     private Integer questionId;
 
@@ -22,7 +22,6 @@ public class StuObjQuesEntity {
     private Double studentPoint;
 
     private Integer questionStatus;
-
 
     private String defAns;
 

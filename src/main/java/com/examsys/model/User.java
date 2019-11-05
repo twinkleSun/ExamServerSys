@@ -9,6 +9,8 @@ public class User {
 
     private String role;
 
+    private int delTag;
+
     public Integer getId() {
         return id;
     }
@@ -39,5 +41,13 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public int getDelTag() {
+        return delTag;
+    }
+
+    public void setDelTag(int delTag) {
+        this.delTag = delTag;
     }
 }
