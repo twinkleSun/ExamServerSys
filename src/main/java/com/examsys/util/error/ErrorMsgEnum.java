@@ -62,6 +62,7 @@ public enum ErrorMsgEnum {
     NO_PAPERS_EXIST(300001,"不存在试卷"),
     PAPER_ASSISTANT_WITH_EXAM(300002,"该试卷已和考试关联，不可以删除。被关联的试卷ID见data"),
     ADMIN_HAS_NO_PAPERS(300003,"该管理员名下没有试卷"),
+    CREATOR_NOT_ADMIN(300004,"创建者非admin用户"),
 
 
     /**

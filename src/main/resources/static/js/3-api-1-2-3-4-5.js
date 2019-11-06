@@ -109,7 +109,7 @@ $(function(){
             description:"描述222",
             paper_code:"20191029200827",
             question_list:json1,
-            user_id:1
+            user_id:9
         };
 
         $.ajax({

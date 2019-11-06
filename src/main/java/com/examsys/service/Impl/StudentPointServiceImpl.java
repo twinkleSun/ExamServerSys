@@ -354,7 +354,7 @@ public class StudentPointServiceImpl {
      * @return
      */
     public ResponseEntity selectAllByExamId(int examId){
-        List<StudentPoint> studentPointList =  studentPointMapper.selectAllByExamId(examId);
+        List<StudentPointAndInfoEntity> studentPointList =  studentPointMapper.selectAllByExamId(examId);
         if(studentPointList == null || studentPointList.size() ==0){
             return new ResponseEntity(ErrorMsgEnum.NO_STUDENT_POINT_INFO);
         }else{

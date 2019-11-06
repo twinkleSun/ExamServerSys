@@ -1,10 +1,7 @@
 package com.examsys.service.Impl;
 
 import com.alibaba.fastjson.JSON;
-import com.examsys.dao.ExamMapper;
-import com.examsys.dao.GroupUserMapper;
-import com.examsys.dao.TestPaperDetailMapper;
-import com.examsys.dao.TestPaperMapper;
+import com.examsys.dao.*;
 import com.examsys.model.*;
 import com.examsys.model.entity.GroupUserEntity;
 import com.examsys.model.entity.ResponseEntity;
@@ -40,13 +37,16 @@ public class TestPaperServiceImpl {
     @Autowired
     ExamMapper examMapper;
 
+    @Autowired
+    UserMapper userMapper;
+
 
     /**
      * 处理添加试卷的数据
      * @param paperMap
      * @return
      */
-    public List<TestPaperDetail> handleNewPaper(Map<String,Object> paperMap){
+    public ResponseEntity handleNewPaper(Map<String,Object> paperMap){
         TestPaper testPaper=new TestPaper();
 
         Date now = new Date();
@@ -57,6 +57,16 @@ public class TestPaperServiceImpl {
         testPaper.setTitle(String.valueOf(paperMap.get("title")));
         testPaper.setCreateUserId(Integer.valueOf(paperMap.get("user_id").toString()));
 
+        User userDB = userMapper.selectByUid(Integer.valueOf(paperMap.get("user_id").toString()));
+        if(userDB == null){
+            return new ResponseEntity(ErrorMsgEnum.USER_NOT_EXIT);
+        }
+
+        if(userDB.getRole().equals("admin")){
+            testPaper.setCreateUserId(Integer.valueOf(paperMap.get("user_id").toString()));
+        }else{
+            return new ResponseEntity(ErrorMsgEnum.CREATOR_NOT_ADMIN);
+        }
         String paper_code;
         if (paperMap.get("paper_code") == null || paperMap.get("paper_code") == "") {
             //没有paper_code则新建
@@ -92,7 +102,7 @@ public class TestPaperServiceImpl {
             testPaperList.add(testPaperDetail);
         }
 
-        return testPaperList;
+        return new ResponseEntity(200,"数据处理成功",testPaperList);
     }
 
 

@@ -65,7 +65,7 @@ $(function(){
 
     $("#1-api-11").click(function() {
         var json11={
-            student_id: [2,3]
+            id: [2,3]
         };
         $.ajax({
             url: "/upi/user/multi",

@@ -20,6 +20,8 @@ public interface UserMapper {
 
     int deleteByPrimaryKey(Integer id);
 
+    User selectByUid(Integer uid);
+
 //    Userinfo selectByPrimaryKey(Integer id);
 //
 //    List<Userinfo> selectAll();
