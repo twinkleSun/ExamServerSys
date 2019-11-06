@@ -115,7 +115,7 @@ public class GroupUserServiceImpl{
         userFront.setName((String)map.get("userName"));
         userFront.setPassword((String)map.get("password"));
         userFront.setRole((String)map.get("userType"));
-        if (String.valueOf(map.get("id")) == null || String.valueOf(map.get("id")) == "") {
+        if (String.valueOf(map.get("id")) == null || String.valueOf(map.get("id")) == "" || String.valueOf(map.get("id")).equals("0")) {
 
             //不存在则添加
             User userDB  = userMapper.selectByUser(userFront);
@@ -159,7 +159,7 @@ public class GroupUserServiceImpl{
                 GroupUser gu = new GroupUser();
                 gu.setStudentId(userId);
                 gu.setGroupId(groupId);
-                int tmp = groupUserMapper.insertUsertoGroup(gu);
+                int tmp = groupUserMapper.insert(gu);
                 if(tmp < 0) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                     return new ResponseEntity(ErrorMsgEnum.DATABASE_ERROR);
