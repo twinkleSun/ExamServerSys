@@ -66,11 +66,10 @@ public class ExamServiceImpl{
         }else{
             examId = Integer.valueOf(String.valueOf(map.get("id")));
             exam.setId(examId);
-            String status = String.valueOf(map.get("status"));
-
-            if(status.equals("未开始")){
+            Exam examDB = examMapper.selectByPrimaryKey(examId);
+            if(examDB.getStatus().equals("未开始")){
                 //修改考试
-                exam.setStatus(status);
+                exam.setStatus(examDB.getStatus());
                 examMapper.updateByPrimaryKey(exam);
                 examGroupMapper.deleteByExamId(examId);
             }else {
