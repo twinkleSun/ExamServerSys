@@ -10,7 +10,7 @@ $(function(){
             paper_code:"20191008193539",
             begin_time:"2019-10-10 19:35:39",
             end_time:"2019-10-10 21:35:39",
-            duration:"00:02:00",
+            duration:12000,
             status:"未开始",
             group_ids:[1,2]
         };

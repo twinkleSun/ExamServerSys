@@ -70,7 +70,7 @@ public enum ErrorMsgEnum {
     NOT_CHOOSE_PAPER(400001,"没有选择试卷，请选择试卷后再提交"),
     END_EARLY_THAN_BEGIN(400002,"开始日期在结束日期之后,请重新提交"),
     INCORRECT_DATA_FORMAT(400003,"日期格式错误，请重新编辑"),
-    BEGIN_CAN_NOT_DELETE(400004,"已完成或进行中的考试信息不允许修改"),
+    BEGIN_CAN_NOT_UPDATE(400004,"已完成或进行中的考试信息不允许修改"),
     EXAM_HAS_NO_GROUP(400005,"未添加组,请重新编辑"),
     STUDENT_HAS_NO_EXAM(400006,"该考生没有考试"),
     EXAM_HAS_NO_STUDENT(400007,"该场考试还没考生，请添加"),
