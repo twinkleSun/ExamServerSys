@@ -114,7 +114,8 @@ public class GroupUserServiceImpl{
         User userFront =new User();
         userFront.setName((String)map.get("userName"));
         userFront.setPassword((String)map.get("password"));
-        userFront.setRole((String)map.get("userType"));
+        //userFront.setRole((String)map.get("userType"));
+        userFront.setRole("student");//只能添加student用户，admin用户只能由super用户添加
         if (String.valueOf(map.get("id")) == null || String.valueOf(map.get("id")) == "" || String.valueOf(map.get("id")).equals("0")) {
 
             //不存在则添加
