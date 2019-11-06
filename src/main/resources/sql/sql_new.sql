@@ -66,10 +66,10 @@ CREATE TABLE `knowledge` (
 -- DROP TABLE IF EXISTS `question_library`;
 CREATE TABLE `question_library` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `description` varchar(50) DEFAULT null comment '题目描述',
-  `content` varchar(255) NOT NULL COMMENT '题干',
-  `options` varchar(255)  default NULL COMMENT '选项{}分隔成json格式字符串',
-  `answer` varchar(255)  default NULL COMMENT '答案,用|分隔',
+  `description` TEXT() DEFAULT null comment '题目描述',
+  `content` TEXT() NOT NULL COMMENT '题干',
+  `options` TEXT()  default NULL COMMENT '选项{}分隔成json格式字符串',
+  `answer` TEXT()  default NULL COMMENT '答案,用|分隔',
   `type` VARCHAR (45) NOT NULL COMMENT '题目类型：单选题：single/多选题：multi/判断题：judge/主观题：subjective',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
@@ -101,7 +101,7 @@ CREATE TABLE `test_paper_detail` (
   `question_id` int(11) NOT NULL COMMENT '题目ID',
   `must_or_not` int(11) NOT NULL COMMENT '必做为1/选做为0',
   `score` DOUBLE(4,2) NOT NULL COMMENT '题目分数',
-  `def_answer` VARCHAR (45) DEFAULT NULL COMMENT '题目的标准答案',
+  `def_answer` TEXT() DEFAULT NULL COMMENT '题目的标准答案',
   `category_content` VARCHAR (45) DEFAULT NULL COMMENT '第几大题，如：一、数据库基础',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`question_id`) REFERENCES `question_library` (`id`)
