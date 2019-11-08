@@ -354,11 +354,20 @@ public class StudentPointServiceImpl {
      * @return
      */
     public ResponseEntity selectAllByExamId(int examId){
-        List<StudentPointAndInfoEntity> studentPointList =  studentPointMapper.selectAllByExamId(examId);
-        if(studentPointList == null || studentPointList.size() ==0){
+        Exam exam = examMapper.selectByPrimaryKey(examId);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = simpleDateFormat.format(new java.util.Date());
+        if(currentTime.compareTo(exam.getEndTime()) <= 0)  {
             return new ResponseEntity(ErrorMsgEnum.NO_STUDENT_POINT_INFO);
-        }else{
-            return new ResponseEntity(200,"查询成功",studentPointList);
+        } else{
+            List<StudentPointAndInfoEntity> studentPointList =  studentPointMapper.selectAllByExamId(examId);
+            if(studentPointList == null || studentPointList.size() ==0){
+                return new ResponseEntity(ErrorMsgEnum.NO_STUDENT_POINT_INFO);
+            }else{
+                return new ResponseEntity(200,"查询成功",studentPointList);
+            }
         }
+
     }
 }

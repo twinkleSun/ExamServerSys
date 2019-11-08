@@ -79,7 +79,7 @@ public enum ErrorMsgEnum {
     EXAM_BEGINS_CAN_NOT_DELETE(400009,"考试已结束或正在继续进行中,不得删除"),
     EXAM_END_CANNOT_IN(400010,"考试已结束，不可再次进入"),
     STUDENT_NOT_IN_EXAM(400011,"该考生不在此场考试中，不得获取考试内容"),
-    NO_STUDENT_POINT_INFO(400012,"考试未开始或进行中，还没学生成绩记录"),
+    NO_STUDENT_POINT_INFO(400012,"考生考试结束后才可查看成绩记录"),
     STUDENT_NOT_TAKE_PART_IN(400013,"考生没有参加或没有提交具体作答内容，不存在答卷详情")
     ;
 
