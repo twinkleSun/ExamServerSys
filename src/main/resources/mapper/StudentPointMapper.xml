@@ -55,9 +55,9 @@
   </delete>
 
   <insert id="insertIds" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPoint" >
-    insert into student_point (id, paper_code, student_id,exam_id,end_flag,in_time,left_time)
+    insert into student_point (id, paper_code, student_id,exam_id,end_flag,in_time,left_time,objective_status,subjective_status)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER},
-      #{examId},#{endFlag},#{inTime},#{leftTime})
+      #{examId},#{endFlag},#{inTime},#{leftTime},#{0},#{0})
   </insert>
 
 

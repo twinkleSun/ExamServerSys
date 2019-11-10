@@ -274,6 +274,9 @@ public class StudentPointServiceImpl {
             Double objectiveGrade = 0.0;
 //            Double objectiveGrade = stuObjJudgeEntity.getObjectiveGrade();
             Double subjectiveGrade = stuObjJudgeEntity.getSubjectiveGrade();
+            if(subjectiveGrade == null){
+                subjectiveGrade = 0.0;
+            }
             List<StuObjQuesEntity> stuQues = stuObjJudgeEntity.getStuQues();
 
             for(int j=0;j<stuQues.size();j++){
