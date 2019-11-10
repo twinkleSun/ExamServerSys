@@ -205,33 +205,38 @@ public class StudentPointServiceImpl {
         studentPoint.setStudentId(stuId);
         studentPoint.setPaperCode(paperCode);
         StudentPoint studentPointDB = studentPointMapper.selectByIds(studentPoint);
+
         if( studentPointDB == null || studentPointDB.getEndFlag() == 0){
             Exam exam = examMapper.selectByPrimaryKey(examId);
+
+            SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            Long durationTime = exam.getDuration();
+            Long nowTime = now.getTime();
+            Long inTime;
+            Date endDate;
             if(studentPointDB == null){
                 //新建
-                Date now = new Date();
                 studentPoint.setInTime(String.valueOf(now.getTime()));
                 studentPoint.setLeftTime(exam.getDuration());
                 studentPoint.setEndFlag(0);
                 studentPointMapper.insertIds(studentPoint);
+
+                inTime = Long.valueOf(studentPoint.getInTime());
             }else{
-                try{
-                    SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date endDate = dateFormatTime.parse(exam.getEndTime());
-                    Long endTime = endDate.getTime();
-
-                    Long inTime = Long.valueOf(studentPointDB.getInTime());
-                    Long durationTime = exam.getDuration();
-                    Date now = new Date();
-                    Long nowTime = now.getTime();
-
-                    Long leftTime = Math.min(inTime + durationTime -nowTime,endTime-nowTime);
-
-                    studentPoint.setLeftTime(leftTime);
-                }catch (Exception e){
-
-                }
+                inTime = Long.valueOf(studentPointDB.getInTime());
             }
+
+            try{
+                endDate = dateFormatTime.parse(exam.getEndTime());
+            }catch (Exception e){
+                return new ResponseEntity(ErrorMsgEnum.INCORRECT_DATA_FORMAT);
+            }
+
+            Long endTime = endDate.getTime();
+            Long leftTime = Math.min(inTime + durationTime -nowTime,endTime-nowTime);
+            studentPoint.setLeftTime(leftTime);
+
             TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
             testPaperList.setLeftTime(studentPoint.getLeftTime());
             return new ResponseEntity(200,"查询成功",testPaperList);

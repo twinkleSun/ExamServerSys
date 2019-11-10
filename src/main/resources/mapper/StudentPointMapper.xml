@@ -116,7 +116,7 @@
   <select id="selectAllByExamId" resultMap="BaseResultUserMap" parameterType="java.lang.Integer">
     select sp.id, sp.paper_code, sp.student_id, sp.objective_grade,
     sp.subjective_grade, sp.extra_point,sp.paper_total_point,
-    sp.student_total_point,sp.exam_id,sp.objective_status, sp.subjective_status,
+    sp.student_total_point,sp.exam_id,sp.objective_status, sp.subjective_status,sp.end_flag end_flag,
     u.name student_name
     from student_point sp
     left join `user` u on u.id = sp.student_id
