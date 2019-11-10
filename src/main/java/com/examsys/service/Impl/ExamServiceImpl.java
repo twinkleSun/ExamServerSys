@@ -47,9 +47,14 @@ public class ExamServiceImpl{
         exam.setEndTime(String.valueOf(map.get("end_time")));
         exam.setDuration(Long.valueOf(map.get("duration").toString()));
 
+        String current = dateFormatTime.format(new Date());
         try{
             Date dtBegin = dateFormatTime.parse(exam.getBeginTime());
             Date dtEnd = dateFormatTime.parse(exam.getEndTime());
+            Date dtNow = dateFormatTime.parse(current);
+            if(dtNow.getTime() >= dtBegin.getTime()){
+                return new ResponseEntity(ErrorMsgEnum.BEIGIN_EARLY_THAN_NOW);
+            }
             if(dtBegin.getTime() >= dtEnd.getTime()){
                 return new ResponseEntity(ErrorMsgEnum.END_EARLY_THAN_BEGIN);
             }

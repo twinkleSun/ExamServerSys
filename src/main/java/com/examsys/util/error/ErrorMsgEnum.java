@@ -80,7 +80,8 @@ public enum ErrorMsgEnum {
     EXAM_END_CANNOT_IN(400010,"考试已结束，不可再次进入"),
     STUDENT_NOT_IN_EXAM(400011,"该考生不在此场考试中，不得获取考试内容"),
     NO_STUDENT_POINT_INFO(400012,"考试未结束或还无考生答题"),
-    STUDENT_NOT_TAKE_PART_IN(400013,"考生没有参加或没有提交具体作答内容，不存在答卷详情")
+    STUDENT_NOT_TAKE_PART_IN(400013,"考生没有参加或没有提交具体作答内容，不存在答卷详情"),
+    BEIGIN_EARLY_THAN_NOW(400014,"开始时间不得早于当前时间")
     ;
 
 
