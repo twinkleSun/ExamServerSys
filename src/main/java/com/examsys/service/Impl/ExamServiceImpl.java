@@ -47,9 +47,14 @@ public class ExamServiceImpl{
         exam.setEndTime(String.valueOf(map.get("end_time")));
         exam.setDuration(Long.valueOf(map.get("duration").toString()));
 
+        String current = dateFormatTime.format(new Date());
         try{
             Date dtBegin = dateFormatTime.parse(exam.getBeginTime());
             Date dtEnd = dateFormatTime.parse(exam.getEndTime());
+            Date dtNow = dateFormatTime.parse(current);
+            if(dtNow.getTime() >= dtBegin.getTime()){
+                return new ResponseEntity(ErrorMsgEnum.BEIGIN_EARLY_THAN_NOW);
+            }
             if(dtBegin.getTime() >= dtEnd.getTime()){
                 return new ResponseEntity(ErrorMsgEnum.END_EARLY_THAN_BEGIN);
             }
@@ -66,14 +71,14 @@ public class ExamServiceImpl{
         }else{
             examId = Integer.valueOf(String.valueOf(map.get("id")));
             exam.setId(examId);
-
-            String status = String.valueOf(map.get("status"));
-            if(status.equals("未开始")){
+            Exam examDB = examMapper.selectByPrimaryKey(examId);
+            if(examDB.getStatus().equals("未开始")){
                 //修改考试
+                exam.setStatus(examDB.getStatus());
                 examMapper.updateByPrimaryKey(exam);
                 examGroupMapper.deleteByExamId(examId);
             }else {
-                return new ResponseEntity(ErrorMsgEnum.BEGIN_CAN_NOT_DELETE);
+                return new ResponseEntity(ErrorMsgEnum.BEGIN_CAN_NOT_UPDATE);
             }
 
         }

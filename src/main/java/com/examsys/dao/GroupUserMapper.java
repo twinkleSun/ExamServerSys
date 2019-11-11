@@ -34,7 +34,7 @@ public interface GroupUserMapper {
 
     int deleteByGroupId(Integer group_id);
 
-    int insertUsertoGroup(GroupUser gu);
+//    int insertUsertoGroup(GroupUser gu);
 
     List<GroupUser> selectOfNoStart(int groupId);
 

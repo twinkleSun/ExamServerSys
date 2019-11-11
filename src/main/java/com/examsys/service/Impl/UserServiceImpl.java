@@ -141,7 +141,7 @@ public class UserServiceImpl{
      */
     @Transactional
     public ResponseEntity deleteUsers(Map<String,Object> map){
-        ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("student_id");
+        ArrayList<Integer> userIds=(ArrayList<Integer>)map.get("id");
         for(int i=0;i<userIds.size();i++){
             int userId = userIds.get(i);
             studentPointDetailMapper.deleteByStuId(userId);

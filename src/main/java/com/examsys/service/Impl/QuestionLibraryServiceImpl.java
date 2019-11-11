@@ -155,38 +155,24 @@ public class QuestionLibraryServiceImpl {
 
 
     /**
-     * 添加题目列表
+     * 批量添加题目
      * @param questionList
      * @return
      */
+    @Transactional
     public ResponseEntity addNewQuestions(List<QuestionLibrary> questionList){
-        int length=questionList.size();
-        ResponseEntity responseEntity=new ResponseEntity();
-        List<QuestionLibrary> questionLibraryList=new ArrayList<>();
-        int flag=0;
-        for(int i=0;i<length;i++){
-            QuestionLibrary question=questionList.get(i);
-            QuestionLibrary questionAlready =questionLibraryMapper.selectByQuestion(question);
-            if(questionAlready != null){
-                questionLibraryList.add(questionAlready);
+        for(int i=0;i<questionList.size();i++){
+            QuestionLibrary question = questionList.get(i);
+            QuestionLibrary questionDB =questionLibraryMapper.selectByQuestion(question);
+            if(questionDB != null){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                return new ResponseEntity(ErrorMsgEnum.QUESTION_ALREADY_EXIST,questionList.get(i));
             }else{
-                int tmp= questionLibraryMapper.insert(question);
-                if(tmp<0){
-                    flag=1;
-                    questionLibraryList.add(question);
-                }
+                questionLibraryMapper.insert(question);
             }
+        }
+        return new ResponseEntity(200,"添加成功");
 
-        }
-        if(flag!=0){
-            responseEntity.setStatus(-1);
-            responseEntity.setMsg("部分题目添加失败，添加失败的题目见data,存在ID则为该题题库中已经存在");
-            responseEntity.setData(questionLibraryList);
-        }else{
-            responseEntity.setStatus(200);
-            responseEntity.setMsg("添加成功");
-        }
-        return responseEntity;
     }
 
 //    /**

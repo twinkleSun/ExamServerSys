@@ -45,7 +45,10 @@ public class ExamsysApplicationTests {
 //            e.printStackTrace();
 //        }
 //
-
+        SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       Long s =1572942741388L;
+        String sb=dateFormatTime.format(s);
+        System.out.println(sb);
 //        Date now = new Date();
 //        SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //
@@ -61,30 +64,30 @@ public class ExamsysApplicationTests {
 //        }catch (Exception w){
 //
 //        }
-        String test = "{0:我才是的}####{1:343242}####{2：测卡}";
-
-        //todo:如果是客观题，一定含有####,否则报错
-        String[] arr = test.split("####");
-        //todo:选项不可以超过10个,否则报错
-
-        List<Map<String,Object>> mapList =new ArrayList<>();
-        for(int i=0;i<arr.length;i++){
-            Map<String,Object> map =new HashMap<>();
-//            JSONObject jsonObject = JSONObject.parseObject(arr[i]);
-            System.out.println(arr[i]);
-            //todo:判断截取的是否equals（0，1，2，，，9）
-            int index = Integer.valueOf(arr[i].substring(1,2));
-            System.out.println("index="+index);
-            //todo:判断最后一个字符是否为}
-            String content = arr[i].substring(3,arr[i].length()-1);
-            System.out.println("content="+content);
-            map.put("id",index);
-            map.put("content",content);
-            mapList.add(map);
-        }
-
-        String t = JSONObject.toJSONString(mapList);
-        System.out.println(t);
+//        String test = "{0:我才是的}####{1:343242}####{2：测卡}";
+//
+//        //todo:如果是客观题，一定含有####,否则报错
+//        String[] arr = test.split("####");
+//        //todo:选项不可以超过10个,否则报错
+//
+//        List<Map<String,Object>> mapList =new ArrayList<>();
+//        for(int i=0;i<arr.length;i++){
+//            Map<String,Object> map =new HashMap<>();
+////            JSONObject jsonObject = JSONObject.parseObject(arr[i]);
+//            System.out.println(arr[i]);
+//            //todo:判断截取的是否equals（0，1，2，，，9）
+//            int index = Integer.valueOf(arr[i].substring(1,2));
+//            System.out.println("index="+index);
+//            //todo:判断最后一个字符是否为}
+//            String content = arr[i].substring(3,arr[i].length()-1);
+//            System.out.println("content="+content);
+//            map.put("id",index);
+//            map.put("content",content);
+//            mapList.add(map);
+//        }
+//
+//        String t = JSONObject.toJSONString(mapList);
+//        System.out.println(t);
 
 
 

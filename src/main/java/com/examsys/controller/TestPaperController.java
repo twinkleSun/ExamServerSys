@@ -70,13 +70,20 @@ public class TestPaperController {
     @Transactional
     public ResponseEntity addPaper(@RequestBody Map<String,Object> mapRes) {
         //添加试卷，并处理试卷-题目关联关系
-        List<TestPaperDetail> testPaperList = testPaperService.handleNewPaper(mapRes);
 
+        ResponseEntity tmpResponse  = testPaperService.handleNewPaper(mapRes);
+
+        if(tmpResponse.getStatus() != 200){
+            return tmpResponse;
+        }
+
+        List<TestPaperDetail> testPaperList = (List<TestPaperDetail>)tmpResponse.getData();
         if(mapRes.get("paper_code") == null || mapRes.get("paper_code") == "" ){
             //没有paper_code则为新建
         }else{
             testPaperService.deletePaperDetail(testPaperList);
         }
+
         //添加试卷-题目关联关系
         ResponseEntity responseEntity = testPaperService.addTestPaperDetail(testPaperList);
         return responseEntity;

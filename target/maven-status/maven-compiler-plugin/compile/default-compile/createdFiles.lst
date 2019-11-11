@@ -2,6 +2,7 @@ com\examsys\model\entity\UserGroupEntity.class
 com\examsys\model\entity\ResponseEntity.class
 com\examsys\model\entity\StuObjQuesEntity.class
 com\examsys\model\TestPaper.class
+com\examsys\model\entity\QuesStuPointEntity.class
 com\examsys\model\entity\TestPaperAdminEntity.class
 com\examsys\model\Exam.class
 com\examsys\controller\GroupController.class
@@ -15,9 +16,7 @@ com\examsys\util\ExcelTemplateUtil.class
 com\examsys\model\entity\QuesKnowEntity.class
 com\examsys\model\StudentPointDetail.class
 com\examsys\service\Impl\UserServiceImpl.class
-com\examsys\controller\QuesKnowledgeController.class
 com\examsys\dao\TestPaperDetailMapper.class
-com\examsys\service\Impl\StudentPointDetailServiceImpl.class
 com\examsys\controller\GroupUserController.class
 com\examsys\service\Impl\KnowledgeServiceImpl.class
 com\examsys\model\Group.class
@@ -41,6 +40,8 @@ com\examsys\model\QuesKnowledge.class
 com\examsys\model\TestPaperDetail.class
 com\examsys\model\entity\Keypoint.class
 com\examsys\model\Knowledge.class
+com\examsys\model\entity\ExamEntity.class
+com\examsys\model\entity\QuestionAns.class
 com\examsys\model\StudentPoint.class
 com\examsys\controller\TestPaperController.class
 com\examsys\model\entity\GroupUserEntity.class
@@ -50,16 +51,16 @@ com\examsys\model\entity\QuesKnowNameEntity.class
 com\examsys\controller\UserController.class
 com\examsys\dao\KnowledgeMapper.class
 com\examsys\util\OtherUtil.class
+com\examsys\model\entity\StudentPointAndInfoEntity.class
 com\examsys\service\Impl\GroupServiceImpl.class
 com\examsys\controller\QuestionLibraryController.class
 com\examsys\service\Impl\TestPaperServiceImpl.class
 com\examsys\config\CorsConfig.class
-com\examsys\service\Impl\QuesKnowledgeServiceImpl.class
 com\examsys\dao\GroupMapper.class
 com\examsys\dao\StudentPointDetailMapper.class
 com\examsys\controller\ExamGroupController.class
 com\examsys\model\entity\StudentAnswersDetail.class
-com\examsys\controller\StudentPointDetailController.class
+com\examsys\model\entity\PaperAndStuAnsPointEntity.class
 com\examsys\service\Impl\ExamGroupServiceImpl.class
 com\examsys\util\error\ErrorMsgEnum.class
 com\examsys\model\entity\TestPaperEntity.class

@@ -55,9 +55,9 @@
   </delete>
 
   <insert id="insertIds" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.StudentPoint" >
-    insert into student_point (id, paper_code, student_id,exam_id,end_flag,in_time,left_time)
+    insert into student_point (id, paper_code, student_id,exam_id,end_flag,in_time,left_time,objective_status,subjective_status)
     values (#{id,jdbcType=INTEGER}, #{paperCode,jdbcType=VARCHAR}, #{studentId,jdbcType=INTEGER},
-      #{examId},#{endFlag},#{inTime},#{leftTime})
+      #{examId},#{endFlag},#{inTime},#{leftTime},#{0},#{0})
   </insert>
 
 
@@ -93,10 +93,34 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="selectAllByExamId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select id, paper_code, student_id, objective_grade, subjective_grade, extra_point,
-    paper_total_point, student_total_point,exam_id,objective_status, subjective_status
-    from student_point where exam_id =#{examId}
+    <resultMap id="BaseResultUserMap" type="com.examsys.model.entity.StudentPointAndInfoEntity" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="paper_code" property="paperCode" jdbcType="VARCHAR" />
+        <result column="student_id" property="studentId" jdbcType="INTEGER" />
+        <result column="exam_id" property="examId" jdbcType="INTEGER" />
+        <result column="objective_grade" property="objectiveGrade" jdbcType="DOUBLE" />
+        <result column="subjective_grade" property="subjectiveGrade" jdbcType="DOUBLE" />
+        <result column="objective_status" property="objectiveStatus" jdbcType="INTEGER" />
+        <result column="subjective_status" property="subjectiveStatus" jdbcType="INTEGER" />
+        <result column="extra_point" property="extraPoint" jdbcType="DOUBLE" />
+        <result column="paper_total_point" property="paperTotalPoint" jdbcType="DOUBLE" />
+        <result column="student_total_point" property="studentTotalPoint" jdbcType="DOUBLE" />
+        <result column="end_flag" property="endFlag" jdbcType="INTEGER" />
+        <result column="in_time" property="inTime" jdbcType="VARCHAR" />
+        <result column="left_time" property="leftTime" />
+        <result column="in_time" property="inTime" jdbcType="VARCHAR" />
+        <result column="student_name" property="studentName" />
+    </resultMap>
+
+
+  <select id="selectAllByExamId" resultMap="BaseResultUserMap" parameterType="java.lang.Integer">
+    select sp.id, sp.paper_code, sp.student_id, sp.objective_grade,
+    sp.subjective_grade, sp.extra_point,sp.paper_total_point,
+    sp.student_total_point,sp.exam_id,sp.objective_status, sp.subjective_status,sp.end_flag end_flag,
+    u.name student_name
+    from student_point sp
+    left join `user` u on u.id = sp.student_id
+    where sp.exam_id =#{examId}
   </select>
 
 

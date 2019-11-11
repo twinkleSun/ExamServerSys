@@ -76,4 +76,28 @@ $(function(){
 
     });
 
+    $("#4-api-14").click(function() {
+        var str14={
+            exam_id:3,
+            stu_id:5
+        };
+        $.ajax({
+            url: "/spi/stuans",
+            type: "post",
+            traditional: true,
+            contentType: "application/json; charset=UTF-8",
+            dataType: "json",
+            data:JSON.stringify(str14),
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                // console.log(XMLHttpRequest.status);
+                // console.log(XMLHttpRequest.readyState);
+                // console.log(textStatus);
+            },
+        });
+
+    });
+
 });

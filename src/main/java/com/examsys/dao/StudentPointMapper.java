@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.StudentPoint;
+import com.examsys.model.entity.StudentPointAndInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public interface StudentPointMapper {
 
     List<StudentPoint> selectAll();
 
-    List<StudentPoint> selectAllByExamId(int examId);
+    List<StudentPointAndInfoEntity> selectAllByExamId(int examId);
 
     int updateByPrimaryKey(StudentPoint record);
 

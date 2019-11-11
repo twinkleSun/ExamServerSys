@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.TestPaperDetail;
+import com.examsys.model.entity.PaperAndStuAnsPointEntity;
 import com.examsys.model.entity.TestPaperEntity;
 import com.examsys.model.entity.TestPaperListEntity;
 import org.apache.ibatis.annotations.Mapper;
@@ -20,6 +21,9 @@ public interface TestPaperDetailMapper {
                                        @Param("examId")Integer examId,
                                        @Param("stuId")Integer stuId);
 
+
+    PaperAndStuAnsPointEntity selectStuPaperAnsDetail(@Param("examId")Integer examId,
+                                                      @Param("stuId")Integer stuId);
 
     List<TestPaperDetail> selectByQuesId(Integer quesId);
 

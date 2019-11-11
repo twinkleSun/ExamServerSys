@@ -205,41 +205,61 @@ public class StudentPointServiceImpl {
         studentPoint.setStudentId(stuId);
         studentPoint.setPaperCode(paperCode);
         StudentPoint studentPointDB = studentPointMapper.selectByIds(studentPoint);
+
         if( studentPointDB == null || studentPointDB.getEndFlag() == 0){
             Exam exam = examMapper.selectByPrimaryKey(examId);
+
+            SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date now = new Date();
+            Long durationTime = exam.getDuration();
+            Long nowTime = now.getTime();
+            Long inTime;
+            Date endDate;
             if(studentPointDB == null){
                 //新建
-                Date now = new Date();
                 studentPoint.setInTime(String.valueOf(now.getTime()));
                 studentPoint.setLeftTime(exam.getDuration());
                 studentPoint.setEndFlag(0);
                 studentPointMapper.insertIds(studentPoint);
+
+                inTime = Long.valueOf(studentPoint.getInTime());
             }else{
-                try{
-                    SimpleDateFormat dateFormatTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date endDate = dateFormatTime.parse(exam.getEndTime());
-                    Long endTime = endDate.getTime();
-
-                    Long inTime = Long.valueOf(studentPointDB.getInTime());
-                    Long durationTime = exam.getDuration();
-                    Date now = new Date();
-                    Long nowTime = now.getTime();
-
-                    Long leftTime = Math.min(inTime + durationTime -nowTime,endTime-nowTime);
-
-                    studentPoint.setLeftTime(leftTime);
-
-                }catch (Exception e){
-
-                }
-
+                inTime = Long.valueOf(studentPointDB.getInTime());
             }
+
+            try{
+                endDate = dateFormatTime.parse(exam.getEndTime());
+            }catch (Exception e){
+                return new ResponseEntity(ErrorMsgEnum.INCORRECT_DATA_FORMAT);
+            }
+
+            Long endTime = endDate.getTime();
+            Long leftTime = Math.min(inTime + durationTime -nowTime,endTime-nowTime);
+            studentPoint.setLeftTime(leftTime);
 
             TestPaperListEntity testPaperList = testPaperDetailMapper.selectStuPaper(paperCode,examId,stuId);
             testPaperList.setLeftTime(studentPoint.getLeftTime());
             return new ResponseEntity(200,"查询成功",testPaperList);
         }else{
             return new ResponseEntity(ErrorMsgEnum.EXAM_END_CANNOT_IN);
+        }
+
+    }
+
+
+    /**
+     * 获取学生答卷详情，包括主观题和客观题
+     * @param map
+     * @return
+     */
+    public ResponseEntity getPaperStuAnsPoint(Map<String,Object> map){
+        int stuId = Integer.valueOf(map.get("stu_id").toString());
+        int examId = Integer.valueOf(map.get("exam_id").toString());
+        PaperAndStuAnsPointEntity stuPaperAnsPoint = testPaperDetailMapper.selectStuPaperAnsDetail(examId,stuId);
+        if(stuPaperAnsPoint == null){
+            return new ResponseEntity(ErrorMsgEnum.STUDENT_NOT_TAKE_PART_IN);
+        }else{
+            return new ResponseEntity(200,"查询成功",stuPaperAnsPoint);
         }
 
     }
@@ -259,6 +279,9 @@ public class StudentPointServiceImpl {
             Double objectiveGrade = 0.0;
 //            Double objectiveGrade = stuObjJudgeEntity.getObjectiveGrade();
             Double subjectiveGrade = stuObjJudgeEntity.getSubjectiveGrade();
+            if(subjectiveGrade == null){
+                subjectiveGrade = 0.0;
+            }
             List<StuObjQuesEntity> stuQues = stuObjJudgeEntity.getStuQues();
 
             for(int j=0;j<stuQues.size();j++){
@@ -339,11 +362,20 @@ public class StudentPointServiceImpl {
      * @return
      */
     public ResponseEntity selectAllByExamId(int examId){
-        List<StudentPoint> studentPointList =  studentPointMapper.selectAllByExamId(examId);
-        if(studentPointList == null || studentPointList.size() ==0){
+        Exam exam = examMapper.selectByPrimaryKey(examId);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = simpleDateFormat.format(new java.util.Date());
+        if(currentTime.compareTo(exam.getEndTime()) <= 0)  {
             return new ResponseEntity(ErrorMsgEnum.NO_STUDENT_POINT_INFO);
-        }else{
-            return new ResponseEntity(200,"查询成功",studentPointList);
+        } else{
+            List<StudentPointAndInfoEntity> studentPointList =  studentPointMapper.selectAllByExamId(examId);
+            if(studentPointList == null || studentPointList.size() ==0){
+                return new ResponseEntity(ErrorMsgEnum.NO_STUDENT_POINT_INFO);
+            }else{
+                return new ResponseEntity(200,"查询成功",studentPointList);
+            }
         }
+
     }
 }

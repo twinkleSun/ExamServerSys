@@ -2,6 +2,7 @@ package com.examsys.util;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
@@ -12,6 +13,7 @@ import java.io.UnsupportedEncodingException;
  */
 
 @Component
+@Repository
 public class OtherUtil {
 
 

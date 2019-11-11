@@ -28,7 +28,7 @@
         <collection property="subjective_answers" ofType="Map" javaType="java.util.List">
           <id column="id" property="id"></id>
           <result column="content" property="content"></result>
-          <result column="descriptiinon" property="description"></result>
+          <result column="description" property="description"></result>
           <result column="total_point" property="total_point"></result>
           <result column="answer" property="answer"></result>
           <result column="student_answer" property="student_answer"></result>

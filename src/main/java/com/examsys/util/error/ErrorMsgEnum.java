@@ -15,6 +15,7 @@ public enum ErrorMsgEnum {
      * 数据库错误，一般不会出现
      */
     DATABASE_ERROR(0,"数据库错误"),
+    EXCEPTION_ERROR(1,"exception"),
 
 
     /**
@@ -46,6 +47,13 @@ public enum ErrorMsgEnum {
     KNOWLEDGE_ALREADY_EXIST(200008,"相同的知识点已存在，请重新编辑"),
     SAME_KNOWLEDGE_EXIST(200009,"相同的知识点已存在，请重新修改"),
     QUESTION_ASSISTANT_WITH_PAPER(200010,"有部分题目关联了试卷，不可以删除，题目ID见data"),
+    INDEX_FORMAT_NOT_CORRECT(200011,"选项的序号不正确，或超过了最大数字9（选项不得超过10个）"),
+    CONTENT_CAN_NOT_BE_NULL(200012,"题干不得为空"),
+    ANSWER_CAN_NOT_BE_NULL(200013,"参考答案不得为空"),
+    OPTION_CAN_NOT_BE_NULL(200014,"客观题选项不得为空"),
+    OPTION_IS_TOO_SHORT(200015,"选项太短"),
+    ANSWER_INDEX_FORMAT_INCORRECT(200016,"答案的选项序号不正确"),
+    ANSWER_FORMAT_INCORRECT(200017,"答案格式不正确，不包含#"),
 
 
     /**
@@ -54,6 +62,7 @@ public enum ErrorMsgEnum {
     NO_PAPERS_EXIST(300001,"不存在试卷"),
     PAPER_ASSISTANT_WITH_EXAM(300002,"该试卷已和考试关联，不可以删除。被关联的试卷ID见data"),
     ADMIN_HAS_NO_PAPERS(300003,"该管理员名下没有试卷"),
+    CREATOR_NOT_ADMIN(300004,"创建者非admin用户"),
 
 
     /**
@@ -62,7 +71,7 @@ public enum ErrorMsgEnum {
     NOT_CHOOSE_PAPER(400001,"没有选择试卷，请选择试卷后再提交"),
     END_EARLY_THAN_BEGIN(400002,"开始日期在结束日期之后,请重新提交"),
     INCORRECT_DATA_FORMAT(400003,"日期格式错误，请重新编辑"),
-    BEGIN_CAN_NOT_DELETE(400004,"已完成或进行中的考试信息不允许修改"),
+    BEGIN_CAN_NOT_UPDATE(400004,"已完成或进行中的考试信息不允许修改"),
     EXAM_HAS_NO_GROUP(400005,"未添加组,请重新编辑"),
     STUDENT_HAS_NO_EXAM(400006,"该考生没有考试"),
     EXAM_HAS_NO_STUDENT(400007,"该场考试还没考生，请添加"),
@@ -70,7 +79,9 @@ public enum ErrorMsgEnum {
     EXAM_BEGINS_CAN_NOT_DELETE(400009,"考试已结束或正在继续进行中,不得删除"),
     EXAM_END_CANNOT_IN(400010,"考试已结束，不可再次进入"),
     STUDENT_NOT_IN_EXAM(400011,"该考生不在此场考试中，不得获取考试内容"),
-    NO_STUDENT_POINT_INFO(400012,"考试未开始或进行中，还没学生成绩记录")
+    NO_STUDENT_POINT_INFO(400012,"考试未结束或还无考生答题"),
+    STUDENT_NOT_TAKE_PART_IN(400013,"考生没有参加或没有提交具体作答内容，不存在答卷详情"),
+    BEIGIN_EARLY_THAN_NOW(400014,"开始时间不得早于当前时间")
     ;
 
 
