@@ -6,7 +6,7 @@ $(function(){
 
     $("#4-api-11").click(function() {
         var str7={
-            exam_id:3
+            exam_id:22
         };
         $.ajax({
             url: "/spi/startobj",
