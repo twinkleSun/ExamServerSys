@@ -134,8 +134,8 @@ $(function(){
     $("#4-api-6").click(function() {
         var str6={
             paper_code: "20191008193539",
-            exam_id:21,
-            stu_id:12
+            exam_id:24,
+            stu_id:11
         };
         $.ajax({
             url: "/spi/stupaper",

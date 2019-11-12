@@ -59,6 +59,7 @@ public class StudentPointController {
      * @param map
      * @return
      */
+    @Transactional
     @PostMapping(value = "/stupaper")
     public ResponseEntity getExamPaper(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = studentPointService.getStuExamPaper(map);

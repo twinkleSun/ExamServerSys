@@ -190,6 +190,8 @@ public class StudentPointServiceImpl {
      * @param map
      * @return
      */
+
+    @Transactional
     public ResponseEntity getStuExamPaper(Map<String,Object> map){
         String paperCode = String.valueOf(map.get("paper_code"));
         int stuId = Integer.valueOf(map.get("stu_id").toString());
@@ -220,6 +222,8 @@ public class StudentPointServiceImpl {
                 studentPoint.setInTime(String.valueOf(now.getTime()));
                 studentPoint.setLeftTime(exam.getDuration());
                 studentPoint.setEndFlag(0);
+                studentPoint.setObjectiveStatus(0);
+                studentPoint.setSubjectiveStatus(0);
                 studentPointMapper.insertIds(studentPoint);
 
                 inTime = Long.valueOf(studentPoint.getInTime());

@@ -86,7 +86,7 @@
                ql.type ques_type,ql.answer def_ans
         FROM student_point sp
         left join student_point_detail sd on sd.student_id = sp.student_id
-        LEFT JOIN  question_library ql on ql.id=sd.question_id
+        LEFT JOIN question_library ql on ql.id=sd.question_id
         where sp.exam_id=#{examId} and ql.type != "subjective"
     </select>
 
