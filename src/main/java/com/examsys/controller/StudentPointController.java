@@ -106,16 +106,4 @@ public class StudentPointController {
 
 
 
-    /**
-     * 考生获取已结束的考试的成绩列表
-     * @param map
-     * @return
-     */
-    @PostMapping(value = "/pointlist")
-    public ResponseEntity stuGetExamPointList(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = studentPointService.stuGetExamPointList(Integer.valueOf(map.get("stu_id").toString()));
-        return responseEntity;
-    }
-
-
 }

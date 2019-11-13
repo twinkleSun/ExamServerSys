@@ -37,5 +37,4 @@ public interface StudentPointMapper {
 
     int deleteByStuId(int stuId);
 
-    List<StuPointList> selectPointByStu(int stuId);
 }

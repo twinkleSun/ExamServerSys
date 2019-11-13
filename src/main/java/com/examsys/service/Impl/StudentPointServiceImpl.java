@@ -383,17 +383,4 @@ public class StudentPointServiceImpl {
 
     }
 
-    /**
-     * 查询考生已结束的成绩列表
-     * @param stuId
-     * @return
-     */
-    public ResponseEntity stuGetExamPointList(int stuId){
-        List<StuPointList> stuPointLists = studentPointMapper.selectPointByStu(stuId);
-        if(stuPointLists == null || stuPointLists.size() == 0){
-            return new ResponseEntity(ErrorMsgEnum.NO_STU_POINT_LIST);
-        }else {
-            return new ResponseEntity(200,"查询成功",stuPointLists);
-        }
-    }
 }

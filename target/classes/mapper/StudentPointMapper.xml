@@ -124,32 +124,7 @@
     left join `user` u on u.id = sp.student_id
     where sp.exam_id =#{examId}
   </select>
-
-
-    <resultMap id="PointByStu" type="com.examsys.model.entity.StuPointList">
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="exam_id" property="examId" />
-        <result column="paper_code" property="paperCode" />
-        <result column="objective_grade" property="objectiveGrade" jdbcType="DOUBLE" />
-        <result column="subjective_grade" property="subjectiveGrade" jdbcType="DOUBLE" />
-        <result column="paper_total_point" property="paperTotalPoint" jdbcType="DOUBLE" />
-        <result column="student_total_point" property="studentTotalPoint" jdbcType="DOUBLE" />
-        <result column="begin_time" property="beginTime" />
-        <result column="end_time" property="endTime"/>
-        <result column="duration" property="duration"/>
-        <result column="exam_name" property="examName"/>
-    </resultMap>
-
-    <select id="selectPointByStu" resultMap="PointByStu" parameterType="java.lang.Integer">
-    select sp.id,sp.exam_id, sp.paper_code,sp.objective_grade,sp.subjective_grade,
-    sp.paper_total_point,sp.student_total_point,
-    e.begin_time,e.end_time,e.duration,e.exam_name
-    from student_point sp
-    left join exam e on e.id = sp.exam_id
-    where sp.student_id =#{stuId} and e.status = "已结束"
-  </select>
-
-
+    
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, paper_code, student_id, objective_grade, subjective_grade, extra_point, 

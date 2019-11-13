@@ -62,7 +62,7 @@ $(function(){
     $("#4-api-3").click(function() {
 
         var str3={
-            user_id:2
+            user_id:11
         };
         $.ajax({
             url: "/epi/user/examlist",

@@ -8,9 +8,20 @@ import lombok.Setter;
 @Setter
 @Getter
 public class StuPointList {
+
     private Integer id;
 
+    private String examName;
+
     private String paperCode;
+
+    private String beginTime;
+
+    private String endTime;
+
+    private Long duration;
+
+    private String status;
 
     private Double objectiveGrade;
 
@@ -20,14 +31,8 @@ public class StuPointList {
 
     private Double studentTotalPoint;
 
-    private String examName;
+    private Integer endFlag;
 
-    private Integer examId;
 
-    private String beginTime;
-
-    private String endTime;
-
-    private Long duration;
 
 }

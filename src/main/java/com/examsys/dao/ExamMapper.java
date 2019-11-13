@@ -2,6 +2,7 @@ package com.examsys.dao;
 
 import com.examsys.model.Exam;
 import com.examsys.model.entity.ExamEntity;
+import com.examsys.model.entity.StuPointList;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ExamMapper {
 
-    List<Exam> selectExamByUserId(Integer id);
+    List<StuPointList> selectExamByUserId(Integer stuId);
 
     int insert(Exam exam);
 
