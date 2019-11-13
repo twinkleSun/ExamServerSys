@@ -146,6 +146,7 @@
                 <id column="ques_id" property="ques_id" jdbcType="INTEGER"></id>
                 <result column="content" property="content" jdbcType="VARCHAR" ></result>
                 <result column="options" property="options" jdbcType="VARCHAR" ></result>
+                <result column="def_ans" property="def_ans" jdbcType="VARCHAR" ></result>
                 <result column="type" property="type" jdbcType="VARCHAR" ></result>
                 <result column="score" property="score" jdbcType="DOUBLE" ></result>
                 <result column="description" property="description" jdbcType="VARCHAR" ></result>
@@ -161,7 +162,7 @@
         q.content content,q.options options,q.type `type`,q.description description,
         p.create_time create_time,p.last_modified_time last_modified_time,
         p.title title,p.description paper_description,p.create_user_id create_user_id,
-        q.id ques_id,
+        q.id ques_id,q.answer def_ans,
         sp.objective_grade objective_grade, sp.subjective_grade subjective_grade,
         sp.paper_total_point paper_total_point,sp.student_total_point student_total_point,
         sp.objective_status objective_status,sp.subjective_status subjective_status,

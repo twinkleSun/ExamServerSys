@@ -1,6 +1,7 @@
 package com.examsys.dao;
 
 import com.examsys.model.StudentPoint;
+import com.examsys.model.entity.StuPointList;
 import com.examsys.model.entity.StudentPointAndInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,4 +36,6 @@ public interface StudentPointMapper {
     int updateTotalPoint(StudentPoint studentPoint);
 
     int deleteByStuId(int stuId);
+
+    List<StuPointList> selectPointByStu(int stuId);
 }

@@ -29,4 +29,6 @@ public class QuestionAns {
 
     private String description;
 
+    private String def_ans;
+
 }
