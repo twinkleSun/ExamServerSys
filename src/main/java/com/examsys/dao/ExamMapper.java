@@ -6,13 +6,16 @@ import com.examsys.model.entity.StuPointList;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Mapper
 @Repository
 public interface ExamMapper {
 
-    List<StuPointList> selectExamByUserId(Integer stuId);
+    HashSet<StuPointList> selectExamByUserId(Integer stuId);
 
     int insert(Exam exam);
 

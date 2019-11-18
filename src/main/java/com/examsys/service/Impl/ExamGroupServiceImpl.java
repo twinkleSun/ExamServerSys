@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
@@ -28,14 +30,13 @@ public class ExamGroupServiceImpl {
      * @return
      */
     public ResponseEntity getExamListByStudent(int userId) {
-        List<StuPointList> examList = examMapper.selectExamByUserId(userId);
+        HashSet<StuPointList> examList = examMapper.selectExamByUserId(userId);
         if(examList==null || examList.size()==0){
             return new ResponseEntity(ErrorMsgEnum.STUDENT_HAS_NO_EXAM);
         }
 
         List<StuPointList> stuPointLists = new ArrayList<>();
-        for(int i = 0; i < examList.size(); i++) {
-            StuPointList stuPointList = examList.get(i);
+        for(StuPointList stuPointList:examList){
 
             Exam exam = new Exam();
             exam.setId(stuPointList.getId());
@@ -55,6 +56,7 @@ public class ExamGroupServiceImpl {
             examMapper.updateExamStatus(exam);
             stuPointLists.add(stuPointList);
         }
+
         return new ResponseEntity(200,"查询成功",stuPointLists);
     }
 

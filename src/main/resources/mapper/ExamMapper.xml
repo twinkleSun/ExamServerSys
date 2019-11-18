@@ -56,12 +56,15 @@
 
   <!--根据用户ID查询考试列表-->
   <select id="selectExamByUserId" parameterType="java.lang.Integer" resultMap="PointByStu">
-     select sp.exam_id id, sp.paper_code,sp.objective_grade,sp.subjective_grade,
-        sp.paper_total_point,sp.student_total_point,
-        e.begin_time,e.end_time,e.duration,e.exam_name,e.status,sp.end_flag
-    from student_point sp
-    left join exam e on e.id = sp.exam_id
-    where sp.student_id =#{stuId}
+     select e.id id, e.paper_code paper_code,sp.objective_grade objective_grade,sp.subjective_grade subjective_grade,
+        sp.paper_total_point paper_total_point,sp.student_total_point student_total_point,
+        e.begin_time begin_time,e.end_time end_time,e.duration duration,e.exam_name exam_name,e.status status,
+        sp.end_flag end_flag
+        from group_user gu
+        left join exam_group eg on gu.group_id = eg.group_id
+        left join exam e on  eg.exam_id = e.id
+        left join student_point sp on (sp.exam_id = e.id and  gu.student_id = sp.student_id)
+      where gu.student_id =#{stuId}
   </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.examsys.model.Exam" >
