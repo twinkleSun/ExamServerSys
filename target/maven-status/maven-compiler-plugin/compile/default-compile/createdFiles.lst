@@ -25,6 +25,7 @@ com\examsys\model\User.class
 com\examsys\dao\ExamMapper.class
 com\examsys\controller\ExamController.class
 com\examsys\controller\KnowledgeController.class
+com\examsys\model\entity\StuPointList.class
 com\examsys\model\ExamGroup.class
 com\examsys\model\GroupUser.class
 com\examsys\service\Impl\QuestionLibraryServiceImpl.class

@@ -124,7 +124,7 @@
     left join `user` u on u.id = sp.student_id
     where sp.exam_id =#{examId}
   </select>
-    
+
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select id, paper_code, student_id, objective_grade, subjective_grade, extra_point, 

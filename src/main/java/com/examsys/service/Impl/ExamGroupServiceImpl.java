@@ -49,10 +49,11 @@ public class ExamGroupServiceImpl {
             if(!exam.getStatus().equals("已结束")) {
                 exam = handleExamStatus(exam);
                 if(!exam.getStatus().equals("已结束") && !exam.getStatus().equals("判题中")){
-                    stuPointLists.add(stuPointList);
+
                 }
             }
             examMapper.updateExamStatus(exam);
+            stuPointLists.add(stuPointList);
         }
         return new ResponseEntity(200,"查询成功",stuPointLists);
     }
