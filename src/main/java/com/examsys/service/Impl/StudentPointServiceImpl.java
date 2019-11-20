@@ -301,42 +301,59 @@ public class StudentPointServiceImpl {
                     studentPoint = 0.0;
                 }else{
                     if(quesType.equals("multi")){
-                        JSONArray defAnsArr =  JSONObject.parseArray(defAns);
-                        JSONArray stuAnsArr =  JSONObject.parseArray(studentAnswer);
+                        if(studentAnswer!=null && studentAnswer.equals("") && !studentAnswer.equals("[]") && !studentAnswer.equals("[{}]")){
+                            JSONArray defAnsArr =  JSONObject.parseArray(defAns);
+                            JSONArray stuAnsArr =  JSONObject.parseArray(studentAnswer);
 
-                        int defLen = defAnsArr.size();
-                        int stuLen = stuAnsArr.size();
-                        if(defLen == stuLen){
-                            ArrayList<Integer> defArr = new ArrayList<>();
-                            for (Object obj : defAnsArr) {
-                                JSONObject defObj = (JSONObject)obj;
-                                defArr.add(defObj.getInteger("id"));
-                            }
-
-                            int tmp = 1;
-                            for(Object obj:stuAnsArr){
-                                JSONObject stuObj = (JSONObject)obj;
-                                int tmpId = stuObj.getInteger("id");
-                                if(defArr.contains(tmpId)){
-                                }else{
-                                    tmp = 0;
-                                    studentPoint = 0.0;
-                                    break;
+                            int defLen = defAnsArr.size();
+                            int stuLen = stuAnsArr.size();
+                            if(defLen == stuLen){
+                                ArrayList<Integer> defArr = new ArrayList<>();
+                                for (Object obj : defAnsArr) {
+                                    JSONObject defObj = (JSONObject)obj;
+                                    defArr.add(defObj.getInteger("id"));
                                 }
-                            }
-                            if(tmp == 1){
-                                studentPoint = defPoint;
+
+                                int tmp = 1;
+                                for(Object obj:stuAnsArr){
+                                    JSONObject stuObj = (JSONObject)obj;
+                                    int tmpId = stuObj.getInteger("id");
+                                    if(defArr.contains(tmpId)){
+                                    }else{
+                                        tmp = 0;
+                                        studentPoint = 0.0;
+                                        break;
+                                    }
+                                }
+                                if(tmp == 1){
+                                    studentPoint = defPoint;
+                                }
+                            }else{
+                                studentPoint = 0.0;
                             }
                         }else{
                             studentPoint = 0.0;
                         }
+
 
                     }else{
-                        if (studentAnswer.equals(defAns)){
-                            studentPoint = defPoint;
-                        }else{
-                            studentPoint = 0.0;
+                        if(studentAnswer!=null && !studentAnswer.equals("[]") && !studentAnswer.equals("[{}]") && !studentAnswer.equals("")){
+                            JSONArray defAnsArrs =  JSONObject.parseArray(defAns);
+                            JSONArray stuAnsArrs =  JSONObject.parseArray(studentAnswer);
+                            JSONObject defAnsArr = (JSONObject)defAnsArrs.get(0);
+                            JSONObject stuAnsArr = (JSONObject)stuAnsArrs.get(0);
+
+                            int tmpAnsId = Integer.valueOf(defAnsArr.get("id").toString());
+                            int tmpStuId = Integer.valueOf(stuAnsArr.get("id").toString());
+                            if (tmpAnsId == tmpStuId){
+                                studentPoint = defPoint;
+                            }else{
+                                studentPoint = 0.0;
+                            }
+                        }else {
+                            studentPoint= 0.0;
                         }
+
                     }
                 }
 
