@@ -301,7 +301,7 @@ public class StudentPointServiceImpl {
                     studentPoint = 0.0;
                 }else{
                     if(quesType.equals("multi")){
-                        if(studentAnswer!=null && studentAnswer.equals("") && !studentAnswer.equals("[]") && !studentAnswer.equals("[{}]")){
+                        if(studentAnswer!=null && !studentAnswer.equals("") && !studentAnswer.equals("[]") && !studentAnswer.equals("[{}]")){
                             JSONArray defAnsArr =  JSONObject.parseArray(defAns);
                             JSONArray stuAnsArr =  JSONObject.parseArray(studentAnswer);
 
