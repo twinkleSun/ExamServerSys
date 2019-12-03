@@ -2,6 +2,7 @@ package com.examsys.controller;
 
 import com.examsys.model.entity.ResponseEntity;
 import com.examsys.service.Impl.ExamServiceImpl;
+import com.examsys.util.EncryptUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -49,7 +50,7 @@ public class ExamController {
      */
     @PostMapping(value = "/techend")
     public ResponseEntity endExam(@RequestBody Map<String,Object> map) {
-        ResponseEntity responseEntity = examService.endExam(Integer.valueOf(map.get("exam_id").toString()));
+        ResponseEntity responseEntity = examService.endExam(Integer.valueOf( map.get("exam_id").toString()));
         return responseEntity;
     }
 

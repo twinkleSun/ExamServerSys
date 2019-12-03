@@ -38,8 +38,6 @@ public class UserServiceImpl{
     StudentPointDetailMapper studentPointDetailMapper;
     @Autowired
     StudentPointMapper studentPointMapper;
-    @Autowired
-    EncryptUtil encryptUtil;
 
     /**
      * 用户登录，通过用户名查找
@@ -55,7 +53,7 @@ public class UserServiceImpl{
         }else if(!password.equals(userDB.getPassword())){
             return new ResponseEntity(ErrorMsgEnum.USERNAME_OR_PASSWORD_INCORRECT);
         }else{
-            userLoginInfo.put("auth_token",encryptUtil.GetEncryptedToken());
+            userLoginInfo.put("auth_token",EncryptUtil.GetEncryptedToken());
             userLoginInfo.put("user_info",userDB);
             return new ResponseEntity(200,"查询成功",userLoginInfo);
         }

@@ -26,8 +26,6 @@ import java.util.Map;
 @Service
 public class AuthServiceImpl {
 
-    @Autowired
-    EncryptUtil encryptUtil;
 
     private static long expireTime = 1000 * 60 * 1;
 
@@ -54,7 +52,7 @@ public class AuthServiceImpl {
         if(auth_token == null || auth_token.equals("") || auth_token.equals("null")) {
             return ErrorMsgEnum.NO_TOKEN_ERROR.getCode();
         }
-        String msg = encryptUtil.Decrypt(auth_token);
+        String msg = EncryptUtil.Decrypt(auth_token);
         String token_time = msg.split("#")[0];
         //token过期
         long cur_time = new Date().getTime();
