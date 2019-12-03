@@ -41,7 +41,7 @@ public class AuthServiceImpl {
                 return new ResponseEntity(ErrorMsgEnum.NO_TOKEN_ERROR);
             }
             else {
-                return new ResponseEntity(200,"授权已校验");
+                return new ResponseEntity(200,"登录授权已校验");
             }
         }
         catch (Exception ex) {
@@ -51,13 +51,15 @@ public class AuthServiceImpl {
 
     int CheckAuthStat(String auth_token) {
         //无token
-        if(auth_token == null || auth_token.equals("")) {
+        if(auth_token == null || auth_token.equals("") || auth_token.equals("null")) {
             return ErrorMsgEnum.NO_TOKEN_ERROR.getCode();
         }
         String msg = encryptUtil.Decrypt(auth_token);
-        String date = msg.split("#")[0];
+        String token_time = msg.split("#")[0];
         //token过期
-        if(Long.valueOf(date) - new Date().getTime() > expireTime) {
+        long cur_time = new Date().getTime();
+        long time_pass = cur_time - Long.valueOf(token_time);
+        if(time_pass > expireTime) {
             return ErrorMsgEnum.TOKEN_EXPIRE_ERROR.getCode();
         }
         return 0;
