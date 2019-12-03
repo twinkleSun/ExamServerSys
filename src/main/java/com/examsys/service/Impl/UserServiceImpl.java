@@ -7,6 +7,7 @@ import com.examsys.dao.UserMapper;
 import com.examsys.model.GroupUser;
 import com.examsys.model.User;
 import com.examsys.model.entity.ResponseEntity;
+import com.examsys.util.EncryptUtil;
 import com.examsys.util.error.ErrorMsgEnum;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +38,8 @@ public class UserServiceImpl{
     StudentPointDetailMapper studentPointDetailMapper;
     @Autowired
     StudentPointMapper studentPointMapper;
-
+    @Autowired
+    EncryptUtil encryptUtil;
 
     /**
      * 用户登录，通过用户名查找
@@ -46,12 +49,15 @@ public class UserServiceImpl{
      */
     public ResponseEntity userLogin(String username,String password){
         User userDB = userMapper.selectByUsername(username);
+        Map<String,Object> userLoginInfo = new HashMap<>();
         if(userDB == null){
             return new ResponseEntity(ErrorMsgEnum.USER_NOT_EXIT);
         }else if(!password.equals(userDB.getPassword())){
             return new ResponseEntity(ErrorMsgEnum.USERNAME_OR_PASSWORD_INCORRECT);
         }else{
-            return new ResponseEntity(200,"查询成功",userDB);
+            userLoginInfo.put("auth_token",encryptUtil.GetEncryptedToken());
+            userLoginInfo.put("user_info",userDB);
+            return new ResponseEntity(200,"查询成功",userLoginInfo);
         }
     }
 
