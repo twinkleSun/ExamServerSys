@@ -82,9 +82,15 @@ public enum ErrorMsgEnum {
     NO_STUDENT_POINT_INFO(400012,"考试未结束或还无考生答题"),
     STUDENT_NOT_TAKE_PART_IN(400013,"考生没有参加或没有提交具体作答内容，不存在答卷详情"),
     BEIGIN_EARLY_THAN_NOW(400014,"开始时间不得早于当前时间"),
-    NO_STU_POINT_LIST(400015,"没有该考生已结束的考试成绩列表")
-    ;
+    NO_STU_POINT_LIST(400015,"没有该考生已结束的考试成绩列表"),
 
+    /**
+     * 前后端权限token校验错误
+     */
+    NO_TOKEN_ERROR(500001,"无登录信息，请重新登录"),
+    TOKEN_EXPIRE_ERROR(500002,"登录信息过期，请重新登录"),
+    TOKEN_WRONG_ERROR(500003,"登录信息错误，请重新登录"),
+    ;
 
     /**
      * 错误码
