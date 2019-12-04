@@ -67,10 +67,10 @@ public class EncryptUtil {
     }
 
 
-    public static String GetEncryptedToken() {
+    public static String GetEncryptedToken(String key) {
         Date cur_time = new Date();
         count++;
-        return Encrypt(String.valueOf(cur_time.getTime()) + "#" + String.valueOf(count));
+        return Encrypt(String.valueOf(cur_time.getTime()) + "#" + key + "#" + String.valueOf(count));
     }
 
     public static void DecryptAllIds(Map<String,Object> map) {

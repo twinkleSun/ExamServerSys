@@ -21,12 +21,13 @@ import javax.xml.crypto.Data;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class AuthServiceImpl {
 
-
+    private static List<String> loggedUsersId;
     private static long expireTime = 1000 * 60 * 1;
 
     public ResponseEntity CheckAuth(Map<String,Object> map) {
@@ -37,6 +38,9 @@ public class AuthServiceImpl {
             }
             else if(auth_stat == ErrorMsgEnum.NO_TOKEN_ERROR.getCode()) {
                 return new ResponseEntity(ErrorMsgEnum.NO_TOKEN_ERROR);
+            }
+            else if(auth_stat == ErrorMsgEnum.MULTIPLE_LOGIN_ERROR.getCode()) {
+                return new ResponseEntity(ErrorMsgEnum.MULTIPLE_LOGIN_ERROR);
             }
             else {
                 return new ResponseEntity(200,"登录授权已校验");
@@ -53,7 +57,13 @@ public class AuthServiceImpl {
             return ErrorMsgEnum.NO_TOKEN_ERROR.getCode();
         }
         String msg = EncryptUtil.Decrypt(auth_token);
-        String token_time = msg.split("#")[0];
+        String[] fields = msg.split("#");
+        String token_time = fields[0];
+        String logged_user_id = fields[1];
+        //用户已登录
+        if(loggedUsersId.contains(logged_user_id)) {
+            return ErrorMsgEnum.MULTIPLE_LOGIN_ERROR.getCode();
+        }
         //token过期
         long cur_time = new Date().getTime();
         long time_pass = cur_time - Long.valueOf(token_time);

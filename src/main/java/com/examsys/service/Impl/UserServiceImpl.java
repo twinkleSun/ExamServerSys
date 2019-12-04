@@ -53,7 +53,7 @@ public class UserServiceImpl{
         }else if(!password.equals(userDB.getPassword())){
             return new ResponseEntity(ErrorMsgEnum.USERNAME_OR_PASSWORD_INCORRECT);
         }else{
-            userLoginInfo.put("auth_token",EncryptUtil.GetEncryptedToken());
+            userLoginInfo.put("auth_token",EncryptUtil.GetEncryptedToken(username));
             userLoginInfo.put("user_info",userDB);
             return new ResponseEntity(200,"查询成功",userLoginInfo);
         }
