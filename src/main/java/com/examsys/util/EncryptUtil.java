@@ -9,10 +9,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.spec.KeySpec;
-import java.util.Base64;
-import java.util.Date;
+import java.util.*;
 
-@Repository
 public class EncryptUtil {
 
     private static String secretKey = "guojingyu_wangtao_liuyuanye";
@@ -24,7 +22,7 @@ public class EncryptUtil {
     }
 
 
-    public String Encrypt(String strToEncrypt)
+    public static String Encrypt(String strToEncrypt)
     {
         try
         {
@@ -47,7 +45,7 @@ public class EncryptUtil {
         return null;
     }
 
-    public String Decrypt(String strToDecrypt) {
+    public static String Decrypt(String strToDecrypt) {
         try
         {
             byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -69,11 +67,19 @@ public class EncryptUtil {
     }
 
 
-    public String GetEncryptedToken() {
+    public static String GetEncryptedToken() {
         Date cur_time = new Date();
         count++;
         return Encrypt(String.valueOf(cur_time.getTime()) + "#" + String.valueOf(count));
     }
 
+    public static void DecryptAllIds(Map<String,Object> map) {
+        Set<String> keySet = map.keySet();
+        for (String key : keySet) {
+            if(key.contains("id") || key.contains("code")) {
+               map.put(key,Decrypt(map.get(key).toString()));
+            }
+        }
+    }
 
 }
