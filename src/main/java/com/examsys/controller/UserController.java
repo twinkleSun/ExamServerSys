@@ -30,7 +30,6 @@ public class UserController {
     @Autowired
     OtherUtil otherUtil;
 
-
     /**
      * 用户登陆
      * 参数：user_name,password
@@ -84,6 +83,18 @@ public class UserController {
     @DeleteMapping("/multi")
     public ResponseEntity deleteUsers(@RequestBody Map<String,Object> map) {
         ResponseEntity responseEntity = userService.deleteUsers(map);
+        return responseEntity;
+    }
+
+    /**
+     * 用户退出登陆
+     * 参数：user_id
+     * @param map
+     * @return
+     */
+    @PostMapping("/logout")
+    public ResponseEntity userLogout(@RequestBody Map<String,String> map) {
+        ResponseEntity responseEntity = userService.userLogout(map.get("user_id"));
         return responseEntity;
     }
 

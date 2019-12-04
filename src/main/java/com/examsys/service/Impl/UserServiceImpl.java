@@ -38,6 +38,8 @@ public class UserServiceImpl{
     StudentPointDetailMapper studentPointDetailMapper;
     @Autowired
     StudentPointMapper studentPointMapper;
+    @Autowired
+    AuthServiceImpl authService;
 
     /**
      * 用户登录，通过用户名查找
@@ -53,7 +55,11 @@ public class UserServiceImpl{
         }else if(!password.equals(userDB.getPassword())){
             return new ResponseEntity(ErrorMsgEnum.USERNAME_OR_PASSWORD_INCORRECT);
         }else{
-            userLoginInfo.put("auth_token",EncryptUtil.GetEncryptedToken(username));
+            String user_id = String.valueOf(userDB.getId());
+            if(authService.UserLogged(user_id))
+                return new  ResponseEntity(ErrorMsgEnum.MULTIPLE_LOGIN_ERROR);
+            authService.AddLoggedUser(user_id);
+            userLoginInfo.put("auth_token",EncryptUtil.GetEncryptedToken(user_id));
             userLoginInfo.put("user_info",userDB);
             return new ResponseEntity(200,"查询成功",userLoginInfo);
         }
@@ -157,5 +163,14 @@ public class UserServiceImpl{
         return new ResponseEntity(200,"删除成功");
     }
 
+    /**
+     * 用户登出
+     * @param user_id
+     * @return
+     */
+    public ResponseEntity userLogout(String user_id) {
+        authService.RemoveLoggedUser(user_id);
+        return new ResponseEntity(200,"登出成功");
+    }
 
 }

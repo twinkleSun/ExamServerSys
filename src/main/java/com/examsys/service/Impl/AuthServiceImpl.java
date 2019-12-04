@@ -19,15 +19,12 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.crypto.Data;
 import java.security.spec.KeySpec;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AuthServiceImpl {
 
-    private static List<String> loggedUsersId;
+    private static Set<String> loggedUsers = new HashSet<>();
     private static long expireTime = 1000 * 60 * 1;
 
     public ResponseEntity CheckAuth(Map<String,Object> map) {
@@ -38,9 +35,6 @@ public class AuthServiceImpl {
             }
             else if(auth_stat == ErrorMsgEnum.NO_TOKEN_ERROR.getCode()) {
                 return new ResponseEntity(ErrorMsgEnum.NO_TOKEN_ERROR);
-            }
-            else if(auth_stat == ErrorMsgEnum.MULTIPLE_LOGIN_ERROR.getCode()) {
-                return new ResponseEntity(ErrorMsgEnum.MULTIPLE_LOGIN_ERROR);
             }
             else {
                 return new ResponseEntity(200,"登录授权已校验");
@@ -59,20 +53,29 @@ public class AuthServiceImpl {
         String msg = EncryptUtil.Decrypt(auth_token);
         String[] fields = msg.split("#");
         String token_time = fields[0];
-        String logged_user_id = fields[1];
-        //用户已登录
-        if(loggedUsersId.contains(logged_user_id)) {
-            return ErrorMsgEnum.MULTIPLE_LOGIN_ERROR.getCode();
-        }
+        String logged_user = fields[1];
         //token过期
         long cur_time = new Date().getTime();
         long time_pass = cur_time - Long.valueOf(token_time);
         if(time_pass > expireTime) {
+            RemoveLoggedUser(logged_user);
             return ErrorMsgEnum.TOKEN_EXPIRE_ERROR.getCode();
         }
         return 0;
     }
 
+    public boolean UserLogged(String logged_user) {
+        if(loggedUsers.contains(logged_user))
+            return true;
+        else return false;
+    }
 
+    public boolean AddLoggedUser(String logged_user) {
+        return loggedUsers.add(logged_user);
+    }
+
+    public boolean RemoveLoggedUser(String logged_user) {
+        return loggedUsers.remove(logged_user);
+    }
 
 }
